@@ -679,11 +679,10 @@ function editJadwal(index) {
    HAPUS JADWAL
 ========================================= */
 
-function hapusJadwal(index) {
+async function hapusJadwal(index) {
 
     const jadwal =
         jadwalData[index];
-
 
     if (!jadwal) {
 
@@ -693,7 +692,6 @@ function hapusJadwal(index) {
 
     }
 
-
     const yakin = confirm(
 
         "Hapus jadwal " +
@@ -702,23 +700,54 @@ function hapusJadwal(index) {
 
     );
 
-
     if (!yakin) {
 
         return;
 
     }
 
+    /* HAPUS DARI SUPABASE */
 
-    /* HAPUS DATA */
+    const { data, error } =
+    await supabaseClient
+        .from("jadwal_kumpulan")
+        .delete()
+        .eq("id", jadwal.id)
+        .select();
 
-    jadwalData.splice(index, 1);
+    if (error) {
 
+    console.error(
+        "Gagal menghapus jadwal:",
+        error
+    );
 
-    /* SIMPAN */
+    alert(
+        "Jadwal gagal dihapus dari database."
+    );
 
-    simpanKeLocalStorage();
+    return;
 
+}
+
+if (!data || data.length === 0) {
+
+    console.error(
+        "Tidak ada data yang terhapus. ID:",
+        jadwal.id
+    );
+
+    alert(
+        "Jadwal tidak terhapus dari database."
+    );
+
+    return;
+
+}
+
+    /* AMBIL DATA TERBARU */
+
+    await ambilData();
 
     /* RESET JIKA SEDANG EDIT */
 
@@ -728,11 +757,9 @@ function hapusJadwal(index) {
 
     }
 
-
     /* TAMPILKAN ULANG */
 
     tampilkanJadwal();
-
 
     alert("Jadwal berhasil dihapus.");
 
