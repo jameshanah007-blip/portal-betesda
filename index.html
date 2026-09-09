@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GPIL Jemaat Betesda Purwosari</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header-content">
+            <h1>GPIL Jemaat Betesda Purwosari</h1>
+            <p>Portal Informasi Jemaat</p>
+        </div>
+    </header>
+
+
+    <!-- MENU UTAMA -->
+    <nav class="menu">
+
+        <button type="button" onclick="bukaHome()">
+            <span class="icon">🏠</span>
+            <span>Home</span>
+        </button>
+
+        <button type="button" onclick="window.location.href='jadwal-kumpulan.html'">
+    <span class="icon">📅</span>
+    <span>Jadwal Kumpulan</span>
+</button>
+
+<button type="button" onclick="window.location.href='kelola-jadwal.html'">
+    <span class="icon">⚙️</span>
+    <span>Kelola Jadwal</span>
+</button>
+
+        <button type="button" onclick="bukaLaporan()">
+            <span class="icon">💰</span>
+            <span>Laporan Keuangan</span>
+        </button>
+
+    </nav>
+
+
+    <!-- ISI PORTAL -->
+    <main class="container">
+
+
+        <!-- HOME -->
+        <section id="home" class="halaman">
+
+            <div class="welcome-box">
+
+                <div class="welcome-icon">
+                    ⛪
+                </div>
+
+                <h2>Selamat Datang</h2>
+
+                <p>
+                    Selamat datang di Portal
+                    GPIL Jemaat Betesda Purwosari.
+                </p>
+
+                <p>
+                    Portal ini menyediakan informasi
+                    jadwal kumpulan dan laporan keuangan
+                    jemaat.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- JADWAL KUMPULAN -->
+        <section id="jadwal" class="halaman" style="display: none;">
+
+            <h2>📅 Jadwal Kumpulan</h2>
+
+            <p class="deskripsi">
+                Pilih kelompok kumpulan yang ingin dilihat.
+            </p>
+
+            <div class="menu-card">
+
+                <button type="button" class="card-button">
+                    <span class="card-icon">🏠</span>
+
+                    <span class="card-text">
+                        <strong>Rumah Tangga</strong>
+                        <small>Jadwal kumpulan rumah tangga</small>
+                    </span>
+                </button>
+
+
+                <button type="button" class="card-button">
+                    <span class="card-icon">👩</span>
+
+                    <span class="card-text">
+                        <strong>Persekutuan Wanita (PW)</strong>
+                        <small>Jadwal kegiatan PW</small>
+                    </span>
+                </button>
+
+
+                <button type="button" class="card-button">
+                    <span class="card-icon">👨</span>
+
+                    <span class="card-text">
+                        <strong>Persekutuan Kaum Bapak (PKB)</strong>
+                        <small>Jadwal kegiatan PKB</small>
+                    </span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- LAPORAN KEUANGAN -->
+        <section id="laporan" class="halaman" style="display: none;">
+
+            <h2>💰 Laporan Keuangan</h2>
+
+            <p class="deskripsi">
+                Silakan pilih laporan keuangan
+                yang ingin dilihat.
+            </p>
+
+            <div class="menu-card">
+
+
+                <button type="button"
+                    class="card-button"
+                    onclick="bukaLaporanJemaat()">
+
+                    <span class="card-icon">📊</span>
+
+                    <span class="card-text">
+                        <strong>Laporan Keuangan Jemaat</strong>
+                        <small>Keuangan Jemaat</small>
+                    </span>
+
+                    <span class="arrow">›</span>
+
+                </button>
+
+
+                <button type="button"
+                    class="card-button"
+                    onclick="bukaLaporanPW()">
+
+                    <span class="card-icon">📊</span>
+
+                    <span class="card-text">
+                        <strong>Laporan Keuangan PW</strong>
+                        <small>Keuangan Persekutuan Wanita</small>
+                    </span>
+
+                    <span class="arrow">›</span>
+
+                </button>
+
+
+                <button type="button"
+                    class="card-button"
+                    onclick="bukaLaporanPKB()">
+
+                    <span class="card-icon">📊</span>
+
+                    <span class="card-text">
+                        <strong>Laporan Keuangan PKB</strong>
+                        <small>Keuangan Kaum Bapak</small>
+                    </span>
+
+                    <span class="arrow">›</span>
+
+                </button>
+
+
+                <button type="button"
+                    class="card-button"
+                    onclick="bukaLaporanPemuda()">
+
+                    <span class="card-icon">📊</span>
+
+                    <span class="card-text">
+                        <strong>Laporan Keuangan Pemuda</strong>
+                        <small>Keuangan Persekutuan Pemuda</small>
+                    </span>
+
+                    <span class="arrow">›</span>
+
+                </button>
+
+
+                <button type="button"
+                    class="card-button"
+                    onclick="bukaLaporanSekolahMinggu()">
+
+                    <span class="card-icon">📊</span>
+
+                    <span class="card-text">
+                        <strong>Laporan Keuangan Sekolah Minggu</strong>
+                        <small>Keuangan Sekolah Minggu</small>
+                    </span>
+
+                    <span class="arrow">›</span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <p>
+            GPIL Jemaat Betesda Purwosari
+        </p>
+
+        <small>
+            Portal Informasi Jemaat
+        </small>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

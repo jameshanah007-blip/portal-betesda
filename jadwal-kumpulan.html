@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Jadwal Kumpulan</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        /* HEADER */
+        .header {
+            background: #1f4e79;
+            color: white;
+
+            padding: 22px 16px;
+
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+
+            font-size: 24px;
+        }
+
+        .header p {
+            margin: 6px 0 0;
+
+            font-size: 14px;
+        }
+
+        /* CONTAINER */
+        .container {
+            width: 100%;
+            max-width: 600px;
+
+            margin: auto;
+
+            padding: 20px 14px 30px;
+        }
+
+        /* KEMBALI */
+        .kembali {
+            display: inline-block;
+
+            margin-bottom: 18px;
+
+            color: #1f4e79;
+
+            text-decoration: none;
+
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        /* JUDUL */
+        h2 {
+            margin: 0 0 8px;
+
+            color: #1f4e79;
+
+            font-size: 22px;
+        }
+
+        .deskripsi {
+            margin-top: 0;
+            margin-bottom: 20px;
+
+            color: #666;
+
+            font-size: 15px;
+        }
+
+        /* PILIHAN KELOMPOK */
+        .kelompok-list {
+            display: flex;
+            flex-direction: column;
+
+            gap: 12px;
+        }
+
+        .kelompok-button {
+            width: 100%;
+
+            min-height: 80px;
+
+            padding: 14px;
+
+            border: 1px solid #ddd;
+            border-radius: 14px;
+
+            background: white;
+
+            display: flex;
+            align-items: center;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 2px 7px rgba(0, 0, 0, 0.06);
+        }
+
+        .kelompok-button:active {
+            transform: scale(0.99);
+
+            background: #eef5fb;
+        }
+
+        .icon {
+            width: 52px;
+            min-width: 52px;
+            height: 52px;
+
+            margin-right: 14px;
+
+            border-radius: 13px;
+
+            background: #eaf3fa;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 27px;
+        }
+
+        .teks {
+            flex: 1;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .teks strong {
+            color: #222;
+
+            font-size: 17px;
+        }
+
+        .teks small {
+            margin-top: 4px;
+
+            color: #777;
+
+            font-size: 13px;
+        }
+
+        .panah {
+            color: #888;
+
+            font-size: 30px;
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: 20px;
+
+            padding: 20px 15px;
+
+            background: #1f4e79;
+
+            color: white;
+
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 0;
+
+            font-size: 14px;
+        }
+
+        .footer small {
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+
+        <h1>📅 Jadwal Kumpulan</h1>
+
+        <p>
+            GPIL Jemaat Betesda Purwosari
+        </p>
+
+    </header>
+
+
+    <main class="container">
+
+        <a href="index.html" class="kembali">
+            ← Kembali ke Portal
+        </a>
+
+
+        <h2>Pilih Kelompok</h2>
+
+        <p class="deskripsi">
+            Silakan pilih kelompok kumpulan
+            yang ingin Anda lihat.
+        </p>
+
+
+        <div class="kelompok-list">
+
+            <!-- RUMAH TANGGA -->
+
+            <button
+                type="button"
+                class="kelompok-button"
+                onclick="bukaRumahTangga()">
+
+                <span class="icon">
+                    🏠
+                </span>
+
+                <span class="teks">
+
+                    <strong>
+                        Rumah Tangga
+                    </strong>
+
+                    <small>
+                        Jadwal kumpulan rumah tangga
+                    </small>
+
+                </span>
+
+                <span class="panah">
+                    ›
+                </span>
+
+            </button>
+
+
+            <!-- PW -->
+
+            <button
+                type="button"
+                class="kelompok-button"
+                onclick="bukaPW()">
+
+                <span class="icon">
+                    👩
+                </span>
+
+                <span class="teks">
+
+                    <strong>
+                        Persekutuan Wanita (PW)
+                    </strong>
+
+                    <small>
+                        Jadwal kegiatan PW
+                    </small>
+
+                </span>
+
+                <span class="panah">
+                    ›
+                </span>
+
+            </button>
+
+
+            <!-- PKB -->
+
+            <button
+                type="button"
+                class="kelompok-button"
+                onclick="bukaPKB()">
+
+                <span class="icon">
+                    👨
+                </span>
+
+                <span class="teks">
+
+                    <strong>
+                        Persekutuan Kaum Bapak (PKB)
+                    </strong>
+
+                    <small>
+                        Jadwal kegiatan PKB
+                    </small>
+
+                </span>
+
+                <span class="panah">
+                    ›
+                </span>
+
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <footer class="footer">
+
+        <p>
+            GPIL Jemaat Betesda Purwosari
+        </p>
+
+        <small>
+            Portal Informasi Jemaat
+        </small>
+
+    </footer>
+
+
+    <script src="jadwal-kumpulan.js"></script>
+
+</body>
+
+</html>
