@@ -374,17 +374,38 @@
                     Jenis Transaksi
                 </label>
 
-               <select id="jenis" required>
+              <div class="jenis-transaksi">
+    <label>Jenis Transaksi</label>
 
-    <option value="Pemasukan">
-        Pemasukan
-    </option>
+    <div class="jenis-pilihan">
+        <button
+            type="button"
+            class="jenis-btn pemasukan active"
+            data-jenis="Pemasukan"
+        >
+            <span class="jenis-icon">↑</span>
+            <span>
+                <strong>Pemasukan</strong>
+                <small>Uang masuk</small>
+            </span>
+        </button>
 
-    <option value="Pengeluaran">
-        Pengeluaran
-    </option>
+        <button
+            type="button"
+            class="jenis-btn pengeluaran"
+            data-jenis="Pengeluaran"
+        >
+            <span class="jenis-icon">↓</span>
+            <span>
+                <strong>Pengeluaran</strong>
+                <small>Uang keluar</small>
+            </span>
+        </button>
+    </div>
 
-</select>
+    <!-- Tetap dipakai oleh JavaScript -->
+    <input type="hidden" id="jenis" value="Pemasukan">
+</div>
 
             </div>
 
