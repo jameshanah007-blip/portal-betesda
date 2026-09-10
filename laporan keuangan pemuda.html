@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
 
     <meta charset="UTF-8">
@@ -56,37 +57,10 @@
             font-weight: bold;
         }
 
-        .judul {
-            background: #1f4e79;
-            color: white;
-
-            padding: 20px 15px;
-
-            border-radius: 12px;
-
-            text-align: center;
-
-            margin-bottom: 15px;
-        }
-
-        .judul h1 {
-            margin: 0 0 8px 0;
-            font-size: 24px;
-        }
-
-        .judul p {
-            margin: 0;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
         .filter-box {
             background: white;
-
             padding: 15px;
-
             border-radius: 10px;
-
             margin-bottom: 15px;
         }
 
@@ -96,9 +70,7 @@
 
         .filter-group label {
             display: block;
-
             margin-bottom: 6px;
-
             font-weight: bold;
         }
 
@@ -135,7 +107,7 @@
 
             gap: 10px;
 
-            margin-top: 10px;
+            margin-bottom: 15px;
         }
 
         .btn-export {
@@ -171,19 +143,16 @@
 
         .laporan-header {
             text-align: center;
-
             margin-bottom: 20px;
         }
 
         .laporan-header h2 {
             margin: 0 0 5px 0;
-
             font-size: 20px;
         }
 
         .laporan-header p {
             margin: 5px 0;
-
             font-size: 14px;
         }
 
@@ -201,23 +170,23 @@
 
         .table-wrapper {
             width: 100%;
-
             overflow-x: auto;
         }
 
         table {
             width: 100%;
-
             min-width: 650px;
 
             border-collapse: collapse;
         }
 
+        /* SEMUA SEL TABEL DIBERI GARIS */
+
         th,
         td {
             padding: 10px 8px;
 
-            border-bottom: 1px solid #ddd;
+            border: 1px solid #999;
 
             font-size: 14px;
         }
@@ -225,6 +194,20 @@
         th {
             background: #1f4e79;
             color: white;
+
+            text-align: center;
+        }
+
+        /* PEMASUKAN, PENGELUARAN, SALDO RATA TENGAH */
+
+        th:nth-child(4),
+        th:nth-child(5),
+        th:nth-child(6),
+
+        td:nth-child(4),
+        td:nth-child(5),
+        td:nth-child(6) {
+            text-align: center;
         }
 
         .keterangan {
@@ -233,10 +216,15 @@
 
         .kosong {
             text-align: center;
-
             padding: 20px;
-
             color: #777;
+        }
+
+        /* TOTAL TANPA WARNA */
+
+        #laporanFooter td {
+            background: white;
+            font-weight: bold;
         }
 
         .ringkasan {
@@ -250,6 +238,13 @@
 
             font-size: 15px;
         }
+
+        .ringkasan strong {
+            float: right;
+            font-weight: bold;
+        }
+
+        /* RESPONSIVE */
 
         @media (min-width: 600px) {
 
@@ -272,15 +267,57 @@
             .btn-tampilkan {
                 grid-column: 1 / 3;
             }
+
+        }
+
+        /* CETAK */
+
+        @media print {
+
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .btn-kembali,
+            .filter-box,
+            .export-box {
+                display: none;
+            }
+
+            .laporan-container {
+                max-width: 100%;
+            }
+
+            .laporan-paper {
+                box-shadow: none;
+                border-radius: 0;
+                margin: 0;
+                padding: 10px;
+            }
+
+            .table-wrapper {
+                overflow: visible;
+            }
+
+            table {
+                min-width: 0;
+            }
+
         }
 
     </style>
 
 </head>
 
+
 <body>
 
+
 <div class="laporan-container">
+
+
+    <!-- TOMBOL KEMBALI -->
 
     <a
         href="buku-kas-pemuda.html"
@@ -290,20 +327,8 @@
     </a>
 
 
-    <div class="judul">
-
-        <h1>
-            Laporan Keuangan Pemuda
-        </h1>
-
-        <p>
-            Persekutuan Pemuda GPIL Jemaat Betesda Purwosari
-        </p>
-
-    </div>
-
-
     <!-- FILTER -->
+
     <div class="filter-box">
 
         <div class="filter-group">
@@ -346,6 +371,7 @@
 
 
     <!-- EXPORT -->
+
     <div class="export-box">
 
         <button
@@ -369,7 +395,11 @@
 
 
     <!-- LAPORAN -->
+
     <div class="laporan-paper">
+
+
+        <!-- HEADER -->
 
         <div class="laporan-header">
 
@@ -388,16 +418,20 @@
         </div>
 
 
+        <!-- SALDO BULAN LALU -->
+
         <div class="saldo-awal">
 
-            Saldo Awal:
+            Saldo Bulan Lalu:
 
             <span id="saldoAwal">
-                Rp 0
+                0
             </span>
 
         </div>
 
+
+        <!-- TABEL -->
 
         <div class="table-wrapper">
 
@@ -427,63 +461,58 @@
                 <tbody id="laporanBody">
                 </tbody>
 
+
+                <tfoot id="laporanFooter">
+                </tfoot>
+
             </table>
 
         </div>
 
 
-        <!-- RINGKASAN -->
-        <div class="ringkasan">
-
-            <div>
-
-                Total Pemasukan:
-
-                <strong id="totalPemasukan">
-                    Rp 0
-                </strong>
-
-            </div>
+        <!-- Ringkasan di bawah tabel dihapus -->
 
 
-            <div>
+        <!--
+        MENGETAHUI TIDAK DITAMPILKAN DI HALAMAN WEB.
+        MENGETAHUI AKAN DITAMPILKAN DI PDF DAN EXCEL.
+        -->
 
-                Total Pengeluaran:
-
-                <strong id="totalPengeluaran">
-                    Rp 0
-                </strong>
-
-            </div>
-
-
-            <div>
-
-                Saldo Akhir:
-
-                <strong id="saldoAkhir">
-                    Rp 0
-                </strong>
-
-            </div>
-
-        </div>
 
     </div>
+
 
 </div>
 
 
 <!-- LIBRARY EXCEL -->
-<script src="xlsx.full.min.js"></script>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
+></script>
+
 
 <!-- LIBRARY PDF -->
-<script src="jspdf.umd.min.js"></script>
 
-<script src="jspdf.plugin.autotable.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"
+></script>
+
+
+<!-- PLUGIN TABEL PDF -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"
+></script>
+
 
 <!-- JAVASCRIPT LAPORAN -->
-<script src="laporan-pemuda.js"></script>
+
+<script
+    src="laporan-pemuda.js"
+></script>
+
 
 </body>
+
 </html>
