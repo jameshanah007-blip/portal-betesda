@@ -26,54 +26,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const tombolBatal =
         document.getElementById("cancelButton");
 
- // ----------------------------------------------
-    // PILIHAN JENIS TRANSAKSI
-    // ----------------------------------------------
 
-    const tombolJenis =
-        document.querySelectorAll(".jenis-btn");
-
-    const inputJenis =
-        document.getElementById("jenis");
-
-
-    tombolJenis.forEach(function (tombol) {
-
-        tombol.addEventListener(
-            "click",
-            function () {
-
-                const jenis =
-                    this.dataset.jenis;
-
-
-                // Simpan pilihan ke input hidden
-                if (inputJenis) {
-
-                    inputJenis.value =
-                        jenis;
-                }
-
-
-                // Hapus status aktif dari semua tombol
-                tombolJenis.forEach(
-                    function (btn) {
-
-                        btn.classList.remove(
-                            "active"
-                        );
-                    }
-                );
-
-
-                // Aktifkan tombol yang dipilih
-                this.classList.add(
-                    "active"
-                );
-            }
-        );
-    });
-    
     // ----------------------------------------------
     // FORM SUBMIT
     // ----------------------------------------------
@@ -110,9 +63,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
                 this.value =
-                    Number(
-                        angka
-                    ).toLocaleString(
+                    Number(angka).toLocaleString(
                         "id-ID"
                     );
             }
@@ -320,14 +271,7 @@ async function simpanTransaksi(event) {
         );
 
 
-    // Simpan teks tombol sebelumnya
-    const teksTombolSebelumnya =
-        tombolSimpan
-            ? tombolSimpan.textContent
-            : "Simpan Transaksi";
-
-
-    // Nonaktifkan tombol
+    // Nonaktifkan tombol sementara
     if (tombolSimpan) {
 
         tombolSimpan.disabled = true;
@@ -383,6 +327,10 @@ async function simpanTransaksi(event) {
             return;
         }
 
+
+        // ------------------------------------------
+        // AMBIL NILAI
+        // ------------------------------------------
 
         const tanggal =
             tanggalElement.value;
@@ -536,13 +484,6 @@ async function simpanTransaksi(event) {
                 null;
 
 
-            if (tombolSimpan) {
-
-                tombolSimpan.textContent =
-                    "Simpan Transaksi";
-            }
-
-
             const tombolBatal =
                 document.getElementById(
                     "cancelButton"
@@ -660,8 +601,6 @@ async function simpanTransaksi(event) {
                 false;
 
 
-            // Jika masih dalam mode edit,
-            // gunakan teks yang sesuai
             if (
                 transaksiSedangDiedit !==
                 null
@@ -1127,26 +1066,13 @@ function kosongkanForm() {
     }
 
 
+    // Dropdown kembali kosong
     if (jenis) {
 
         jenis.value =
-            "Pemasukan";
+            "";
     }
- const tombolJenis =
-        document.querySelectorAll(".jenis-btn");
 
-    tombolJenis.forEach(function (tombol) {
-
-        tombol.classList.remove("active");
-
-        if (
-            tombol.dataset.jenis ===
-            "Pemasukan"
-        ) {
-
-            tombol.classList.add("active");
-        }
-    });
 
     if (jumlah) {
 
