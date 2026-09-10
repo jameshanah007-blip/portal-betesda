@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
     }
 
+    // Tampilkan laporan saat halaman dibuka
     await tampilkanLaporan();
 });
 
@@ -58,24 +59,45 @@ async function ambilTransaksi() {
         "undefined"
     ) {
 
+        console.error(
+            "supabaseClient tidak tersedia."
+        );
+
         alert(
             "Supabase belum terhubung.\n\n" +
-            "Periksa urutan script pada laporan keuangan pemuda.html."
+            "Pastikan urutan script di HTML adalah:\n" +
+            "1. Supabase CDN\n" +
+            "2. supabase-client.js\n" +
+            "3. laporan-pemuda.js"
         );
 
         return [];
     }
 
-    const { data, error } =
-        await supabaseClient
-            .from("transaksi_pemuda")
-            .select("*")
-            .order("tanggal", {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("transaksi_pemuda")
+
+        .select("*")
+
+        .order(
+            "tanggal",
+            {
                 ascending: true
-            })
-            .order("id", {
+            }
+        )
+
+        .order(
+            "id",
+            {
                 ascending: true
-            });
+            }
+        );
+
 
     if (error) {
 
@@ -91,6 +113,7 @@ async function ambilTransaksi() {
 
         return [];
     }
+
 
     return data || [];
 }
@@ -112,23 +135,37 @@ function isiPeriodeDefault() {
             "bulanSampai"
         );
 
-    if (!bulanMulai || !bulanSampai) {
+
+    if (
+        !bulanMulai ||
+        !bulanSampai
+    ) {
         return;
     }
+
 
     const sekarang =
         new Date();
 
+
     const tahun =
         sekarang.getFullYear();
+
 
     const bulan =
         String(
             sekarang.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
+
 
     const periode =
-        tahun + "-" + bulan;
+        tahun +
+        "-" +
+        bulan;
+
 
     bulanMulai.value =
         periode;
@@ -154,20 +191,32 @@ async function tampilkanLaporan() {
             "bulanSampai"
         );
 
-    if (!bulanMulaiElement ||
-        !bulanSampaiElement) {
+
+    if (
+        !bulanMulaiElement ||
+        !bulanSampaiElement
+    ) {
+
+        console.error(
+            "Input periode tidak ditemukan."
+        );
 
         return;
     }
 
+
     const bulanMulai =
         bulanMulaiElement.value;
+
 
     const bulanSampai =
         bulanSampaiElement.value;
 
-    if (!bulanMulai ||
-        !bulanSampai) {
+
+    if (
+        !bulanMulai ||
+        !bulanSampai
+    ) {
 
         alert(
             "Silakan pilih periode laporan."
@@ -176,7 +225,11 @@ async function tampilkanLaporan() {
         return;
     }
 
-    if (bulanMulai > bulanSampai) {
+
+    if (
+        bulanMulai >
+        bulanSampai
+    ) {
 
         alert(
             "Bulan mulai tidak boleh lebih besar dari bulan sampai."
@@ -185,24 +238,27 @@ async function tampilkanLaporan() {
         return;
     }
 
+
+    // Ambil data dari Supabase
     const semuaTransaksi =
         await ambilTransaksi();
 
 
-    // ==============================================
-    // NORMALISASI DATA
-    // ==============================================
-
+    // Urutkan transaksi
     semuaTransaksi.sort(
         function (a, b) {
 
-            if (a.tanggal === b.tanggal) {
+            if (
+                a.tanggal ===
+                b.tanggal
+            ) {
 
                 return (
                     Number(a.id || 0) -
                     Number(b.id || 0)
                 );
             }
+
 
             return String(
                 a.tanggal || ""
@@ -215,11 +271,12 @@ async function tampilkanLaporan() {
     );
 
 
-    // ==============================================
-    // HITUNG SALDO BULAN LALU
-    // ==============================================
+    // ==================================================
+    // HITUNG SALDO AWAL
+    // ==================================================
 
     let saldoAwal = 0;
+
 
     semuaTransaksi.forEach(
         function (item) {
@@ -231,27 +288,24 @@ async function tampilkanLaporan() {
             ) {
 
                 const jumlah =
-                    Number(item.jumlah) || 0;
+                    Number(
+                        item.jumlah
+                    ) || 0;
 
-                const jenis =
-                    String(
-                        item.jenis || ""
-                    )
-                    .trim()
-                    .toLowerCase();
 
                 if (
-                    jenis ===
-                    "pemasukan"
+                    item.jenis ===
+                    "Pemasukan"
                 ) {
 
                     saldoAwal +=
                         jumlah;
                 }
 
+
                 if (
-                    jenis ===
-                    "pengeluaran"
+                    item.jenis ===
+                    "Pengeluaran"
                 ) {
 
                     saldoAwal -=
@@ -262,9 +316,9 @@ async function tampilkanLaporan() {
     );
 
 
-    // ==============================================
-    // FILTER TRANSAKSI
-    // ==============================================
+    // ==================================================
+    // FILTER PERIODE
+    // ==================================================
 
     laporanData =
         semuaTransaksi.filter(
@@ -274,6 +328,7 @@ async function tampilkanLaporan() {
                     return false;
                 }
 
+
                 const bulanTransaksi =
                     String(
                         item.tanggal
@@ -282,9 +337,11 @@ async function tampilkanLaporan() {
                         7
                     );
 
+
                 return (
                     bulanTransaksi >=
                     bulanMulai &&
+
                     bulanTransaksi <=
                     bulanSampai
                 );
@@ -317,20 +374,46 @@ function renderLaporan(
             "laporanBody"
         );
 
+
     const footer =
         document.getElementById(
             "laporanFooter"
         );
+
 
     const periodeLaporan =
         document.getElementById(
             "periodeLaporan"
         );
 
+
     const saldoAwalElement =
         document.getElementById(
             "saldoAwal"
         );
+
+
+    const totalPemasukan =
+        document.getElementById(
+            "totalPemasukan"
+        );
+
+
+    const totalPengeluaran =
+        document.getElementById(
+            "totalPengeluaran"
+        );
+
+
+    const saldoAkhir =
+        document.getElementById(
+            "saldoAkhir"
+        );
+
+
+    // ==================================================
+    // PERIODE
+    // ==================================================
 
     if (periodeLaporan) {
 
@@ -341,6 +424,11 @@ function renderLaporan(
             );
     }
 
+
+    // ==================================================
+    // SALDO AWAL
+    // ==================================================
+
     if (saldoAwalElement) {
 
         saldoAwalElement.textContent =
@@ -349,9 +437,15 @@ function renderLaporan(
             );
     }
 
+
+    // ==================================================
+    // KOSONGKAN TABEL
+    // ==================================================
+
     if (tbody) {
         tbody.innerHTML = "";
     }
+
 
     if (footer) {
         footer.innerHTML = "";
@@ -361,18 +455,22 @@ function renderLaporan(
     let saldoBerjalan =
         saldoAwal;
 
+
     let jumlahPemasukan =
         0;
+
 
     let jumlahPengeluaran =
         0;
 
 
-    // ==============================================
+    // ==================================================
     // TIDAK ADA TRANSAKSI
-    // ==============================================
+    // ==================================================
 
-    if (transaksi.length === 0) {
+    if (
+        transaksi.length === 0
+    ) {
 
         if (tbody) {
 
@@ -385,10 +483,35 @@ function renderLaporan(
             `;
         }
 
+
+        if (totalPemasukan) {
+
+            totalPemasukan.textContent =
+                formatRupiah(0);
+        }
+
+
+        if (totalPengeluaran) {
+
+            totalPengeluaran.textContent =
+                formatRupiah(0);
+        }
+
+
+        if (saldoAkhir) {
+
+            saldoAkhir.textContent =
+                formatRupiah(
+                    saldoAwal
+                );
+        }
+
+
         if (footer) {
 
             footer.innerHTML = `
                 <tr>
+
                     <td colspan="3">
                         <strong>TOTAL</strong>
                     </td>
@@ -407,41 +530,42 @@ function renderLaporan(
 
                     <td>
                         <strong>
-                            ${formatRupiah(saldoAwal)}
+                            ${formatRupiah(
+                                saldoAwal
+                            )}
                         </strong>
                     </td>
+
                 </tr>
             `;
         }
+
 
         return;
     }
 
 
-    // ==============================================
+    // ==================================================
     // TAMPILKAN TRANSAKSI
-    // ==============================================
+    // ==================================================
 
     transaksi.forEach(
         function (item, index) {
 
             const jumlah =
-                Number(item.jumlah) || 0;
+                Number(
+                    item.jumlah
+                ) || 0;
 
-            const jenis =
-                String(
-                    item.jenis || ""
-                )
-                .trim()
-                .toLowerCase();
 
             let pemasukan = 0;
+
             let pengeluaran = 0;
 
 
             if (
-                jenis ===
-                "pemasukan"
+                item.jenis ===
+                "Pemasukan"
             ) {
 
                 pemasukan =
@@ -456,8 +580,8 @@ function renderLaporan(
 
 
             if (
-                jenis ===
-                "pengeluaran"
+                item.jenis ===
+                "Pengeluaran"
             ) {
 
                 pengeluaran =
@@ -475,6 +599,7 @@ function renderLaporan(
                 document.createElement(
                     "tr"
                 );
+
 
             row.innerHTML = `
 
@@ -497,20 +622,20 @@ function renderLaporan(
                 <td>
                     ${
                         pemasukan > 0
-                        ? formatRupiah(
-                            pemasukan
-                        )
-                        : "-"
+                            ? formatRupiah(
+                                pemasukan
+                            )
+                            : "-"
                     }
                 </td>
 
                 <td>
                     ${
                         pengeluaran > 0
-                        ? formatRupiah(
-                            pengeluaran
-                        )
-                        : "-"
+                            ? formatRupiah(
+                                pengeluaran
+                            )
+                            : "-"
                     }
                 </td>
 
@@ -522,19 +647,21 @@ function renderLaporan(
 
             `;
 
+
             if (tbody) {
 
                 tbody.appendChild(
                     row
                 );
             }
+
         }
     );
 
 
-    // ==============================================
+    // ==================================================
     // TOTAL
-    // ==============================================
+    // ==================================================
 
     if (footer) {
 
@@ -574,6 +701,37 @@ function renderLaporan(
 
         `;
     }
+
+
+    // ==================================================
+    // RINGKASAN
+    // ==================================================
+
+    if (totalPemasukan) {
+
+        totalPemasukan.textContent =
+            formatRupiah(
+                jumlahPemasukan
+            );
+    }
+
+
+    if (totalPengeluaran) {
+
+        totalPengeluaran.textContent =
+            formatRupiah(
+                jumlahPengeluaran
+            );
+    }
+
+
+    if (saldoAkhir) {
+
+        saldoAkhir.textContent =
+            formatRupiah(
+                saldoBerjalan
+            );
+    }
 }
 
 
@@ -591,10 +749,12 @@ function formatPeriode(
             bulanMulai
         );
 
+
     const sampai =
         formatBulan(
             bulanSampai
         );
+
 
     if (
         bulanMulai ===
@@ -603,6 +763,7 @@ function formatPeriode(
 
         return mulai;
     }
+
 
     return (
         mulai +
@@ -622,12 +783,17 @@ function formatBulan(value) {
         return "-";
     }
 
+
     const bagian =
         value.split("-");
 
-    if (bagian.length !== 2) {
+
+    if (
+        bagian.length !== 2
+    ) {
         return value;
     }
+
 
     const namaBulan = [
 
@@ -646,13 +812,16 @@ function formatBulan(value) {
 
     ];
 
+
     const tahun =
         bagian[0];
+
 
     const nomorBulan =
         Number(
             bagian[1]
         );
+
 
     return (
         namaBulan[
@@ -674,12 +843,22 @@ function formatTanggal(tanggal) {
         return "-";
     }
 
-    const bagian =
-        String(tanggal).split("-");
 
-    if (bagian.length !== 3) {
+    const bagian =
+        String(
+            tanggal
+        ).substring(
+            0,
+            10
+        ).split("-");
+
+
+    if (
+        bagian.length !== 3
+    ) {
         return tanggal;
     }
+
 
     return (
         bagian[2] +
@@ -697,10 +876,13 @@ function formatTanggal(tanggal) {
 
 function formatRupiah(angka) {
 
-    return Number(
-        angka || 0
-    ).toLocaleString(
-        "id-ID"
+    return (
+        "Rp " +
+        Number(
+            angka || 0
+        ).toLocaleString(
+            "id-ID"
+        )
     );
 }
 
@@ -714,26 +896,26 @@ function escapeHTML(text) {
     return String(
         text || ""
     )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
 
@@ -762,33 +944,41 @@ function exportExcel() {
     ) {
 
         alert(
-            "Tidak ada isi laporan pada periode yang dipilih."
+            "Tidak ada transaksi untuk diekspor."
         );
 
         return;
     }
 
 
-    const periodeElement =
+    const periode =
         document.getElementById(
             "periodeLaporan"
-        );
+        ).textContent;
 
-    const saldoAwalElement =
-        document.getElementById(
-            "saldoAwal"
-        );
-
-
-    const periode =
-        periodeElement
-        ? periodeElement.textContent
-        : "-";
 
     const saldoAwal =
-        saldoAwalElement
-        ? saldoAwalElement.textContent
-        : "0";
+        document.getElementById(
+            "saldoAwal"
+        ).textContent;
+
+
+    const totalPemasukan =
+        document.getElementById(
+            "totalPemasukan"
+        ).textContent;
+
+
+    const totalPengeluaran =
+        document.getElementById(
+            "totalPengeluaran"
+        ).textContent;
+
+
+    const saldoAkhir =
+        document.getElementById(
+            "saldoAkhir"
+        ).textContent;
 
 
     const dataExcel = [];
@@ -798,20 +988,25 @@ function exportExcel() {
         "LAPORAN KEUANGAN"
     ]);
 
+
     dataExcel.push([
         "Persekutuan Pemuda GPIL Jemaat Betesda Purwosari"
     ]);
+
 
     dataExcel.push([
         periode
     ]);
 
+
     dataExcel.push([]);
 
+
     dataExcel.push([
-        "Saldo Bulan Lalu:",
+        "Saldo Awal",
         saldoAwal
     ]);
+
 
     dataExcel.push([]);
 
@@ -826,34 +1021,30 @@ function exportExcel() {
     ]);
 
 
+    // Hitung saldo berjalan untuk Excel
     let saldoBerjalan =
-        Number(
-            String(saldoAwal)
-                .replace(/\./g, "")
-                .replace(/,/g, ".")
-        ) || 0;
+        parseRupiah(
+            saldoAwal
+        );
 
 
     laporanData.forEach(
         function (item, index) {
 
             const jumlah =
-                Number(item.jumlah) || 0;
+                Number(
+                    item.jumlah
+                ) || 0;
 
-            const jenis =
-                String(
-                    item.jenis || ""
-                )
-                .trim()
-                .toLowerCase();
 
             let pemasukan = 0;
+
             let pengeluaran = 0;
 
 
             if (
-                jenis ===
-                "pemasukan"
+                item.jenis ===
+                "Pemasukan"
             ) {
 
                 pemasukan =
@@ -865,8 +1056,8 @@ function exportExcel() {
 
 
             if (
-                jenis ===
-                "pengeluaran"
+                item.jenis ===
+                "Pengeluaran"
             ) {
 
                 pengeluaran =
@@ -894,52 +1085,13 @@ function exportExcel() {
                 saldoBerjalan
 
             ]);
-        }
-    );
 
-
-    // ==============================================
-    // HITUNG TOTAL
-    // ==============================================
-
-    let totalPemasukan = 0;
-    let totalPengeluaran = 0;
-
-    laporanData.forEach(
-        function (item) {
-
-            const jumlah =
-                Number(item.jumlah) || 0;
-
-            const jenis =
-                String(
-                    item.jenis || ""
-                )
-                .trim()
-                .toLowerCase();
-
-            if (
-                jenis ===
-                "pemasukan"
-            ) {
-
-                totalPemasukan +=
-                    jumlah;
-            }
-
-            if (
-                jenis ===
-                "pengeluaran"
-            ) {
-
-                totalPengeluaran +=
-                    jumlah;
-            }
         }
     );
 
 
     dataExcel.push([]);
+
 
     dataExcel.push([
 
@@ -947,55 +1099,71 @@ function exportExcel() {
         "",
         "TOTAL",
 
-        totalPemasukan,
+        parseRupiah(
+            totalPemasukan
+        ),
 
-        totalPengeluaran,
+        parseRupiah(
+            totalPengeluaran
+        ),
 
-        saldoBerjalan
+        parseRupiah(
+            saldoAkhir
+        )
 
     ]);
 
 
     dataExcel.push([]);
+
 
     dataExcel.push([
         "Total Pemasukan",
-        totalPemasukan
+        parseRupiah(
+            totalPemasukan
+        )
     ]);
+
 
     dataExcel.push([
         "Total Pengeluaran",
-        totalPengeluaran
+        parseRupiah(
+            totalPengeluaran
+        )
     ]);
+
 
     dataExcel.push([
         "Saldo Akhir",
-        saldoBerjalan
+        parseRupiah(
+            saldoAkhir
+        )
     ]);
 
+
     dataExcel.push([]);
+
 
     dataExcel.push([
         "Mengetahui,"
     ]);
 
+
     dataExcel.push([
         "Ketua Persekutuan Pemuda"
     ]);
+
 
     dataExcel.push([
         "GPIL Jemaat Betesda Purwosari"
     ]);
 
 
-    // ==============================================
-    // BUAT FILE EXCEL
-    // ==============================================
-
     const worksheet =
         XLSX.utils.aoa_to_sheet(
             dataExcel
         );
+
 
     worksheet["!cols"] = [
 
@@ -1008,8 +1176,10 @@ function exportExcel() {
 
     ];
 
+
     const workbook =
         XLSX.utils.book_new();
+
 
     XLSX.utils.book_append_sheet(
         workbook,
@@ -1017,10 +1187,38 @@ function exportExcel() {
         "Laporan Pemuda"
     );
 
+
     XLSX.writeFile(
         workbook,
         "Laporan_Keuangan_Pemuda.xlsx"
     );
+}
+
+
+// ==================================================
+// UBAH "Rp 10.000" MENJADI ANGKA 10000
+// ==================================================
+
+function parseRupiah(value) {
+
+    return Number(
+        String(
+            value || "0"
+        )
+            .replace(
+                /Rp/g,
+                ""
+            )
+            .replace(
+                /\./g,
+                ""
+            )
+            .replace(
+                /,/g,
+                ""
+            )
+            .trim()
+    ) || 0;
 }
 
 
@@ -1059,6 +1257,7 @@ function exportPDF() {
     const jsPDF =
         window.jspdf.jsPDF;
 
+
     const doc =
         new jsPDF(
             "landscape",
@@ -1067,33 +1266,12 @@ function exportPDF() {
         );
 
 
-    const periodeElement =
-        document.getElementById(
-            "periodeLaporan"
-        );
-
-    const saldoAwalElement =
-        document.getElementById(
-            "saldoAwal"
-        );
-
-
-    const periode =
-        periodeElement
-        ? periodeElement.textContent
-        : "-";
-
-    const saldoAwal =
-        saldoAwalElement
-        ? saldoAwalElement.textContent
-        : "0";
-
-
-    // ==============================================
+    // ==================================================
     // JUDUL
-    // ==============================================
+    // ==================================================
 
     doc.setFontSize(14);
+
 
     doc.text(
         "LAPORAN KEUANGAN",
@@ -1104,7 +1282,9 @@ function exportPDF() {
         }
     );
 
+
     doc.setFontSize(10);
+
 
     doc.text(
         "Persekutuan Pemuda GPIL Jemaat Betesda Purwosari",
@@ -1115,6 +1295,13 @@ function exportPDF() {
         }
     );
 
+
+    const periode =
+        document.getElementById(
+            "periodeLaporan"
+        ).textContent;
+
+
     doc.text(
         periode,
         148,
@@ -1124,17 +1311,24 @@ function exportPDF() {
         }
     );
 
+
+    const saldoAwal =
+        document.getElementById(
+            "saldoAwal"
+        ).textContent;
+
+
     doc.text(
-        "Saldo Bulan Lalu: " +
+        "Saldo Awal: " +
         saldoAwal,
         14,
         38
     );
 
 
-    // ==============================================
+    // ==================================================
     // CEK AUTOTABLE
-    // ==============================================
+    // ==================================================
 
     if (
         typeof doc.autoTable !==
@@ -1149,177 +1343,19 @@ function exportPDF() {
     }
 
 
-    // ==============================================
-    // BUAT DATA TABEL PDF
-    // ==============================================
-
-    const head = [[
-        "No",
-        "Tanggal",
-        "Keterangan",
-        "Pemasukan",
-        "Pengeluaran",
-        "Saldo"
-    ]];
+    const table =
+        document.getElementById(
+            "laporanTable"
+        );
 
 
-    const body = [];
-
-    let saldoBerjalan =
-        parseFloat(
-            String(saldoAwal)
-                .replace(/\./g, "")
-                .replace(/,/g, ".")
-        ) || 0;
-
-
-    laporanData.forEach(
-        function (item, index) {
-
-            const jumlah =
-                Number(item.jumlah) || 0;
-
-            const jenis =
-                String(
-                    item.jenis || ""
-                )
-                .trim()
-                .toLowerCase();
-
-            let pemasukan = 0;
-            let pengeluaran = 0;
-
-
-            if (
-                jenis ===
-                "pemasukan"
-            ) {
-
-                pemasukan =
-                    jumlah;
-
-                saldoBerjalan +=
-                    jumlah;
-            }
-
-
-            if (
-                jenis ===
-                "pengeluaran"
-            ) {
-
-                pengeluaran =
-                    jumlah;
-
-                saldoBerjalan -=
-                    jumlah;
-            }
-
-
-            body.push([
-
-                index + 1,
-
-                formatTanggal(
-                    item.tanggal
-                ),
-
-                item.keterangan || "",
-
-                pemasukan > 0
-                    ? formatRupiah(
-                        pemasukan
-                    )
-                    : "-",
-
-                pengeluaran > 0
-                    ? formatRupiah(
-                        pengeluaran
-                    )
-                    : "-",
-
-                formatRupiah(
-                    saldoBerjalan
-                )
-
-            ]);
-        }
-    );
-
-
-    // ==============================================
-    // TOTAL PDF
-    // ==============================================
-
-    let totalPemasukan = 0;
-    let totalPengeluaran = 0;
-
-    laporanData.forEach(
-        function (item) {
-
-            const jumlah =
-                Number(item.jumlah) || 0;
-
-            const jenis =
-                String(
-                    item.jenis || ""
-                )
-                .trim()
-                .toLowerCase();
-
-            if (
-                jenis ===
-                "pemasukan"
-            ) {
-
-                totalPemasukan +=
-                    jumlah;
-            }
-
-            if (
-                jenis ===
-                "pengeluaran"
-            ) {
-
-                totalPengeluaran +=
-                    jumlah;
-            }
-        }
-    );
-
-
-    const foot = [[
-
-        "",
-        "",
-        "TOTAL",
-
-        formatRupiah(
-            totalPemasukan
-        ),
-
-        formatRupiah(
-            totalPengeluaran
-        ),
-
-        formatRupiah(
-            saldoBerjalan
-        )
-
-    ]];
-
-
-    // ==============================================
-    // TABEL
-    // ==============================================
+    // ==================================================
+    // TABEL PDF
+    // ==================================================
 
     doc.autoTable({
 
-        head: head,
-
-        body: body,
-
-        foot: foot,
+        html: table,
 
         startY: 43,
 
@@ -1343,12 +1379,6 @@ function exportPDF() {
 
         headStyles: {
 
-            fillColor: [
-                31,
-                78,
-                121
-            ],
-
             textColor: 255,
 
             halign: "center"
@@ -1356,12 +1386,6 @@ function exportPDF() {
         },
 
         footStyles: {
-
-            fillColor: [
-                255,
-                255,
-                255
-            ],
 
             textColor: 0,
 
@@ -1386,15 +1410,15 @@ function exportPDF() {
             },
 
             3: {
-                halign: "center"
+                halign: "right"
             },
 
             4: {
-                halign: "center"
+                halign: "right"
             },
 
             5: {
-                halign: "center"
+                halign: "right"
             }
 
         }
@@ -1402,32 +1426,42 @@ function exportPDF() {
     });
 
 
-    // ==============================================
+    // ==================================================
     // MENGETAHUI
-    // ==============================================
+    // ==================================================
 
     let posisiAkhir = 0;
 
-    if (doc.lastAutoTable) {
+
+    if (
+        doc.lastAutoTable
+    ) {
 
         posisiAkhir =
-            doc.lastAutoTable.finalY + 12;
+            doc.lastAutoTable.finalY +
+            12;
 
     } else {
 
-        posisiAkhir = 100;
+        posisiAkhir =
+            100;
     }
 
 
-    if (posisiAkhir > 175) {
+    if (
+        posisiAkhir >
+        175
+    ) {
 
         doc.addPage();
 
-        posisiAkhir = 25;
+        posisiAkhir =
+            25;
     }
 
 
     doc.setFontSize(10);
+
 
     doc.text(
         "Mengetahui,",
@@ -1435,11 +1469,13 @@ function exportPDF() {
         posisiAkhir
     );
 
+
     doc.text(
         "Ketua Persekutuan Pemuda GPIL",
         220,
         posisiAkhir + 6
     );
+
 
     doc.text(
         "Jemaat Betesda Purwosari",
@@ -1448,9 +1484,9 @@ function exportPDF() {
     );
 
 
-    // ==============================================
+    // ==================================================
     // SIMPAN PDF
-    // ==============================================
+    // ==================================================
 
     doc.save(
         "Laporan_Keuangan_Pemuda.pdf"
