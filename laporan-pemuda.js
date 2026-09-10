@@ -1,8 +1,6 @@
 // ==================================================
-// LAPORAN KEUANGAN PEMUDA
+// LAPORAN KEUANGAN PEMUDA - SUPABASE
 // ==================================================
-
-const STORAGE_KEY = "transaksi_pemuda";
 
 let laporanData = [];
 
@@ -11,11 +9,11 @@ let laporanData = [];
 // SAAT HALAMAN DIBUKA
 // ==================================================
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
 
     isiPeriodeDefault();
 
-    tampilkanLaporan();
+    await tampilkanLaporan();
 
     const btnTampilkan =
         document.getElementById("btnTampilkan");
@@ -51,38 +49,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // ==================================================
-// AMBIL TRANSAKSI
+// AMBIL TRANSAKSI DARI SUPABASE
 // ==================================================
 
-function ambilTransaksi() {
+async function ambilTransaksi() {
 
-    const data =
-        localStorage.getItem(STORAGE_KEY);
+    const { data, error } =
+        await supabaseClient
+            .from("transaksi_pemuda")
+            .select("*")
+            .order("tanggal", {
+                ascending: true
+            })
+            .order("id", {
+                ascending: true
+            });
 
-    if (!data) {
-        return [];
-    }
-
-    try {
-
-        const transaksi =
-            JSON.parse(data);
-
-        if (!Array.isArray(transaksi)) {
-            return [];
-        }
-
-        return transaksi;
-
-    } catch (error) {
+    if (error) {
 
         console.error(
-            "Gagal membaca transaksi:",
+            "Gagal mengambil transaksi:",
             error
+        );
+
+        alert(
+            "Gagal mengambil data dari Supabase.\n\n" +
+            error.message
         );
 
         return [];
     }
+
+    return data || [];
 }
 
 
@@ -127,17 +125,29 @@ function isiPeriodeDefault() {
 // TAMPILKAN LAPORAN
 // ==================================================
 
-function tampilkanLaporan() {
+async function tampilkanLaporan() {
 
-    const bulanMulai =
+    const bulanMulaiElement =
         document.getElementById(
             "bulanMulai"
-        ).value;
+        );
 
-    const bulanSampai =
+    const bulanSampaiElement =
         document.getElementById(
             "bulanSampai"
-        ).value;
+        );
+
+    if (!bulanMulaiElement ||
+        !bulanSampaiElement) {
+
+        return;
+    }
+
+    const bulanMulai =
+        bulanMulaiElement.value;
+
+    const bulanSampai =
+        bulanSampaiElement.value;
 
     if (!bulanMulai || !bulanSampai) {
 
@@ -157,8 +167,14 @@ function tampilkanLaporan() {
         return;
     }
 
+
+    // Ambil data dari Supabase
+
     const semuaTransaksi =
-        ambilTransaksi();
+        await ambilTransaksi();
+
+
+    // Urutkan transaksi
 
     semuaTransaksi.sort(
         function (a, b) {
@@ -200,18 +216,21 @@ function tampilkanLaporan() {
                 const jumlah =
                     Number(item.jumlah) || 0;
 
-                if (
-                    item.jenis ===
-                    "Pemasukan"
-                ) {
+                const jenis =
+                    String(
+                        item.jenis || ""
+                    )
+                    .toLowerCase()
+                    .trim();
+
+
+                if (jenis === "pemasukan") {
 
                     saldoAwal += jumlah;
                 }
 
-                if (
-                    item.jenis ===
-                    "Pengeluaran"
-                ) {
+
+                if (jenis === "pengeluaran") {
 
                     saldoAwal -= jumlah;
                 }
@@ -221,7 +240,7 @@ function tampilkanLaporan() {
 
 
     // ==============================================
-    // FILTER TRANSAKSI
+    // FILTER TRANSAKSI SESUAI PERIODE
     // ==============================================
 
     laporanData =
@@ -319,7 +338,7 @@ function renderLaporan(
 
 
     // ==============================================
-    // SALDO BULAN LALU
+    // SALDO AWAL
     // ==============================================
 
     if (saldoAwalElement) {
@@ -345,7 +364,7 @@ function renderLaporan(
 
 
     // ==============================================
-    // VARIABEL TOTAL
+    // TOTAL
     // ==============================================
 
     let saldoBerjalan =
@@ -378,17 +397,20 @@ function renderLaporan(
             `;
         }
 
+
         if (totalPemasukan) {
 
             totalPemasukan.textContent =
                 formatRupiah(0);
         }
 
+
         if (totalPengeluaran) {
 
             totalPengeluaran.textContent =
                 formatRupiah(0);
         }
+
 
         if (saldoAkhir) {
 
@@ -397,6 +419,7 @@ function renderLaporan(
                     saldoAwal
                 );
         }
+
 
         if (footer) {
 
@@ -445,6 +468,13 @@ function renderLaporan(
             const jumlah =
                 Number(item.jumlah) || 0;
 
+            const jenis =
+                String(
+                    item.jenis || ""
+                )
+                .toLowerCase()
+                .trim();
+
             let pemasukan = 0;
 
             let pengeluaran = 0;
@@ -454,10 +484,7 @@ function renderLaporan(
             // PEMASUKAN
             // ==========================================
 
-            if (
-                item.jenis ===
-                "Pemasukan"
-            ) {
+            if (jenis === "pemasukan") {
 
                 pemasukan =
                     jumlah;
@@ -474,10 +501,7 @@ function renderLaporan(
             // PENGELUARAN
             // ==========================================
 
-            if (
-                item.jenis ===
-                "Pengeluaran"
-            ) {
+            if (jenis === "pengeluaran") {
 
                 pengeluaran =
                     jumlah;
@@ -813,10 +837,6 @@ function exportExcel() {
     }
 
 
-    // ==============================================
-    // AMBIL INFORMASI LAPORAN
-    // ==============================================
-
     const periode =
         document.getElementById(
             "periodeLaporan"
@@ -842,10 +862,6 @@ function exportExcel() {
             "saldoAkhir"
         ).textContent;
 
-
-    // ==============================================
-    // DATA EXCEL
-    // ==============================================
 
     const dataExcel = [];
 
@@ -877,10 +893,6 @@ function exportExcel() {
     dataExcel.push([]);
 
 
-    // ==============================================
-    // HEADER TABEL
-    // ==============================================
-
     dataExcel.push([
         "No",
         "Tanggal",
@@ -895,45 +907,46 @@ function exportExcel() {
     // ISI TRANSAKSI
     // ==============================================
 
+    const rows =
+        document.querySelectorAll(
+            "#laporanBody tr"
+        );
+
+
     laporanData.forEach(
         function (item, index) {
 
             const jumlah =
                 Number(item.jumlah) || 0;
 
+            const jenis =
+                String(
+                    item.jenis || ""
+                )
+                .toLowerCase()
+                .trim();
+
             let pemasukan = 0;
 
             let pengeluaran = 0;
 
 
-            if (
-                item.jenis ===
-                "Pemasukan"
-            ) {
+            if (jenis === "pemasukan") {
 
                 pemasukan =
                     jumlah;
             }
 
 
-            if (
-                item.jenis ===
-                "Pengeluaran"
-            ) {
+            if (jenis === "pengeluaran") {
 
                 pengeluaran =
                     jumlah;
             }
 
 
-            // Cari saldo berjalan dari tabel HTML
-            const rows =
-                document.querySelectorAll(
-                    "#laporanBody tr"
-                );
+            let saldo = "";
 
-            let saldo =
-                "";
 
             if (rows[index]) {
 
@@ -944,7 +957,8 @@ function exportExcel() {
                 if (cells.length >= 6) {
 
                     saldo =
-                        cells[5].textContent
+                        cells[5]
+                            .textContent
                             .trim();
                 }
             }
@@ -996,10 +1010,6 @@ function exportExcel() {
     dataExcel.push([]);
 
 
-    // ==============================================
-    // RINGKASAN
-    // ==============================================
-
     dataExcel.push([
         "Total Pemasukan",
         totalPemasukan
@@ -1019,10 +1029,6 @@ function exportExcel() {
     dataExcel.push([]);
 
 
-    // ==============================================
-    // MENGETAHUI
-    // ==============================================
-
     dataExcel.push([
         "Mengetahui,"
     ]);
@@ -1038,17 +1044,11 @@ function exportExcel() {
     ]);
 
 
-    // ==============================================
-    // BUAT WORKBOOK
-    // ==============================================
-
     const worksheet =
         XLSX.utils.aoa_to_sheet(
             dataExcel
         );
 
-
-    // Lebar kolom
 
     worksheet["!cols"] = [
 
@@ -1073,10 +1073,6 @@ function exportExcel() {
     );
 
 
-    // ==============================================
-    // SIMPAN EXCEL
-    // ==============================================
-
     XLSX.writeFile(
         workbook,
         "Laporan_Keuangan_Pemuda.xlsx"
@@ -1090,11 +1086,10 @@ function exportExcel() {
 
 function exportPDF() {
 
-    // ==============================================
-    // CEK ADA DATA LAPORAN
-    // ==============================================
-
-    if (!laporanData || laporanData.length === 0) {
+    if (
+        !laporanData ||
+        laporanData.length === 0
+    ) {
 
         alert(
             "Tidak ada isi laporan pada periode yang dipilih. PDF tidak dibuat."
@@ -1103,10 +1098,6 @@ function exportPDF() {
         return;
     }
 
-
-    // ==============================================
-    // CEK LIBRARY PDF
-    // ==============================================
 
     if (
         typeof window.jspdf ===
@@ -1134,7 +1125,7 @@ function exportPDF() {
 
 
     // ==============================================
-    // JUDUL — HANYA HALAMAN PERTAMA
+    // JUDUL
     // ==============================================
 
     doc.setFontSize(14);
@@ -1161,10 +1152,6 @@ function exportPDF() {
     );
 
 
-    // ==============================================
-    // PERIODE
-    // ==============================================
-
     const periode =
         document.getElementById(
             "periodeLaporan"
@@ -1181,10 +1168,6 @@ function exportPDF() {
     );
 
 
-    // ==============================================
-    // SALDO BULAN LALU
-    // ==============================================
-
     const saldoAwal =
         document.getElementById(
             "saldoAwal"
@@ -1200,7 +1183,7 @@ function exportPDF() {
 
 
     // ==============================================
-    // CEK PLUGIN TABLE
+    // TABEL PDF
     // ==============================================
 
     const table =
@@ -1222,20 +1205,14 @@ function exportPDF() {
     }
 
 
-    // ==============================================
-    // TABEL LAPORAN
-    // ==============================================
-
     doc.autoTable({
 
         html: table,
 
         startY: 43,
 
-        // Tabel otomatis lanjut ke halaman berikutnya
         pageBreak: "auto",
 
-        // Header tabel diulang setiap halaman
         showHead: "everyPage",
 
         styles: {
@@ -1315,7 +1292,6 @@ function exportPDF() {
 
     // ==============================================
     // MENGETAHUI
-    // HANYA DI HALAMAN TERAKHIR
     // ==============================================
 
     let posisiAkhir = 0;
@@ -1333,13 +1309,6 @@ function exportPDF() {
     }
 
 
-    // ==============================================
-    // CEK RUANG UNTUK MENGETAHUI
-    // ==============================================
-
-    // Tinggi halaman A4 landscape = 210 mm
-    // Batas bawah kita beri ruang agar tidak terlalu mepet
-
     if (posisiAkhir > 175) {
 
         doc.addPage();
@@ -1347,10 +1316,6 @@ function exportPDF() {
         posisiAkhir = 25;
     }
 
-
-    // ==============================================
-    // TULIS MENGETAHUI
-    // ==============================================
 
     doc.setFontSize(10);
 
