@@ -26,7 +26,54 @@ document.addEventListener("DOMContentLoaded", async function () {
     const tombolBatal =
         document.getElementById("cancelButton");
 
+ // ----------------------------------------------
+    // PILIHAN JENIS TRANSAKSI
+    // ----------------------------------------------
 
+    const tombolJenis =
+        document.querySelectorAll(".jenis-btn");
+
+    const inputJenis =
+        document.getElementById("jenis");
+
+
+    tombolJenis.forEach(function (tombol) {
+
+        tombol.addEventListener(
+            "click",
+            function () {
+
+                const jenis =
+                    this.dataset.jenis;
+
+
+                // Simpan pilihan ke input hidden
+                if (inputJenis) {
+
+                    inputJenis.value =
+                        jenis;
+                }
+
+
+                // Hapus status aktif dari semua tombol
+                tombolJenis.forEach(
+                    function (btn) {
+
+                        btn.classList.remove(
+                            "active"
+                        );
+                    }
+                );
+
+
+                // Aktifkan tombol yang dipilih
+                this.classList.add(
+                    "active"
+                );
+            }
+        );
+    });
+    
     // ----------------------------------------------
     // FORM SUBMIT
     // ----------------------------------------------
@@ -1083,9 +1130,23 @@ function kosongkanForm() {
     if (jenis) {
 
         jenis.value =
-            "";
+            "Pemasukan";
     }
+ const tombolJenis =
+        document.querySelectorAll(".jenis-btn");
 
+    tombolJenis.forEach(function (tombol) {
+
+        tombol.classList.remove("active");
+
+        if (
+            tombol.dataset.jenis ===
+            "Pemasukan"
+        ) {
+
+            tombol.classList.add("active");
+        }
+    });
 
     if (jumlah) {
 
