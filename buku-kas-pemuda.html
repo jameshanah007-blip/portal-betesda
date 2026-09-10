@@ -1,99 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
-    <style>
-/* ================================
-   JENIS TRANSAKSI
-================================ */
 
-.jenis-transaksi {
-    margin-bottom: 20px;
-}
-
-.jenis-transaksi > label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: 600;
-    color: #333;
-}
-
-.jenis-pilihan {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.jenis-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    background: #fff;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.2s ease;
-}
-
-.jenis-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.jenis-btn .jenis-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.jenis-btn strong {
-    display: block;
-    font-size: 15px;
-    margin-bottom: 3px;
-}
-
-.jenis-btn small {
-    display: block;
-    font-size: 12px;
-    color: #777;
-}
-
-.jenis-btn.pemasukan.active {
-    border-color: #22a06b;
-    background: #f0faf5;
-}
-
-.jenis-btn.pemasukan.active .jenis-icon {
-    background: #d9f5e7;
-    color: #168653;
-}
-
-.jenis-btn.pengeluaran.active {
-    border-color: #d9534f;
-    background: #fff5f5;
-}
-
-.jenis-btn.pengeluaran.active .jenis-icon {
-    background: #fde0df;
-    color: #c93d39;
-}
-
-@media (max-width: 500px) {
-    .jenis-pilihan {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
 <head>
+
     <meta charset="UTF-8">
 
-    <!-- Supaya tampilan mengikuti ukuran layar HP -->
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
@@ -101,284 +12,503 @@
 
     <title>Buku Kas Pemuda</title>
 
+
     <style>
+
         * {
             box-sizing: border-box;
         }
 
+
         body {
             margin: 0;
             padding: 15px;
+
             background: #f4f6f8;
+
             font-family: Arial, sans-serif;
+
             color: #222;
         }
+
 
         .container {
             width: 100%;
             max-width: 600px;
+
             margin: 0 auto;
         }
 
+
+        /* ================================
+           HEADER
+        ================================= */
+
         .header {
             background: #1f4e79;
+
             color: white;
+
             padding: 20px 15px;
+
             border-radius: 12px;
+
             margin-bottom: 15px;
+
             text-align: center;
         }
+
 
         .header h1 {
             margin: 0 0 8px 0;
+
             font-size: 24px;
         }
 
+
         .header p {
             margin: 0;
+
             font-size: 14px;
+
             line-height: 1.5;
         }
 
+
+        /* ================================
+           TOMBOL KEMBALI
+        ================================= */
+
         .btn-kembali {
             display: block;
+
             width: 100%;
+
             min-height: 48px;
+
             padding: 13px;
+
             margin-bottom: 15px;
 
             background: white;
+
             color: #1f4e79;
 
             border: 1px solid #1f4e79;
+
             border-radius: 10px;
 
             text-align: center;
+
             text-decoration: none;
 
             font-size: 16px;
+
             font-weight: bold;
         }
+
+
+        /* ================================
+           DASHBOARD
+        ================================= */
 
         .dashboard {
             display: grid;
+
             grid-template-columns: 1fr;
+
             gap: 10px;
+
             margin-bottom: 15px;
         }
+
 
         .card {
             background: white;
+
             padding: 15px;
+
             border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+            box-shadow:
+                0 2px 6px rgba(0, 0, 0, 0.08);
         }
+
 
         .card-title {
             font-size: 14px;
+
             color: #666;
+
             margin-bottom: 8px;
         }
 
+
         .card-value {
             font-size: 22px;
+
             font-weight: bold;
         }
 
+
+        /* ================================
+           FORM
+        ================================= */
+
         .form-box {
             background: white;
+
             padding: 15px;
+
             border-radius: 10px;
+
             margin-bottom: 15px;
         }
 
+
         .form-box h2 {
             margin-top: 0;
+
             font-size: 20px;
         }
+
 
         .form-group {
             margin-bottom: 14px;
         }
 
+
         .form-group label {
             display: block;
+
             margin-bottom: 6px;
+
             font-weight: bold;
+
             font-size: 15px;
         }
 
+
         input,
         select {
+
             width: 100%;
+
             min-height: 48px;
+
             padding: 12px;
 
             border: 1px solid #ccc;
+
             border-radius: 8px;
 
             font-size: 16px;
+
             background: white;
         }
 
+
         input:focus,
         select:focus {
+
             outline: none;
+
             border-color: #1f4e79;
+
+            box-shadow:
+                0 0 0 2px rgba(
+                    31,
+                    78,
+                    121,
+                    0.10
+                );
         }
 
+
+        /* ================================
+           DROPDOWN JENIS TRANSAKSI
+        ================================= */
+
+        #jenis {
+
+            appearance: auto;
+
+            cursor: pointer;
+        }
+
+
+        /* ================================
+           TOMBOL SIMPAN
+        ================================= */
+
         .btn-simpan {
+
             width: 100%;
+
             min-height: 50px;
 
             border: none;
+
             border-radius: 10px;
 
             background: #1f4e79;
+
             color: white;
 
             font-size: 17px;
+
             font-weight: bold;
 
             padding: 12px;
+
+            cursor: pointer;
         }
 
+
         .btn-simpan:active {
+
             opacity: 0.8;
         }
 
+
+        .btn-simpan:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+        }
+
+
+        /* ================================
+           TOMBOL BATAL
+        ================================= */
+
         .btn-batal {
+
             width: 100%;
+
             min-height: 48px;
 
             margin-top: 10px;
 
             border: 1px solid #999;
+
             border-radius: 10px;
 
             background: white;
+
             color: #444;
 
             font-size: 16px;
+
+            cursor: pointer;
         }
 
+
+        /* ================================
+           RIWAYAT
+        ================================= */
+
         .riwayat-box {
+
             background: white;
+
             padding: 15px;
+
             border-radius: 10px;
+
             margin-bottom: 15px;
         }
 
+
         .riwayat-box h2 {
+
             margin-top: 0;
+
             font-size: 20px;
         }
 
-        /*
-            Tabel dapat digeser ke kiri/kanan
-            jika layar HP terlalu kecil.
-        */
+
         .table-wrapper {
+
             width: 100%;
+
             overflow-x: auto;
         }
 
+
         table {
+
             width: 100%;
+
             min-width: 600px;
+
             border-collapse: collapse;
         }
 
+
         th,
         td {
+
             padding: 10px 8px;
+
             border-bottom: 1px solid #ddd;
+
             text-align: left;
+
             font-size: 14px;
         }
 
+
         th {
+
             background: #f0f2f4;
         }
 
+
+        /* ================================
+           TOMBOL EDIT & HAPUS
+        ================================= */
+
         .btn-edit,
         .btn-hapus {
+
             min-height: 40px;
+
             padding: 8px 10px;
 
             border-radius: 7px;
+
             border: none;
 
             font-size: 14px;
+
+            cursor: pointer;
         }
 
+
         .btn-edit {
+
             background: #e8f1fa;
+
             color: #1f4e79;
         }
 
+
         .btn-hapus {
+
             background: #fdeaea;
+
             color: #b00020;
         }
 
+
+        /* ================================
+           TOMBOL LAPORAN
+        ================================= */
+
         .btn-laporan {
+
             display: block;
+
             width: 100%;
+
             min-height: 50px;
 
             padding: 13px;
 
             background: #2e7d32;
+
             color: white;
 
             border-radius: 10px;
 
             text-align: center;
+
             text-decoration: none;
 
             font-size: 17px;
+
             font-weight: bold;
         }
 
+
+        /* ================================
+           DATA KOSONG
+        ================================= */
+
         .kosong {
+
             text-align: center;
+
             color: #777;
+
             padding: 20px;
         }
 
+
+        /* ================================
+           DESKTOP
+        ================================= */
+
         @media (min-width: 500px) {
+
             .dashboard {
-                grid-template-columns: repeat(3, 1fr);
+
+                grid-template-columns:
+                    repeat(3, 1fr);
             }
 
+
             .card-value {
+
                 font-size: 18px;
             }
         }
+
     </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-    <a href="index.html" class="btn-kembali">
+
+    <!-- KEMBALI -->
+
+    <a
+        href="index.html"
+        class="btn-kembali"
+    >
         ← Kembali ke Portal
     </a>
 
+
+    <!-- HEADER -->
+
     <div class="header">
-        <h1>Buku Kas Pemuda</h1>
+
+        <h1>
+            Buku Kas Pemuda
+        </h1>
 
         <p>
             Persekutuan Pemuda GPIL Jemaat Betesda Purwosari
         </p>
+
     </div>
 
+
     <!-- DASHBOARD -->
+
     <div class="dashboard">
 
+
         <div class="card">
+
             <div class="card-title">
                 Total Pemasukan
             </div>
@@ -389,9 +519,12 @@
             >
                 Rp 0
             </div>
+
         </div>
 
+
         <div class="card">
+
             <div class="card-title">
                 Total Pengeluaran
             </div>
@@ -402,9 +535,12 @@
             >
                 Rp 0
             </div>
+
         </div>
 
+
         <div class="card">
+
             <div class="card-title">
                 Saldo
             </div>
@@ -415,17 +551,29 @@
             >
                 Rp 0
             </div>
+
         </div>
+
 
     </div>
 
 
     <!-- FORM TRANSAKSI -->
+
     <div class="form-box">
 
-        <h2>Input Transaksi</h2>
+
+        <h2>
+            Input Transaksi
+        </h2>
+
 
         <form id="transactionForm">
+
+
+            <!-- ==========================
+                 TANGGAL
+            =========================== -->
 
             <div class="form-group">
 
@@ -441,6 +589,10 @@
 
             </div>
 
+
+            <!-- ==========================
+                 KETERANGAN
+            =========================== -->
 
             <div class="form-group">
 
@@ -458,47 +610,9 @@
             </div>
 
 
-            <div class="form-group">
-
-                <label for="jenis">
-                    Jenis Transaksi
-                </label>
-
-              <div class="jenis-transaksi">
-    <label>Jenis Transaksi</label>
-
-    <div class="jenis-pilihan">
-        <button
-            type="button"
-            class="jenis-btn pemasukan active"
-            data-jenis="Pemasukan"
-        >
-            <span class="jenis-icon">↑</span>
-            <span>
-                <strong>Pemasukan</strong>
-                <small>Uang masuk</small>
-            </span>
-        </button>
-
-        <button
-            type="button"
-            class="jenis-btn pengeluaran"
-            data-jenis="Pengeluaran"
-        >
-            <span class="jenis-icon">↓</span>
-            <span>
-                <strong>Pengeluaran</strong>
-                <small>Uang keluar</small>
-            </span>
-        </button>
-    </div>
-
-    <!-- Tetap dipakai oleh JavaScript -->
-    <input type="hidden" id="jenis" value="Pemasukan">
-</div>
-
-            </div>
-
+            <!-- ==========================
+                 JUMLAH
+            =========================== -->
 
             <div class="form-group">
 
@@ -506,16 +620,61 @@
                     Jumlah
                 </label>
 
-               <input
-    type="text"
-    id="jumlah"
-    min="1"
-    inputmode="numeric"
-    required
->
+                <input
+                    type="text"
+                    id="jumlah"
+                    inputmode="numeric"
+                    placeholder="Contoh: 100.000"
+                    required
+                >
 
             </div>
 
+
+            <!-- ==========================
+                 JENIS TRANSAKSI
+            =========================== -->
+
+            <div class="form-group">
+
+                <label for="jenis">
+                    Jenis Transaksi
+                </label>
+
+
+                <select
+                    id="jenis"
+                    required
+                >
+
+                    <!-- Tampilan awal kosong -->
+
+                    <option
+                        value=""
+                        selected
+                        disabled
+                        hidden
+                    >
+                    </option>
+
+
+                    <option value="Pemasukan">
+                        Pemasukan
+                    </option>
+
+
+                    <option value="Pengeluaran">
+                        Pengeluaran
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- ==========================
+                 SIMPAN
+            =========================== -->
 
             <button
                 type="submit"
@@ -526,6 +685,10 @@
             </button>
 
 
+            <!-- ==========================
+                 BATAL EDIT
+            =========================== -->
+
             <button
                 type="button"
                 class="btn-batal"
@@ -535,33 +698,66 @@
                 Batal Edit
             </button>
 
+
         </form>
 
     </div>
 
 
-    <!-- RIWAYAT -->
+    <!-- RIWAYAT TRANSAKSI -->
+
     <div class="riwayat-box">
 
-        <h2>Riwayat Transaksi</h2>
+
+        <h2>
+            Riwayat Transaksi
+        </h2>
+
 
         <div class="table-wrapper">
 
+
             <table>
 
+
                 <thead>
+
                     <tr>
-                        <th>No</th>
-                        <th>Tanggal</th>
-                        <th>Keterangan</th>
-                        <th>Jenis</th>
-                        <th>Jumlah</th>
-                        <th>Aksi</th>
+
+                        <th>
+                            No
+                        </th>
+
+                        <th>
+                            Tanggal
+                        </th>
+
+                        <th>
+                            Keterangan
+                        </th>
+
+                        <th>
+                            Jenis
+                        </th>
+
+                        <th>
+                            Jumlah
+                        </th>
+
+                        <th>
+                            Aksi
+                        </th>
+
                     </tr>
+
                 </thead>
 
-                <tbody id="transactionTable">
+
+                <tbody
+                    id="transactionTable"
+                >
                 </tbody>
+
 
             </table>
 
@@ -571,6 +767,7 @@
 
 
     <!-- LAPORAN -->
+
     <a
         href="laporan keuangan pemuda.html"
         class="btn-laporan"
@@ -578,12 +775,27 @@
         Lihat Laporan Keuangan
     </a>
 
+
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-client.js"></script>
-<script src="buku-kas-pemuda.js"></script>
+<!-- SUPABASE -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+<script
+    src="supabase-client.js"
+></script>
+
+
+<script
+    src="buku-kas-pemuda.js"
+></script>
+
 
 </body>
+
 </html>
