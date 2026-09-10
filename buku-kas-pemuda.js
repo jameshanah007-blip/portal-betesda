@@ -5,38 +5,90 @@
 let transaksiSedangDiedit = null;
 let daftarTransaksi = [];
 
+// Pengunci agar transaksi tidak tersimpan dua kali
+let sedangMenyimpan = false;
+
 
 // ==================================================
 // SAAT HALAMAN DIBUKA
 // ==================================================
 
 document.addEventListener("DOMContentLoaded", async function () {
+
     isiTanggalHariIni();
 
-    const form = document.getElementById("transactionForm");
-    const inputJumlah = document.getElementById("jumlah");
-    const tombolBatal = document.getElementById("cancelButton");
+    const form =
+        document.getElementById("transactionForm");
+
+    const inputJumlah =
+        document.getElementById("jumlah");
+
+    const tombolBatal =
+        document.getElementById("cancelButton");
+
+
+    // ----------------------------------------------
+    // FORM SUBMIT
+    // ----------------------------------------------
 
     if (form) {
-        form.addEventListener("submit", simpanTransaksi);
+
+        form.addEventListener(
+            "submit",
+            simpanTransaksi
+        );
     }
+
+
+    // ----------------------------------------------
+    // FORMAT JUMLAH
+    // ----------------------------------------------
 
     if (inputJumlah) {
-        inputJumlah.addEventListener("input", function () {
-            let angka = this.value.replace(/\D/g, "");
 
-            if (!angka) {
-                this.value = "";
-                return;
+        inputJumlah.addEventListener(
+            "input",
+            function () {
+
+                let angka =
+                    this.value.replace(/\D/g, "");
+
+
+                if (!angka) {
+
+                    this.value = "";
+
+                    return;
+                }
+
+
+                this.value =
+                    Number(
+                        angka
+                    ).toLocaleString(
+                        "id-ID"
+                    );
             }
-
-            this.value = Number(angka).toLocaleString("id-ID");
-        });
+        );
     }
+
+
+    // ----------------------------------------------
+    // TOMBOL BATAL
+    // ----------------------------------------------
 
     if (tombolBatal) {
-        tombolBatal.addEventListener("click", batalEdit);
+
+        tombolBatal.addEventListener(
+            "click",
+            batalEdit
+        );
     }
+
+
+    // ----------------------------------------------
+    // MUAT DATA
+    // ----------------------------------------------
 
     await muatData();
 });
@@ -47,27 +99,50 @@ document.addEventListener("DOMContentLoaded", async function () {
 // ==================================================
 
 function isiTanggalHariIni() {
-    const inputTanggal = document.getElementById("tanggal");
+
+    const inputTanggal =
+        document.getElementById("tanggal");
+
 
     if (!inputTanggal) {
         return;
     }
 
+
     if (!inputTanggal.value) {
-        const sekarang = new Date();
 
-        const tahun = sekarang.getFullYear();
+        const sekarang =
+            new Date();
 
-        const bulan = String(
-            sekarang.getMonth() + 1
-        ).padStart(2, "0");
 
-        const tanggal = String(
-            sekarang.getDate()
-        ).padStart(2, "0");
+        const tahun =
+            sekarang.getFullYear();
+
+
+        const bulan =
+            String(
+                sekarang.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const tanggal =
+            String(
+                sekarang.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
 
         inputTanggal.value =
-            tahun + "-" + bulan + "-" + tanggal;
+            tahun +
+            "-" +
+            bulan +
+            "-" +
+            tanggal;
     }
 }
 
@@ -77,13 +152,50 @@ function isiTanggalHariIni() {
 // ==================================================
 
 async function ambilTransaksi() {
-    const { data, error } = await supabaseClient
+
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        alert(
+            "Supabase belum terhubung."
+        );
+
+        console.error(
+            "supabaseClient tidak ditemukan."
+        );
+
+        return [];
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
         .from("transaksi_pemuda")
+
         .select("*")
-        .order("tanggal", { ascending: true })
-        .order("id", { ascending: true });
+
+        .order(
+            "tanggal",
+            {
+                ascending: true
+            }
+        )
+
+        .order(
+            "id",
+            {
+                ascending: true
+            }
+        );
+
 
     if (error) {
+
         console.error(
             "Gagal mengambil transaksi:",
             error
@@ -97,6 +209,7 @@ async function ambilTransaksi() {
         return [];
     }
 
+
     return data || [];
 }
 
@@ -106,9 +219,13 @@ async function ambilTransaksi() {
 // ==================================================
 
 async function muatData() {
-    daftarTransaksi = await ambilTransaksi();
+
+    daftarTransaksi =
+        await ambilTransaksi();
+
 
     tampilkanTransaksi();
+
     tampilkanSaldo();
 }
 
@@ -118,79 +235,332 @@ async function muatData() {
 // ==================================================
 
 async function simpanTransaksi(event) {
-    event.preventDefault();
 
-    const tanggal =
-        document.getElementById("tanggal").value;
+    // ----------------------------------------------
+    // CEGAH SUBMIT BAWAAN BROWSER
+    // ----------------------------------------------
 
-    const keterangan =
-        document
-            .getElementById("keterangan")
-            .value
-            .trim();
+    if (event) {
 
-    const jenis =
-        document.getElementById("jenis").value;
+        event.preventDefault();
+    }
 
-    const jumlahText =
-        document.getElementById("jumlah").value;
 
-    const jumlah =
-        Number(
-            jumlahText.replace(/\./g, "")
+    // ----------------------------------------------
+    // CEGAH KLIK BERULANG
+    // ----------------------------------------------
+
+    if (sedangMenyimpan) {
+
+        console.log(
+            "Penyimpanan masih berlangsung. Klik diabaikan."
+        );
+
+        return;
+    }
+
+
+    // ----------------------------------------------
+    // KUNCI PROSES
+    // ----------------------------------------------
+
+    sedangMenyimpan = true;
+
+
+    const tombolSimpan =
+        document.getElementById(
+            "saveButton"
         );
 
 
-    // ----------------------------------------------
-    // VALIDASI
-    // ----------------------------------------------
+    // Simpan teks tombol sebelumnya
+    const teksTombolSebelumnya =
+        tombolSimpan
+            ? tombolSimpan.textContent
+            : "Simpan Transaksi";
 
-    if (!tanggal) {
-        alert("Tanggal harus diisi.");
-        return;
-    }
 
-    if (!keterangan) {
-        alert("Keterangan harus diisi.");
-        return;
-    }
+    // Nonaktifkan tombol
+    if (tombolSimpan) {
 
-    if (!jenis) {
-        alert("Silakan pilih jenis transaksi.");
-        return;
-    }
+        tombolSimpan.disabled = true;
 
-    if (!jumlah || jumlah <= 0) {
-        alert("Jumlah harus lebih dari 0.");
-        return;
+        tombolSimpan.textContent =
+            transaksiSedangDiedit !== null
+                ? "Menyimpan Perubahan..."
+                : "Menyimpan...";
     }
 
 
-    // ----------------------------------------------
-    // EDIT TRANSAKSI
-    // ----------------------------------------------
+    try {
 
-    if (transaksiSedangDiedit !== null) {
+        // ------------------------------------------
+        // AMBIL FORM
+        // ------------------------------------------
 
-        const { error } = await supabaseClient
-            .from("transaksi_pemuda")
-            .update({
-                tanggal: tanggal,
-                keterangan: keterangan,
-                jenis: jenis,
-                jumlah: jumlah
-            })
-            .eq("id", transaksiSedangDiedit);
+        const tanggalElement =
+            document.getElementById(
+                "tanggal"
+            );
+
+
+        const keteranganElement =
+            document.getElementById(
+                "keterangan"
+            );
+
+
+        const jenisElement =
+            document.getElementById(
+                "jenis"
+            );
+
+
+        const jumlahElement =
+            document.getElementById(
+                "jumlah"
+            );
+
+
+        if (
+            !tanggalElement ||
+            !keteranganElement ||
+            !jenisElement ||
+            !jumlahElement
+        ) {
+
+            alert(
+                "Form transaksi tidak lengkap."
+            );
+
+            return;
+        }
+
+
+        const tanggal =
+            tanggalElement.value;
+
+
+        const keterangan =
+            keteranganElement.value.trim();
+
+
+        const jenis =
+            jenisElement.value;
+
+
+        const jumlahText =
+            jumlahElement.value;
+
+
+        // ------------------------------------------
+        // KONVERSI JUMLAH
+        // ------------------------------------------
+
+        const jumlah =
+            Number(
+                jumlahText.replace(
+                    /\D/g,
+                    ""
+                )
+            );
+
+
+        // ------------------------------------------
+        // VALIDASI
+        // ------------------------------------------
+
+        if (!tanggal) {
+
+            alert(
+                "Tanggal harus diisi."
+            );
+
+            return;
+        }
+
+
+        if (!keterangan) {
+
+            alert(
+                "Keterangan harus diisi."
+            );
+
+            return;
+        }
+
+
+        if (!jenis) {
+
+            alert(
+                "Silakan pilih jenis transaksi."
+            );
+
+            return;
+        }
+
+
+        if (
+            !jumlah ||
+            jumlah <= 0
+        ) {
+
+            alert(
+                "Jumlah harus lebih dari 0."
+            );
+
+            return;
+        }
+
+
+        // ------------------------------------------
+        // CEK SUPABASE
+        // ------------------------------------------
+
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+
+            alert(
+                "Supabase belum terhubung."
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // EDIT TRANSAKSI
+        // ==========================================
+
+        if (
+            transaksiSedangDiedit !==
+            null
+        ) {
+
+            const {
+                error
+            } = await supabaseClient
+
+                .from(
+                    "transaksi_pemuda"
+                )
+
+                .update({
+
+                    tanggal:
+                        tanggal,
+
+                    keterangan:
+                        keterangan,
+
+                    jenis:
+                        jenis,
+
+                    jumlah:
+                        jumlah
+
+                })
+
+                .eq(
+                    "id",
+                    transaksiSedangDiedit
+                );
+
+
+            if (error) {
+
+                console.error(
+                    "Gagal memperbarui transaksi:",
+                    error
+                );
+
+                alert(
+                    "Gagal memperbarui transaksi.\n\n" +
+                    error.message
+                );
+
+                return;
+            }
+
+
+            transaksiSedangDiedit =
+                null;
+
+
+            if (tombolSimpan) {
+
+                tombolSimpan.textContent =
+                    "Simpan Transaksi";
+            }
+
+
+            const tombolBatal =
+                document.getElementById(
+                    "cancelButton"
+                );
+
+
+            if (tombolBatal) {
+
+                tombolBatal.style.display =
+                    "none";
+            }
+
+
+            kosongkanForm();
+
+            await muatData();
+
+
+            alert(
+                "Transaksi berhasil diperbarui."
+            );
+
+
+            return;
+        }
+
+
+        // ==========================================
+        // TRANSAKSI BARU
+        // ==========================================
+
+        const {
+            error
+        } = await supabaseClient
+
+            .from(
+                "transaksi_pemuda"
+            )
+
+            .insert({
+
+                tanggal:
+                    tanggal,
+
+                keterangan:
+                    keterangan,
+
+                jenis:
+                    jenis,
+
+                jumlah:
+                    jumlah
+
+            });
 
 
         if (error) {
+
             console.error(
-                "Gagal memperbarui transaksi:",
+                "Gagal menyimpan transaksi:",
                 error
             );
 
             alert(
-                "Gagal memperbarui transaksi.\n\n" +
+                "Gagal menyimpan transaksi.\n\n" +
                 error.message
             );
 
@@ -198,66 +568,68 @@ async function simpanTransaksi(event) {
         }
 
 
-        transaksiSedangDiedit = null;
-
-        document.getElementById(
-            "saveButton"
-        ).textContent =
-            "Simpan Transaksi";
-
-        document.getElementById(
-            "cancelButton"
-        ).style.display =
-            "none";
+        // ------------------------------------------
+        // BERHASIL
+        // ------------------------------------------
 
         kosongkanForm();
 
         await muatData();
 
+
         alert(
-            "Transaksi berhasil diperbarui."
+            "Transaksi berhasil disimpan."
         );
 
-        return;
     }
 
+    catch (error) {
 
-    // ----------------------------------------------
-    // TRANSAKSI BARU
-    // ----------------------------------------------
-
-    const { error } = await supabaseClient
-        .from("transaksi_pemuda")
-        .insert({
-            tanggal: tanggal,
-            keterangan: keterangan,
-            jenis: jenis,
-            jumlah: jumlah
-        });
-
-
-    if (error) {
         console.error(
-            "Gagal menyimpan transaksi:",
+            "Terjadi kesalahan:",
             error
         );
 
+
         alert(
-            "Gagal menyimpan transaksi.\n\n" +
+            "Terjadi kesalahan saat menyimpan transaksi.\n\n" +
             error.message
         );
 
-        return;
     }
 
+    finally {
 
-    kosongkanForm();
+        // ------------------------------------------
+        // BUKA KEMBALI KUNCI
+        // ------------------------------------------
 
-    await muatData();
+        sedangMenyimpan = false;
 
-    alert(
-        "Transaksi berhasil disimpan."
-    );
+
+        if (tombolSimpan) {
+
+            tombolSimpan.disabled =
+                false;
+
+
+            // Jika masih dalam mode edit,
+            // gunakan teks yang sesuai
+            if (
+                transaksiSedangDiedit !==
+                null
+            ) {
+
+                tombolSimpan.textContent =
+                    "Simpan Perubahan";
+
+            } else {
+
+                tombolSimpan.textContent =
+                    "Simpan Transaksi";
+            }
+        }
+    }
 }
 
 
@@ -266,19 +638,25 @@ async function simpanTransaksi(event) {
 // ==================================================
 
 function tampilkanTransaksi() {
+
     const tbody =
         document.getElementById(
             "transactionTable"
         );
 
+
     if (!tbody) {
         return;
     }
 
+
     tbody.innerHTML = "";
 
 
-    if (daftarTransaksi.length === 0) {
+    if (
+        daftarTransaksi.length ===
+        0
+    ) {
 
         tbody.innerHTML = `
             <tr>
@@ -299,30 +677,43 @@ function tampilkanTransaksi() {
         function (item, index) {
 
             const row =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
+
 
             row.innerHTML = `
+
                 <td>
                     ${index + 1}
                 </td>
 
                 <td>
-                    ${formatTanggal(item.tanggal)}
+                    ${formatTanggal(
+                        item.tanggal
+                    )}
                 </td>
 
                 <td>
-                    ${escapeHTML(item.keterangan)}
+                    ${escapeHTML(
+                        item.keterangan
+                    )}
                 </td>
 
                 <td>
-                    ${escapeHTML(item.jenis)}
+                    ${escapeHTML(
+                        item.jenis
+                    )}
                 </td>
 
                 <td>
-                    ${formatRupiah(item.jumlah)}
+                    ${formatRupiah(
+                        item.jumlah
+                    )}
                 </td>
 
                 <td>
+
                     <button
                         type="button"
                         class="btn-edit"
@@ -338,10 +729,15 @@ function tampilkanTransaksi() {
                     >
                         Hapus
                     </button>
+
                 </td>
+
             `;
 
-            tbody.appendChild(row);
+
+            tbody.appendChild(
+                row
+            );
         }
     );
 }
@@ -354,6 +750,7 @@ function tampilkanTransaksi() {
 function tampilkanSaldo() {
 
     let pemasukan = 0;
+
     let pengeluaran = 0;
 
 
@@ -361,46 +758,89 @@ function tampilkanSaldo() {
         function (item) {
 
             const jumlah =
-                Number(item.jumlah) || 0;
+                Number(
+                    item.jumlah
+                ) || 0;
+
 
             const jenis =
-                String(item.jenis)
+                String(
+                    item.jenis
+                )
                     .toLowerCase()
                     .trim();
 
 
-            if (jenis === "pemasukan") {
-                pemasukan += jumlah;
+            if (
+                jenis ===
+                "pemasukan"
+            ) {
+
+                pemasukan +=
+                    jumlah;
             }
 
 
-            if (jenis === "pengeluaran") {
-                pengeluaran += jumlah;
+            if (
+                jenis ===
+                "pengeluaran"
+            ) {
+
+                pengeluaran +=
+                    jumlah;
             }
         }
     );
 
 
     const saldo =
-        pemasukan - pengeluaran;
+        pemasukan -
+        pengeluaran;
 
 
-    document.getElementById(
-        "totalIncome"
-    ).textContent =
-        formatRupiah(pemasukan);
+    const totalIncome =
+        document.getElementById(
+            "totalIncome"
+        );
 
 
-    document.getElementById(
-        "totalExpense"
-    ).textContent =
-        formatRupiah(pengeluaran);
+    const totalExpense =
+        document.getElementById(
+            "totalExpense"
+        );
 
 
-    document.getElementById(
-        "balance"
-    ).textContent =
-        formatRupiah(saldo);
+    const balance =
+        document.getElementById(
+            "balance"
+        );
+
+
+    if (totalIncome) {
+
+        totalIncome.textContent =
+            formatRupiah(
+                pemasukan
+            );
+    }
+
+
+    if (totalExpense) {
+
+        totalExpense.textContent =
+            formatRupiah(
+                pengeluaran
+            );
+    }
+
+
+    if (balance) {
+
+        balance.textContent =
+            formatRupiah(
+                saldo
+            );
+    }
 }
 
 
@@ -413,13 +853,21 @@ function editTransaksi(id) {
     const item =
         daftarTransaksi.find(
             function (data) {
-                return Number(data.id) === Number(id);
+
+                return (
+                    Number(data.id) ===
+                    Number(id)
+                );
             }
         );
 
 
     if (!item) {
-        alert("Data transaksi tidak ditemukan.");
+
+        alert(
+            "Data transaksi tidak ditemukan."
+        );
+
         return;
     }
 
@@ -445,7 +893,11 @@ function editTransaksi(id) {
     document.getElementById(
         "jumlah"
     ).value =
-        Number(item.jumlah).toLocaleString("id-ID");
+        Number(
+            item.jumlah
+        ).toLocaleString(
+            "id-ID"
+        );
 
 
     transaksiSedangDiedit =
@@ -465,8 +917,11 @@ function editTransaksi(id) {
 
 
     window.scrollTo({
+
         top: 0,
+
         behavior: "smooth"
+
     });
 }
 
@@ -477,19 +932,41 @@ function editTransaksi(id) {
 
 function batalEdit() {
 
-    transaksiSedangDiedit = null;
+    // Jangan lakukan pembatalan
+    // ketika sedang menyimpan
+    if (sedangMenyimpan) {
+        return;
+    }
 
 
-    document.getElementById(
-        "saveButton"
-    ).textContent =
-        "Simpan Transaksi";
+    transaksiSedangDiedit =
+        null;
 
 
-    document.getElementById(
-        "cancelButton"
-    ).style.display =
-        "none";
+    const tombolSimpan =
+        document.getElementById(
+            "saveButton"
+        );
+
+
+    if (tombolSimpan) {
+
+        tombolSimpan.textContent =
+            "Simpan Transaksi";
+    }
+
+
+    const tombolBatal =
+        document.getElementById(
+            "cancelButton"
+        );
+
+
+    if (tombolBatal) {
+
+        tombolBatal.style.display =
+            "none";
+    }
 
 
     kosongkanForm();
@@ -502,6 +979,11 @@ function batalEdit() {
 
 async function hapusTransaksi(id) {
 
+    if (sedangMenyimpan) {
+        return;
+    }
+
+
     const yakin =
         confirm(
             "Apakah transaksi ini ingin dihapus?"
@@ -513,10 +995,33 @@ async function hapusTransaksi(id) {
     }
 
 
-    const { error } = await supabaseClient
-        .from("transaksi_pemuda")
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+
+        alert(
+            "Supabase belum terhubung."
+        );
+
+        return;
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+
+        .from(
+            "transaksi_pemuda"
+        )
+
         .delete()
-        .eq("id", id);
+
+        .eq(
+            "id",
+            id
+        );
 
 
     if (error) {
@@ -537,6 +1042,7 @@ async function hapusTransaksi(id) {
 
     await muatData();
 
+
     alert(
         "Transaksi berhasil dihapus."
     );
@@ -549,19 +1055,43 @@ async function hapusTransaksi(id) {
 
 function kosongkanForm() {
 
-    document.getElementById(
-        "keterangan"
-    ).value = "";
+    const keterangan =
+        document.getElementById(
+            "keterangan"
+        );
 
 
-    document.getElementById(
-        "jenis"
-    ).value = "";
+    const jenis =
+        document.getElementById(
+            "jenis"
+        );
 
 
-    document.getElementById(
-        "jumlah"
-    ).value = "";
+    const jumlah =
+        document.getElementById(
+            "jumlah"
+        );
+
+
+    if (keterangan) {
+
+        keterangan.value =
+            "";
+    }
+
+
+    if (jenis) {
+
+        jenis.value =
+            "";
+    }
+
+
+    if (jumlah) {
+
+        jumlah.value =
+            "";
+    }
 
 
     isiTanggalHariIni();
@@ -580,10 +1110,15 @@ function formatTanggal(tanggal) {
 
 
     const bagian =
-        tanggal.split("-");
+        String(tanggal)
+            .substring(0, 10)
+            .split("-");
 
 
-    if (bagian.length !== 3) {
+    if (
+        bagian.length !== 3
+    ) {
+
         return tanggal;
     }
 
@@ -606,8 +1141,11 @@ function formatRupiah(angka) {
 
     return (
         "Rp " +
-        Number(angka || 0)
-            .toLocaleString("id-ID")
+        Number(
+            angka || 0
+        ).toLocaleString(
+            "id-ID"
+        )
     );
 }
 
@@ -618,10 +1156,27 @@ function formatRupiah(angka) {
 
 function escapeHTML(text) {
 
-    return String(text || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(
+        text || ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
