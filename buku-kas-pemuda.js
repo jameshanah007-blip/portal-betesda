@@ -1,33 +1,44 @@
 // ==================================================
-// BUKU KAS PEMUDA
+// BUKU KAS PEMUDA - SUPABASE
 // ==================================================
 
-const STORAGE_KEY = "transaksi_pemuda";
-
 let transaksiSedangDiedit = null;
+let daftarTransaksi = [];
 
 
 // ==================================================
 // SAAT HALAMAN DIBUKA
 // ==================================================
 
-document.addEventListener("DOMContentLoaded", function () {
-
+document.addEventListener("DOMContentLoaded", async function () {
     isiTanggalHariIni();
 
-    tampilkanTransaksi();
-
-    tampilkanSaldo();
-
     const form = document.getElementById("transactionForm");
-
-    form.addEventListener("submit", simpanTransaksi);
-
-
+    const inputJumlah = document.getElementById("jumlah");
     const tombolBatal = document.getElementById("cancelButton");
 
-    tombolBatal.addEventListener("click", batalEdit);
+    if (form) {
+        form.addEventListener("submit", simpanTransaksi);
+    }
 
+    if (inputJumlah) {
+        inputJumlah.addEventListener("input", function () {
+            let angka = this.value.replace(/\D/g, "");
+
+            if (!angka) {
+                this.value = "";
+                return;
+            }
+
+            this.value = Number(angka).toLocaleString("id-ID");
+        });
+    }
+
+    if (tombolBatal) {
+        tombolBatal.addEventListener("click", batalEdit);
+    }
+
+    await muatData();
 });
 
 
@@ -36,11 +47,13 @@ document.addEventListener("DOMContentLoaded", function () {
 // ==================================================
 
 function isiTanggalHariIni() {
-
     const inputTanggal = document.getElementById("tanggal");
 
-    if (!inputTanggal.value) {
+    if (!inputTanggal) {
+        return;
+    }
 
+    if (!inputTanggal.value) {
         const sekarang = new Date();
 
         const tahun = sekarang.getFullYear();
@@ -60,50 +73,43 @@ function isiTanggalHariIni() {
 
 
 // ==================================================
-// AMBIL DATA
+// AMBIL DATA DARI SUPABASE
 // ==================================================
 
-function ambilTransaksi() {
+async function ambilTransaksi() {
+    const { data, error } = await supabaseClient
+        .from("transaksi_pemuda")
+        .select("*")
+        .order("tanggal", { ascending: true })
+        .order("id", { ascending: true });
 
-    const data =
-        localStorage.getItem(STORAGE_KEY);
-
-    if (!data) {
-        return [];
-    }
-
-    try {
-
-        const transaksi = JSON.parse(data);
-
-        if (!Array.isArray(transaksi)) {
-            return [];
-        }
-
-        return transaksi;
-
-    } catch (error) {
-
+    if (error) {
         console.error(
-            "Gagal membaca transaksi:",
+            "Gagal mengambil transaksi:",
             error
+        );
+
+        alert(
+            "Gagal mengambil data dari Supabase.\n\n" +
+            error.message
         );
 
         return [];
     }
+
+    return data || [];
 }
 
 
 // ==================================================
-// SIMPAN DATA
+// MUAT DATA
 // ==================================================
 
-function simpanData(transaksi) {
+async function muatData() {
+    daftarTransaksi = await ambilTransaksi();
 
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(transaksi)
-    );
+    tampilkanTransaksi();
+    tampilkanSaldo();
 }
 
 
@@ -111,150 +117,147 @@ function simpanData(transaksi) {
 // SIMPAN TRANSAKSI
 // ==================================================
 
-function simpanTransaksi(event) {
-
+async function simpanTransaksi(event) {
     event.preventDefault();
-
 
     const tanggal =
         document.getElementById("tanggal").value;
 
     const keterangan =
-        document.getElementById("keterangan").value.trim();
+        document
+            .getElementById("keterangan")
+            .value
+            .trim();
 
     const jenis =
         document.getElementById("jenis").value;
 
+    const jumlahText =
+        document.getElementById("jumlah").value;
+
     const jumlah =
         Number(
-            document.getElementById("jumlah").value
+            jumlahText.replace(/\./g, "")
         );
 
 
+    // ----------------------------------------------
+    // VALIDASI
+    // ----------------------------------------------
+
     if (!tanggal) {
-
         alert("Tanggal harus diisi.");
-
         return;
     }
-
 
     if (!keterangan) {
-
         alert("Keterangan harus diisi.");
-
         return;
     }
-
 
     if (!jenis) {
-
         alert("Silakan pilih jenis transaksi.");
-
         return;
     }
-
 
     if (!jumlah || jumlah <= 0) {
-
         alert("Jumlah harus lebih dari 0.");
-
         return;
     }
 
 
-    const transaksi =
-        ambilTransaksi();
-
-
-    // ==============================================
+    // ----------------------------------------------
     // EDIT TRANSAKSI
-    // ==============================================
+    // ----------------------------------------------
 
     if (transaksiSedangDiedit !== null) {
 
-        const index =
-            transaksi.findIndex(function (item) {
+        const { error } = await supabaseClient
+            .from("transaksi_pemuda")
+            .update({
+                tanggal: tanggal,
+                keterangan: keterangan,
+                jenis: jenis,
+                jumlah: jumlah
+            })
+            .eq("id", transaksiSedangDiedit);
 
-                return item.id === transaksiSedangDiedit;
-            });
 
+        if (error) {
+            console.error(
+                "Gagal memperbarui transaksi:",
+                error
+            );
 
-        if (index !== -1) {
+            alert(
+                "Gagal memperbarui transaksi.\n\n" +
+                error.message
+            );
 
-            transaksi[index].tanggal = tanggal;
-
-            transaksi[index].keterangan =
-                keterangan;
-
-            transaksi[index].jenis =
-                jenis;
-
-            transaksi[index].jumlah =
-                jumlah;
+            return;
         }
 
 
         transaksiSedangDiedit = null;
-
 
         document.getElementById(
             "saveButton"
         ).textContent =
             "Simpan Transaksi";
 
-
         document.getElementById(
             "cancelButton"
         ).style.display =
             "none";
 
-
-        simpanData(transaksi);
-
-        tampilkanTransaksi();
-
-        tampilkanSaldo();
-
         kosongkanForm();
 
-        alert("Transaksi berhasil diperbarui.");
+        await muatData();
+
+        alert(
+            "Transaksi berhasil diperbarui."
+        );
 
         return;
     }
 
 
-    // ==============================================
+    // ----------------------------------------------
     // TRANSAKSI BARU
-    // ==============================================
+    // ----------------------------------------------
 
-    const transaksiBaru = {
-
-        id: Date.now(),
-
-        tanggal: tanggal,
-
-        keterangan: keterangan,
-
-        jenis: jenis,
-
-        jumlah: jumlah
-    };
+    const { error } = await supabaseClient
+        .from("transaksi_pemuda")
+        .insert({
+            tanggal: tanggal,
+            keterangan: keterangan,
+            jenis: jenis,
+            jumlah: jumlah
+        });
 
 
-    transaksi.push(transaksiBaru);
+    if (error) {
+        console.error(
+            "Gagal menyimpan transaksi:",
+            error
+        );
 
-    simpanData(transaksi);
+        alert(
+            "Gagal menyimpan transaksi.\n\n" +
+            error.message
+        );
 
+        return;
+    }
 
-    tampilkanTransaksi();
-
-    tampilkanSaldo();
 
     kosongkanForm();
 
+    await muatData();
 
-    alert("Transaksi berhasil disimpan.");
+    alert(
+        "Transaksi berhasil disimpan."
+    );
 }
 
 
@@ -263,34 +266,19 @@ function simpanTransaksi(event) {
 // ==================================================
 
 function tampilkanTransaksi() {
-
     const tbody =
         document.getElementById(
             "transactionTable"
         );
 
-
-    const transaksi =
-        ambilTransaksi();
-
-
-    transaksi.sort(function (a, b) {
-
-        if (a.tanggal === b.tanggal) {
-
-            return Number(a.id) - Number(b.id);
-        }
-
-        return a.tanggal.localeCompare(
-            b.tanggal
-        );
-    });
-
+    if (!tbody) {
+        return;
+    }
 
     tbody.innerHTML = "";
 
 
-    if (transaksi.length === 0) {
+    if (daftarTransaksi.length === 0) {
 
         tbody.innerHTML = `
             <tr>
@@ -307,59 +295,55 @@ function tampilkanTransaksi() {
     }
 
 
-    transaksi.forEach(function (item, index) {
+    daftarTransaksi.forEach(
+        function (item, index) {
 
-        const row =
-            document.createElement("tr");
+            const row =
+                document.createElement("tr");
 
+            row.innerHTML = `
+                <td>
+                    ${index + 1}
+                </td>
 
-        row.innerHTML = `
+                <td>
+                    ${formatTanggal(item.tanggal)}
+                </td>
 
-            <td>
-                ${index + 1}
-            </td>
+                <td>
+                    ${escapeHTML(item.keterangan)}
+                </td>
 
-            <td>
-                ${formatTanggal(item.tanggal)}
-            </td>
+                <td>
+                    ${escapeHTML(item.jenis)}
+                </td>
 
-            <td>
-                ${escapeHTML(item.keterangan)}
-            </td>
+                <td>
+                    ${formatRupiah(item.jumlah)}
+                </td>
 
-            <td>
-                ${item.jenis}
-            </td>
+                <td>
+                    <button
+                        type="button"
+                        class="btn-edit"
+                        onclick="editTransaksi(${item.id})"
+                    >
+                        Edit
+                    </button>
 
-            <td>
-                ${formatRupiah(item.jumlah)}
-            </td>
+                    <button
+                        type="button"
+                        class="btn-hapus"
+                        onclick="hapusTransaksi(${item.id})"
+                    >
+                        Hapus
+                    </button>
+                </td>
+            `;
 
-            <td>
-
-                <button
-                    type="button"
-                    class="btn-edit"
-                    onclick="editTransaksi(${item.id})"
-                >
-                    Edit
-                </button>
-
-                <button
-                    type="button"
-                    class="btn-hapus"
-                    onclick="hapusTransaksi(${item.id})"
-                >
-                    Hapus
-                </button>
-
-            </td>
-        `;
-
-
-        tbody.appendChild(row);
-
-    });
+            tbody.appendChild(row);
+        }
+    );
 }
 
 
@@ -369,33 +353,32 @@ function tampilkanTransaksi() {
 
 function tampilkanSaldo() {
 
-    const transaksi =
-        ambilTransaksi();
-
-
     let pemasukan = 0;
-
     let pengeluaran = 0;
 
 
-    transaksi.forEach(function (item) {
+    daftarTransaksi.forEach(
+        function (item) {
 
-        const jumlah =
-            Number(item.jumlah) || 0;
+            const jumlah =
+                Number(item.jumlah) || 0;
+
+            const jenis =
+                String(item.jenis)
+                    .toLowerCase()
+                    .trim();
 
 
-        if (item.jenis === "Pemasukan") {
+            if (jenis === "pemasukan") {
+                pemasukan += jumlah;
+            }
 
-            pemasukan += jumlah;
+
+            if (jenis === "pengeluaran") {
+                pengeluaran += jumlah;
+            }
         }
-
-
-        if (item.jenis === "Pengeluaran") {
-
-            pengeluaran += jumlah;
-        }
-
-    });
+    );
 
 
     const saldo =
@@ -427,18 +410,16 @@ function tampilkanSaldo() {
 
 function editTransaksi(id) {
 
-    const transaksi =
-        ambilTransaksi();
-
-
     const item =
-        transaksi.find(function (data) {
-
-            return data.id === id;
-        });
+        daftarTransaksi.find(
+            function (data) {
+                return Number(data.id) === Number(id);
+            }
+        );
 
 
     if (!item) {
+        alert("Data transaksi tidak ditemukan.");
         return;
     }
 
@@ -464,11 +445,11 @@ function editTransaksi(id) {
     document.getElementById(
         "jumlah"
     ).value =
-        item.jumlah;
+        Number(item.jumlah).toLocaleString("id-ID");
 
 
     transaksiSedangDiedit =
-        id;
+        Number(id);
 
 
     document.getElementById(
@@ -487,7 +468,6 @@ function editTransaksi(id) {
         top: 0,
         behavior: "smooth"
     });
-
 }
 
 
@@ -513,7 +493,6 @@ function batalEdit() {
 
 
     kosongkanForm();
-
 }
 
 
@@ -521,7 +500,7 @@ function batalEdit() {
 // HAPUS TRANSAKSI
 // ==================================================
 
-function hapusTransaksi(id) {
+async function hapusTransaksi(id) {
 
     const yakin =
         confirm(
@@ -534,26 +513,33 @@ function hapusTransaksi(id) {
     }
 
 
-    let transaksi =
-        ambilTransaksi();
+    const { error } = await supabaseClient
+        .from("transaksi_pemuda")
+        .delete()
+        .eq("id", id);
 
 
-    transaksi =
-        transaksi.filter(function (item) {
+    if (error) {
 
-            return item.id !== id;
-        });
+        console.error(
+            "Gagal menghapus transaksi:",
+            error
+        );
+
+        alert(
+            "Gagal menghapus transaksi.\n\n" +
+            error.message
+        );
+
+        return;
+    }
 
 
-    simpanData(transaksi);
+    await muatData();
 
-
-    tampilkanTransaksi();
-
-    tampilkanSaldo();
-
-
-    alert("Transaksi berhasil dihapus.");
+    alert(
+        "Transaksi berhasil dihapus."
+    );
 }
 
 
