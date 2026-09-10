@@ -1,112 +1,468 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Laporan Keuangan Pemuda</title>
 
-    <link rel="stylesheet" href="laporan.css">
+    <link
+        rel="stylesheet"
+        href="laporan.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 15px;
+            background: #f4f6f8;
+            font-family: Arial, sans-serif;
+        }
+
+        .laporan-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .btn-kembali {
+            display: block;
+            width: 100%;
+            min-height: 48px;
+
+            margin-bottom: 15px;
+            padding: 13px;
+
+            background: white;
+            color: #1f4e79;
+
+            border: 1px solid #1f4e79;
+            border-radius: 10px;
+
+            text-align: center;
+            text-decoration: none;
+
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .filter-box {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            margin-bottom: 12px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input[type="month"] {
+            width: 100%;
+            min-height: 48px;
+
+            padding: 10px;
+
+            border: 1px solid #ccc;
+            border-radius: 8px;
+
+            font-size: 16px;
+        }
+
+        .btn-tampilkan {
+            width: 100%;
+            min-height: 50px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #1f4e79;
+            color: white;
+
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .export-box {
+            display: grid;
+
+            grid-template-columns: 1fr;
+
+            gap: 10px;
+
+            margin-bottom: 15px;
+        }
+
+        .btn-export {
+            width: 100%;
+            min-height: 48px;
+
+            border: none;
+            border-radius: 10px;
+
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn-excel {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .btn-pdf {
+            background: #b00020;
+            color: white;
+        }
+
+        .laporan-paper {
+            background: white;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .laporan-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .laporan-header h2 {
+            margin: 0 0 5px 0;
+            font-size: 20px;
+        }
+
+        .laporan-header p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .saldo-awal {
+            margin-bottom: 15px;
+
+            padding: 12px;
+
+            background: #f0f2f4;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 650px;
+
+            border-collapse: collapse;
+        }
+
+        /* SEMUA SEL TABEL DIBERI GARIS */
+
+        th,
+        td {
+            padding: 10px 8px;
+
+            border: 1px solid #999;
+
+            font-size: 14px;
+        }
+
+        th {
+            background: #1f4e79;
+            color: white;
+
+            text-align: center;
+        }
+
+        /* PEMASUKAN, PENGELUARAN, SALDO RATA TENGAH */
+
+        th:nth-child(4),
+        th:nth-child(5),
+        th:nth-child(6),
+
+        td:nth-child(4),
+        td:nth-child(5),
+        td:nth-child(6) {
+            text-align: center;
+        }
+
+        .keterangan {
+            min-width: 180px;
+        }
+
+        .kosong {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+
+        /* TOTAL TANPA WARNA */
+
+        #laporanFooter td {
+            background: white;
+            font-weight: bold;
+        }
+
+        .ringkasan {
+            margin-top: 20px;
+        }
+
+        .ringkasan div {
+            padding: 10px 0;
+
+            border-bottom: 1px solid #ddd;
+
+            font-size: 15px;
+        }
+
+        .ringkasan strong {
+            float: right;
+            font-weight: bold;
+        }
+
+        /* RESPONSIVE */
+
+        @media (min-width: 600px) {
+
+            .export-box {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .filter-box {
+                display: grid;
+
+                grid-template-columns: 1fr 1fr;
+
+                gap: 10px;
+            }
+
+            .filter-group {
+                margin-bottom: 0;
+            }
+
+            .btn-tampilkan {
+                grid-column: 1 / 3;
+            }
+
+        }
+
+        /* CETAK */
+
+        @media print {
+
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .btn-kembali,
+            .filter-box,
+            .export-box {
+                display: none;
+            }
+
+            .laporan-container {
+                max-width: 100%;
+            }
+
+            .laporan-paper {
+                box-shadow: none;
+                border-radius: 0;
+                margin: 0;
+                padding: 10px;
+            }
+
+            .table-wrapper {
+                overflow: visible;
+            }
+
+            table {
+                min-width: 0;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-    <div class="container">
 
-        <h1>Laporan Keuangan Pemuda</h1>
+<div class="laporan-container">
 
-        <!-- FILTER PERIODE -->
-        <div class="filter-box">
 
-            <div class="filter-item">
-                <label for="bulanMulai">Dari Bulan</label>
-                <input
-                    type="month"
-                    id="bulanMulai"
-                    name="bulanMulai"
-                >
-            </div>
+    <!-- TOMBOL KEMBALI -->
 
-            <div class="filter-item">
-                <label for="bulanSampai">Sampai Bulan</label>
-                <input
-                    type="month"
-                    id="bulanSampai"
-                    name="bulanSampai"
-                >
-            </div>
+    <a
+        href="buku-kas-pemuda.html"
+        class="btn-kembali"
+    >
+        ← Kembali ke Buku Kas
+    </a>
 
-            <button type="button" id="btnTampilkan">
-                Tampilkan Laporan
-            </button>
+
+    <!-- FILTER -->
+
+    <div class="filter-box">
+
+        <div class="filter-group">
+
+            <label for="bulanMulai">
+                Bulan Mulai
+            </label>
+
+            <input
+                type="month"
+                id="bulanMulai"
+            >
 
         </div>
 
 
-        <!-- INFORMASI PERIODE -->
-        <div class="report-info">
+        <div class="filter-group">
 
-            <h2 id="periodeLaporan">
-                Laporan Keuangan
+            <label for="bulanSampai">
+                Bulan Sampai
+            </label>
+
+            <input
+                type="month"
+                id="bulanSampai"
+            >
+
+        </div>
+
+
+        <button
+            type="button"
+            id="btnTampilkan"
+            class="btn-tampilkan"
+        >
+            Tampilkan Laporan
+        </button>
+
+    </div>
+
+
+    <!-- EXPORT -->
+
+    <div class="export-box">
+
+        <button
+            type="button"
+            id="btnExcel"
+            class="btn-export btn-excel"
+        >
+            Export Excel
+        </button>
+
+
+        <button
+            type="button"
+            id="btnPdf"
+            class="btn-export btn-pdf"
+        >
+            Export PDF
+        </button>
+
+    </div>
+
+
+    <!-- LAPORAN -->
+
+    <div class="laporan-paper">
+
+
+        <!-- HEADER -->
+
+        <div class="laporan-header">
+
+            <h2>
+                LAPORAN KEUANGAN
             </h2>
 
             <p>
-                Saldo Awal:
-                <strong id="saldoAwal">Rp 0</strong>
+                Persekutuan Pemuda GPIL Jemaat Betesda Purwosari
+            </p>
+
+            <p id="periodeLaporan">
+                -
             </p>
 
         </div>
 
 
-        <!-- RINGKASAN -->
-        <div class="summary">
+        <!-- SALDO BULAN LALU -->
 
-            <div class="summary-box">
-                <span>Total Pemasukan</span>
-                <strong id="totalPemasukan">
-                    Rp 0
-                </strong>
-            </div>
+        <div class="saldo-awal">
 
-            <div class="summary-box">
-                <span>Total Pengeluaran</span>
-                <strong id="totalPengeluaran">
-                    Rp 0
-                </strong>
-            </div>
+            Saldo Bulan Lalu:
 
-            <div class="summary-box">
-                <span>Saldo Akhir</span>
-                <strong id="saldoAkhir">
-                    Rp 0
-                </strong>
-            </div>
+            <span id="saldoAwal">
+                0
+            </span>
 
         </div>
 
 
-        <!-- TABEL LAPORAN -->
-        <div class="table-container">
+        <!-- TABEL -->
+
+        <div class="table-wrapper">
 
             <table id="laporanTable">
 
                 <thead>
+
                     <tr>
+
                         <th>No</th>
+
                         <th>Tanggal</th>
+
                         <th>Keterangan</th>
-                        <th>Jenis</th>
-                        <th>Jumlah</th>
+
+                        <th>Pemasukan</th>
+
+                        <th>Pengeluaran</th>
+
                         <th>Saldo</th>
+
                     </tr>
+
                 </thead>
 
+
                 <tbody id="laporanBody">
-                    <!-- Data transaksi akan dimuat oleh JavaScript -->
                 </tbody>
 
+
                 <tfoot id="laporanFooter">
-                    <!-- Total akan dibuat oleh JavaScript -->
                 </tfoot>
 
             </table>
@@ -114,52 +470,60 @@
         </div>
 
 
-        <!-- TOMBOL EXPORT -->
-        <div class="export-box">
+        <!-- Ringkasan di bawah tabel dihapus -->
 
-            <button type="button" id="btnExcel">
-                Export Excel
-            </button>
 
-            <button type="button" id="btnPdf">
-                Export PDF
-            </button>
+        <!--
+        MENGETAHUI TIDAK DITAMPILKAN DI HALAMAN WEB.
+        MENGETAHUI AKAN DITAMPILKAN DI PDF DAN EXCEL.
+        -->
 
-        </div>
 
     </div>
 
 
-    <!-- ==================================================
-         LIBRARY EXPORT EXCEL
-         ================================================== -->
-
-    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</div>
 
 
-    <!-- ==================================================
-         LIBRARY PDF
-         ================================================== -->
+<!-- LIBRARY EXCEL -->
 
-    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
+></script>
 
 
-    <!-- ==================================================
-         SUPABASE
-         ================================================== -->
+<!-- LIBRARY PDF -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <script src="supabase-client.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"
+></script>
 
 
-    <!-- ==================================================
-         JAVASCRIPT LAPORAN PEMUDA
-         ================================================== -->
+<!-- PLUGIN TABEL PDF -->
 
-    <script src="laporan-pemuda.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"
+></script>
+
+
+<!-- SUPABASE -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+<script
+    src="supabase-client.js"
+></script>
+
+
+<!-- JAVASCRIPT LAPORAN -->
+
+<script
+    src="laporan-pemuda.js"
+></script>
+
 
 </body>
+
 </html>
