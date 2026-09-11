@@ -1125,14 +1125,10 @@ function formatTanggal(tanggal) {
 // ==================================================
 
 function formatRupiah(angka) {
-
-    return (
-        "Rp " +
-        Number(
-            angka || 0
-        ).toLocaleString(
-            "id-ID"
-        )
+    return Number(
+        angka || 0
+    ).toLocaleString(
+        "id-ID"
     );
 }
 
