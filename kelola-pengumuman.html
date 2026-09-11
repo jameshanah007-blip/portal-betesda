@@ -2,17 +2,22 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Kelola Pengumuman - GPIL Jemaat Betesda Purwosari</title>
+    <title>
+        Kelola Pengumuman - GPIL Jemaat Betesda Purwosari
+    </title>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
+
 
         :root {
             --primary: #1f4e79;
@@ -23,9 +28,12 @@
             --muted: #64748b;
 
             --border: #e2e8f0;
+
             --background: #f5f7fb;
+
             --white: #ffffff;
         }
+
 
         body {
             margin: 0;
@@ -39,8 +47,12 @@
                 sans-serif;
 
             background: var(--background);
+
             color: var(--text);
+
+            line-height: 1.5;
         }
+
 
         /* =========================
            HEADER
@@ -55,6 +67,7 @@
                 );
 
             color: white;
+
             text-align: center;
 
             padding: 27px 18px 28px;
@@ -63,21 +76,26 @@
                 0 4px 18px rgba(15, 23, 42, 0.10);
         }
 
+
         header h1 {
             margin: 0;
 
             font-size: 21px;
+
             font-weight: 700;
 
             letter-spacing: -0.3px;
         }
 
+
         header p {
             margin: 7px 0 0;
 
             font-size: 13px;
+
             opacity: 0.88;
         }
+
 
         /* =========================
            CONTAINER
@@ -85,6 +103,7 @@
 
         .container {
             width: 100%;
+
             max-width: 620px;
 
             margin: 0 auto;
@@ -92,14 +111,16 @@
             padding: 18px 14px 30px;
         }
 
+
         /* =========================
-           KEMBALI
+           TOMBOL KEMBALI
         ========================= */
 
         .btn-kembali {
             display: inline-flex;
 
             align-items: center;
+
             justify-content: center;
 
             padding: 10px 18px;
@@ -107,35 +128,47 @@
             margin-bottom: 16px;
 
             background: white;
+
             color: #334155;
 
             border: 1px solid var(--border);
+
             border-radius: 12px;
 
             text-decoration: none;
 
             font-size: 14px;
+
             font-weight: 600;
 
             box-shadow:
                 0 2px 8px rgba(15, 23, 42, 0.04);
 
             transition:
-                all 0.2s ease;
+                background 0.2s ease,
+                color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
         }
+
 
         .btn-kembali:hover {
             color: var(--primary);
 
             background: #f8fafc;
 
+            border-color: #cbd5e1;
+
             box-shadow:
                 0 6px 16px rgba(15, 23, 42, 0.08);
         }
 
+
         .btn-kembali:active {
             transform: scale(0.97);
         }
+
 
         /* =========================
            CARD
@@ -154,6 +187,7 @@
                 0 8px 28px rgba(15, 23, 42, 0.07);
         }
 
+
         /* =========================
            FORM
         ========================= */
@@ -162,7 +196,8 @@
             margin-bottom: 20px;
         }
 
-        label {
+
+        label.form-label {
             display: block;
 
             margin-bottom: 8px;
@@ -170,8 +205,10 @@
             color: #334155;
 
             font-size: 14px;
+
             font-weight: 600;
         }
+
 
         input[type="text"] {
             width: 100%;
@@ -179,12 +216,15 @@
             padding: 13px 14px;
 
             border: 1px solid #d8e0e8;
+
             border-radius: 11px;
 
             background: white;
+
             color: var(--text);
 
             font-family: inherit;
+
             font-size: 15px;
 
             outline: none;
@@ -194,9 +234,11 @@
                 box-shadow 0.2s ease;
         }
 
+
         input[type="text"]::placeholder {
             color: #94a3b8;
         }
+
 
         input[type="text"]:focus {
             border-color: var(--primary);
@@ -204,6 +246,7 @@
             box-shadow:
                 0 0 0 3px rgba(31, 78, 121, 0.10);
         }
+
 
         /* =========================
            FILE PICKER
@@ -219,11 +262,13 @@
             display: flex;
 
             align-items: center;
+
             justify-content: center;
 
             padding: 18px;
 
             border: 1.5px dashed #b8c7d8;
+
             border-radius: 15px;
 
             background:
@@ -235,11 +280,14 @@
 
             cursor: pointer;
 
+            overflow: hidden;
+
             transition:
                 border-color 0.2s ease,
                 background 0.2s ease,
                 transform 0.2s ease;
         }
+
 
         .file-picker:hover {
             border-color: var(--primary);
@@ -247,31 +295,56 @@
             background: var(--primary-light);
         }
 
+
         .file-picker:active {
             transform: scale(0.99);
         }
 
+
+        /*
+         * PENTING:
+         * Input file dibuat transparan,
+         * tetapi tetap memenuhi seluruh area
+         * agar bisa disentuh pada HP.
+         */
+
         .file-picker input[type="file"] {
             position: absolute;
 
-            width: 1px;
-            height: 1px;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            margin: 0;
+
+            padding: 0;
 
             opacity: 0;
 
-            pointer-events: none;
+            cursor: pointer;
+
+            z-index: 10;
         }
 
+
         .file-picker-content {
+            position: relative;
+
+            z-index: 1;
+
             text-align: center;
 
             pointer-events: none;
         }
 
+
         .file-button {
             display: inline-flex;
 
             align-items: center;
+
             justify-content: center;
 
             min-width: 125px;
@@ -281,14 +354,17 @@
             border-radius: 10px;
 
             background: var(--primary);
+
             color: white;
 
             font-size: 14px;
+
             font-weight: 700;
 
             box-shadow:
                 0 5px 12px rgba(31, 78, 121, 0.18);
         }
+
 
         .file-hint {
             margin-top: 9px;
@@ -297,6 +373,7 @@
 
             font-size: 12px;
         }
+
 
         /* =========================
            INFO FILE
@@ -320,10 +397,13 @@
             line-height: 1.55;
 
             display: none;
+
+            word-break: break-word;
         }
 
+
         /* =========================
-           UPLOAD BUTTON
+           TOMBOL UPLOAD
         ========================= */
 
         .btn-upload {
@@ -336,6 +416,7 @@
             margin-top: 6px;
 
             border: none;
+
             border-radius: 12px;
 
             background:
@@ -350,6 +431,7 @@
             font-family: inherit;
 
             font-size: 15px;
+
             font-weight: 700;
 
             cursor: pointer;
@@ -363,6 +445,7 @@
                 opacity 0.2s ease;
         }
 
+
         .btn-upload:hover {
             transform: translateY(-1px);
 
@@ -370,9 +453,11 @@
                 0 10px 22px rgba(31, 78, 121, 0.25);
         }
 
+
         .btn-upload:active {
             transform: scale(0.98);
         }
+
 
         .btn-upload:disabled {
             background: #94a3b8;
@@ -385,6 +470,7 @@
 
             transform: none;
         }
+
 
         /* =========================
            STATUS
@@ -404,7 +490,10 @@
             font-size: 13px;
 
             line-height: 1.5;
+
+            word-break: break-word;
         }
+
 
         /* =========================
            FOOTER
@@ -420,6 +509,7 @@
             font-size: 12px;
         }
 
+
         /* =========================
            MOBILE
         ========================= */
@@ -430,17 +520,21 @@
                 padding: 23px 15px 24px;
             }
 
+
             header h1 {
                 font-size: 18px;
             }
+
 
             header p {
                 font-size: 12px;
             }
 
+
             .container {
                 padding: 15px 12px 28px;
             }
+
 
             .btn-kembali {
                 padding: 9px 16px;
@@ -450,19 +544,23 @@
                 font-size: 13px;
             }
 
+
             .card {
                 padding: 20px 15px;
 
                 border-radius: 16px;
             }
 
+
             .form-group {
                 margin-bottom: 18px;
             }
 
-            label {
+
+            label.form-label {
                 font-size: 13px;
             }
+
 
             input[type="text"] {
                 padding: 12px;
@@ -470,9 +568,11 @@
                 font-size: 14px;
             }
 
+
             .file-picker {
-                min-height: 118px;
+                min-height: 120px;
             }
+
 
             .file-button {
                 min-width: 115px;
@@ -482,9 +582,11 @@
                 font-size: 13px;
             }
 
+
             .file-hint {
                 font-size: 11px;
             }
+
 
             .btn-upload {
                 padding: 13px 16px;
@@ -492,21 +594,31 @@
                 font-size: 14px;
             }
         }
+
     </style>
 </head>
 
+
 <body>
+
 
 <header>
 
-    <h1>GPIL Jemaat Betesda Purwosari</h1>
+    <h1>
+        GPIL Jemaat Betesda Purwosari
+    </h1>
 
-    <p>Kelola Pengumuman dan Dokumen</p>
+    <p>
+        Kelola Pengumuman dan Dokumen
+    </p>
 
 </header>
 
 
 <div class="container">
+
+
+    <!-- Kembali ke menu admin -->
 
     <a
         href="kelola-admin.html"
@@ -518,33 +630,50 @@
 
     <div class="card">
 
-        <!-- Judul -->
+
+        <!-- JUDUL -->
+
         <div class="form-group">
 
-            <label for="judul">
+            <label
+                for="judul"
+                class="form-label"
+            >
                 Judul Pengumuman
             </label>
+
 
             <input
                 type="text"
                 id="judul"
                 placeholder="Masukkan judul pengumuman"
+                autocomplete="off"
             >
 
         </div>
 
 
-        <!-- Pilih File -->
+        <!-- FILE -->
+
         <div class="form-group">
 
-            <label>
+            <label
+                class="form-label"
+            >
                 Dokumen / File
             </label>
 
+
             <label
                 class="file-picker"
-                for="file"
             >
+
+
+                <!--
+                    Input file tetap aktif
+                    untuk HP.
+                    Jangan diberi pointer-events:none.
+                -->
 
                 <input
                     type="file"
@@ -552,17 +681,26 @@
                     accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.webp,.txt,.csv,.rtf,.odt,.ods,.odp,.zip,.rar,.7z"
                 >
 
-                <div class="file-picker-content">
 
-                    <div class="file-button">
+                <div
+                    class="file-picker-content"
+                >
+
+                    <div
+                        class="file-button"
+                    >
                         Pilih File
                     </div>
 
-                    <div class="file-hint">
+
+                    <div
+                        class="file-hint"
+                    >
                         Maksimal ukuran 20 MB
                     </div>
 
                 </div>
+
 
             </label>
 
@@ -572,10 +710,12 @@
                 class="info-file"
             ></div>
 
+
         </div>
 
 
-        <!-- Tombol Upload -->
+        <!-- UPLOAD -->
+
         <button
             type="button"
             id="btnUpload"
@@ -588,7 +728,9 @@
 
         <div id="status"></div>
 
+
     </div>
+
 
 </div>
 
@@ -603,6 +745,7 @@
 <script src="supabase-client.js"></script>
 
 <script src="kelola-pengumuman.js"></script>
+
 
 </body>
 </html>
