@@ -512,29 +512,27 @@ function renderLaporan(
             footer.innerHTML = `
                 <tr>
 
-                    <td colspan="3">
-                        <strong>TOTAL</strong>
-                    </td>
+                     <td colspan="3" style="text-align: center;">
+            <strong>TOTAL</strong>
+        </td>
 
-                    <td>
-                        <strong>
-                            ${formatRupiah(0)}
-                        </strong>
-                    </td>
+                   <td style="text-align: center;">
+            <strong>
+                ${formatRupiah(jumlahPemasukan)}
+            </strong>
+        </td>
 
-                    <td>
-                        <strong>
-                            ${formatRupiah(0)}
-                        </strong>
-                    </td>
+                    <td style="text-align: center;">
+            <strong>
+                ${formatRupiah(jumlahPengeluaran)}
+            </strong>
+        </td>
 
-                    <td>
-                        <strong>
-                            ${formatRupiah(
-                                saldoAwal
-                            )}
-                        </strong>
-                    </td>
+                   <td style="text-align: center;">
+            <strong>
+                ${formatRupiah(saldoBerjalan)}
+            </strong>
+        </td>
 
                 </tr>
             `;
