@@ -44,10 +44,13 @@
 
             color: #1f4e79;
 
+            font-family: inherit;
             font-size: 14px;
             font-weight: 600;
 
             text-decoration: none;
+
+            cursor: pointer;
 
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 
@@ -58,6 +61,7 @@
                 transform 0.2s ease;
         }
 
+
         .btn-kembali-portal:hover {
             background: #f4f8fb;
 
@@ -66,6 +70,7 @@
             box-shadow:
                 0 5px 14px rgba(31, 78, 121, 0.08);
         }
+
 
         .btn-kembali-portal:active {
             transform: scale(0.97);
@@ -777,15 +782,16 @@
             style="display: none;">
 
 
-            <!-- TOMBOL KEMBALI -->
+            <!-- TOMBOL KEMBALI KE PORTAL -->
 
-            <a
-                href="#home"
-                class="btn-kembali-portal">
+            <button
+                type="button"
+                class="btn-kembali-portal"
+                onclick="bukaHome()">
 
                 Kembali ke Portal
 
-            </a>
+            </button>
 
 
 
