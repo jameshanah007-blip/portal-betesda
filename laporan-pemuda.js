@@ -619,31 +619,25 @@ function renderLaporan(
                     )}
                 </td>
 
-                <td>
-                    ${
-                        pemasukan > 0
-                            ? formatRupiah(
-                                pemasukan
-                            )
-                            : "-"
-                    }
-                </td>
+                 <td style="text-align: center;">
+        ${
+            pemasukan > 0
+                ? formatRupiah(pemasukan)
+                : "-"
+        }
+    </td>
 
-                <td>
-                    ${
-                        pengeluaran > 0
-                            ? formatRupiah(
-                                pengeluaran
-                            )
-                            : "-"
-                    }
-                </td>
+                <td style="text-align: center;">
+        ${
+            pengeluaran > 0
+                ? formatRupiah(pengeluaran)
+                : "-"
+        }
+    </td>
 
-                <td>
-                    ${formatRupiah(
-                        saldoBerjalan
-                    )}
-                </td>
+               <td style="text-align: center;">
+        ${formatRupiah(saldoBerjalan)}
+    </td>
 
             `;
 
