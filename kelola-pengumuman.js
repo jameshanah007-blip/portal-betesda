@@ -43,6 +43,7 @@ inputFile.addEventListener(
         const file =
             this.files[0];
 
+
         if (!file) {
 
             infoFile.style.display =
@@ -54,8 +55,10 @@ inputFile.addEventListener(
             return;
         }
 
+
         const namaFile =
             file.name;
+
 
         const ekstensi =
             namaFile
@@ -63,6 +66,10 @@ inputFile.addEventListener(
                 .pop()
                 .toLowerCase();
 
+
+        /* =========================
+           CEK EKSTENSI
+        ========================= */
 
         if (
             !EXTENSI_DIIJINKAN.includes(
@@ -83,6 +90,10 @@ inputFile.addEventListener(
         }
 
 
+        /* =========================
+           CEK UKURAN
+        ========================= */
+
         if (
             file.size > MAX_SIZE
         ) {
@@ -100,18 +111,25 @@ inputFile.addEventListener(
         }
 
 
+        /* =========================
+           TAMPILKAN INFO FILE
+        ========================= */
+
         infoFile.innerHTML = `
-            <strong>${escapeHTML(
-                file.name
-            )}</strong><br>
-            Ukuran: ${formatUkuran(
-                file.size
-            )}<br>
-            Tipe: ${escapeHTML(
+            <strong>
+                ${escapeHTML(file.name)}
+            </strong>
+            <br>
+            Ukuran:
+            ${formatUkuran(file.size)}
+            <br>
+            Tipe:
+            ${escapeHTML(
                 file.type ||
                 ekstensi.toUpperCase()
             )}
         `;
+
 
         infoFile.style.display =
             "block";
@@ -151,7 +169,7 @@ async function uploadPengumuman() {
 
 
     /* =========================
-       VALIDASI JUDUL
+       CEK JUDUL
     ========================= */
 
     if (!judul) {
@@ -165,7 +183,7 @@ async function uploadPengumuman() {
 
 
     /* =========================
-       VALIDASI FILE
+       CEK FILE
     ========================= */
 
     if (!file) {
@@ -178,6 +196,10 @@ async function uploadPengumuman() {
     }
 
 
+    /* =========================
+       CEK UKURAN
+    ========================= */
+
     if (
         file.size > MAX_SIZE
     ) {
@@ -189,6 +211,10 @@ async function uploadPengumuman() {
         return;
     }
 
+
+    /* =========================
+       CEK EKSTENSI
+    ========================= */
 
     const ekstensi =
         file.name
@@ -212,10 +238,11 @@ async function uploadPengumuman() {
 
 
     /* =========================
-       NONAKTIFKAN BUTTON
+       DISABLE BUTTON
     ========================= */
 
     button.disabled = true;
+
 
     status.innerHTML =
         "Mempersiapkan upload...";
@@ -224,7 +251,7 @@ async function uploadPengumuman() {
     try {
 
         /* =========================
-           NAMA FILE BERSIH
+           NAMA FILE
         ========================= */
 
         const namaBersih =
@@ -255,7 +282,7 @@ async function uploadPengumuman() {
 
 
         /* =========================
-           UPLOAD STORAGE
+           UPLOAD KE STORAGE
         ========================= */
 
         status.innerHTML =
@@ -315,7 +342,7 @@ async function uploadPengumuman() {
 
 
         /* =========================
-           SIMPAN KE DATABASE
+           SIMPAN DATABASE
         ========================= */
 
         status.innerHTML =
@@ -329,15 +356,16 @@ async function uploadPengumuman() {
                 .from("pengumuman")
                 .insert([
                     {
+
                         judul:
                             judul,
 
                         /*
-                         * Kolom keterangan
-                         * tetap dikirim agar
-                         * struktur database
-                         * lama tidak berubah.
+                         * Kolom ini tetap dikirim
+                         * karena struktur tabel lama
+                         * masih menggunakannya.
                          */
+
                         keterangan:
                             null,
 
@@ -360,6 +388,10 @@ async function uploadPengumuman() {
                 ]);
 
 
+        /* =========================
+           DATABASE ERROR
+        ========================= */
+
         if (databaseError) {
 
             console.error(
@@ -368,10 +400,10 @@ async function uploadPengumuman() {
             );
 
 
-            /* =========================
-               HAPUS FILE STORAGE
-               JIKA DATABASE GAGAL
-            ========================= */
+            /*
+             * Hapus file dari Storage
+             * jika database gagal.
+             */
 
             await supabaseClient
                 .storage
@@ -395,6 +427,10 @@ async function uploadPengumuman() {
         status.innerHTML =
             "Dokumen berhasil diupload.";
 
+
+        /* =========================
+           RESET FORM
+        ========================= */
 
         document
             .getElementById("judul")
@@ -433,6 +469,10 @@ async function uploadPengumuman() {
     }
 
 
+    /* =========================
+       AKTIFKAN KEMBALI BUTTON
+    ========================= */
+
     button.disabled =
         false;
 }
@@ -445,6 +485,7 @@ async function uploadPengumuman() {
 function formatUkuran(bytes) {
 
     if (!bytes) {
+
         return "0 B";
     }
 
@@ -491,27 +532,33 @@ function escapeHTML(value) {
         value === null ||
         value === undefined
     ) {
+
         return "";
     }
 
 
     return String(value)
+
         .replace(
             /&/g,
             "&amp;"
         )
+
         .replace(
             /</g,
             "&lt;"
         )
+
         .replace(
             />/g,
             "&gt;"
         )
+
         .replace(
             /"/g,
             "&quot;"
         )
+
         .replace(
             /'/g,
             "&#039;"
