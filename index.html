@@ -23,176 +23,12 @@
 
 
         /* =====================================================
-           TOMBOL KEMBALI KE PORTAL
-           ===================================================== */
-
-        .btn-kembali-portal {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            min-height: 42px;
-
-            padding: 0 18px;
-
-            margin-bottom: 20px;
-
-            border: 1px solid #d9e2ea;
-            border-radius: 10px;
-
-            background: #ffffff;
-
-            color: #1f4e79;
-
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-
-            text-decoration: none;
-
-            cursor: pointer;
-
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                box-shadow 0.2s ease,
-                transform 0.2s ease;
-        }
-
-
-        .btn-kembali-portal:hover {
-            background: #f4f8fb;
-
-            border-color: #b9cddd;
-
-            box-shadow:
-                0 5px 14px rgba(31, 78, 121, 0.08);
-        }
-
-
-        .btn-kembali-portal:active {
-            transform: scale(0.97);
-        }
-
-
-        /* =====================================================
-           HEADER LAPORAN
-           ===================================================== */
-
-        .laporan-header {
-            position: relative;
-
-            overflow: hidden;
-
-            margin-bottom: 20px;
-
-            padding: 28px 26px;
-
-            border-radius: 20px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #1f4e79 0%,
-                    #2f6f9f 100%
-                );
-
-            color: #ffffff;
-
-            box-shadow:
-                0 10px 28px rgba(31, 78, 121, 0.16);
-        }
-
-
-        .laporan-header::after {
-            content: "";
-
-            position: absolute;
-
-            width: 150px;
-            height: 150px;
-
-            right: -55px;
-            top: -65px;
-
-            border-radius: 50%;
-
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-
-        .laporan-header::before {
-            content: "";
-
-            position: absolute;
-
-            width: 90px;
-            height: 90px;
-
-            right: 70px;
-            bottom: -55px;
-
-            border-radius: 50%;
-
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-
-        .laporan-header-content {
-            position: relative;
-
-            z-index: 2;
-        }
-
-
-        .laporan-label-atas {
-            display: block;
-
-            margin-bottom: 8px;
-
-            font-size: 11px;
-            font-weight: 700;
-
-            letter-spacing: 1.2px;
-
-            color: rgba(255, 255, 255, 0.75);
-        }
-
-
-        .laporan-header h2 {
-            margin: 0 0 8px;
-
-            font-size: 26px;
-            font-weight: 700;
-
-            letter-spacing: -0.3px;
-        }
-
-
-        .laporan-header p {
-            max-width: 520px;
-
-            margin: 0;
-
-            font-size: 14px;
-
-            line-height: 1.6;
-
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-
-        /* =====================================================
            DAFTAR LAPORAN
            ===================================================== */
 
         .laporan-list {
             display: flex;
-
             flex-direction: column;
-
             gap: 14px;
         }
 
@@ -205,7 +41,6 @@
             width: 100%;
 
             display: flex;
-
             align-items: center;
 
             gap: 15px;
@@ -213,7 +48,6 @@
             padding: 18px;
 
             border: 1px solid #e1e7ed;
-
             border-radius: 18px;
 
             background: #ffffff;
@@ -261,7 +95,6 @@
             flex-shrink: 0;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -283,7 +116,6 @@
             flex: 1;
 
             display: flex;
-
             flex-direction: column;
         }
 
@@ -334,7 +166,6 @@
             flex-shrink: 0;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -368,49 +199,7 @@
 
             .laporan-halaman {
                 max-width: 100%;
-
                 padding-bottom: 15px;
-            }
-
-
-            .btn-kembali-portal {
-                width: 100%;
-
-                min-height: 44px;
-
-                margin-bottom: 16px;
-
-                border-radius: 11px;
-
-                font-size: 14px;
-            }
-
-
-            .laporan-header {
-                margin-bottom: 16px;
-
-                padding: 22px 19px;
-
-                border-radius: 17px;
-            }
-
-
-            .laporan-label-atas {
-                font-size: 10px;
-
-                letter-spacing: 1px;
-            }
-
-
-            .laporan-header h2 {
-                font-size: 22px;
-            }
-
-
-            .laporan-header p {
-                font-size: 13px;
-
-                line-height: 1.55;
             }
 
 
@@ -782,56 +571,12 @@
             style="display: none;">
 
 
-            <!-- TOMBOL KEMBALI KE PORTAL -->
-
-            <button
-                type="button"
-                class="btn-kembali-portal"
-                onclick="bukaHome()">
-
-                Kembali ke Portal
-
-            </button>
-
-
-
-            <!-- HEADER LAPORAN -->
-
-            <div class="laporan-header">
-
-
-                <div class="laporan-header-content">
-
-
-                    <span class="laporan-label-atas">
-                        INFORMASI KEUANGAN
-                    </span>
-
-
-                    <h2>
-                        Laporan Keuangan
-                    </h2>
-
-
-                    <p>
-                        Laporan keuangan Persekutuan Pemuda
-                        GPIL Jemaat Betesda Purwosari.
-                    </p>
-
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- DAFTAR LAPORAN -->
-
             <div class="laporan-list">
 
 
-                <!-- LAPORAN PEMUDA -->
+                <!-- =================================================
+                     LAPORAN PEMUDA
+                     ================================================= -->
 
                 <button
                     type="button"
