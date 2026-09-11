@@ -54,10 +54,8 @@ inputFile.addEventListener(
             return;
         }
 
-
         const namaFile =
             file.name;
-
 
         const ekstensi =
             namaFile
@@ -114,7 +112,6 @@ inputFile.addEventListener(
                 ekstensi.toUpperCase()
             )}
         `;
-
 
         infoFile.style.display =
             "block";
@@ -215,12 +212,10 @@ async function uploadPengumuman() {
 
 
     /* =========================
-       MULAI UPLOAD
+       NONAKTIFKAN BUTTON
     ========================= */
 
-    button.disabled =
-        true;
-
+    button.disabled = true;
 
     status.innerHTML =
         "Mempersiapkan upload...";
@@ -229,7 +224,7 @@ async function uploadPengumuman() {
     try {
 
         /* =========================
-           NAMA FILE UNIK
+           NAMA FILE BERSIH
         ========================= */
 
         const namaBersih =
@@ -264,7 +259,7 @@ async function uploadPengumuman() {
         ========================= */
 
         status.innerHTML =
-            "Mengupload file...";
+            "Mengupload file ke Storage...";
 
 
         const {
@@ -320,7 +315,7 @@ async function uploadPengumuman() {
 
 
         /* =========================
-           SIMPAN DATABASE
+           SIMPAN KE DATABASE
         ========================= */
 
         status.innerHTML =
@@ -336,6 +331,15 @@ async function uploadPengumuman() {
                     {
                         judul:
                             judul,
+
+                        /*
+                         * Kolom keterangan
+                         * tetap dikirim agar
+                         * struktur database
+                         * lama tidak berubah.
+                         */
+                        keterangan:
+                            null,
 
                         nama_file:
                             path,
@@ -365,7 +369,8 @@ async function uploadPengumuman() {
 
 
             /* =========================
-               HAPUS FILE JIKA DATABASE GAGAL
+               HAPUS FILE STORAGE
+               JIKA DATABASE GAGAL
             ========================= */
 
             await supabaseClient
