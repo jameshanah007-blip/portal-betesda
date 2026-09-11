@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Galeri Jemaat - GPIL Jemaat Betesda Purwosari</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f6f8;
+            color: #333;
+        }
+
+        .header {
+            background: #1f4e79;
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .header p {
+            margin: 6px 0 0;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px 12px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .top-bar h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .btn-kembali {
+            background: #555;
+            color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .galeri {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .foto-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .foto-card img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+        }
+
+        .foto-info {
+            padding: 10px;
+        }
+
+        .foto-info h3 {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .foto-info small {
+            display: block;
+            margin-top: 5px;
+            color: #777;
+            font-size: 11px;
+        }
+
+        .kosong {
+            text-align: center;
+            background: white;
+            padding: 40px 20px;
+            border-radius: 10px;
+            color: #777;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+        }
+
+        @media (min-width: 600px) {
+            .galeri {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .foto-card img {
+                height: 200px;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .galeri {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Tampilan foto besar */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .modal img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: white;
+            font-size: 35px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <h1>GPIL Jemaat Betesda Purwosari</h1>
+        <p>Galeri Kegiatan Jemaat</p>
+    </header>
+
+    <main class="container">
+
+        <div class="top-bar">
+            <h2>📸 Galeri Jemaat</h2>
+
+            <a href="index.html" class="btn-kembali">
+                ← Kembali
+            </a>
+        </div>
+
+        <div id="loading" class="loading">
+            Memuat foto...
+        </div>
+
+        <div id="galeri" class="galeri"></div>
+
+    </main>
+
+    <!-- Modal Foto -->
+    <div id="modal" class="modal" onclick="tutupFoto()">
+
+        <span class="close">&times;</span>
+
+        <img id="fotoBesar" src="" alt="Foto kegiatan jemaat">
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase-client.js"></script>
+
+    <script src="galeri.js"></script>
+
+</body>
+
+</html>
