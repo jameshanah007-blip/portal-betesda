@@ -32,6 +32,10 @@ const EXTENSI_DIIJINKAN = [
 ];
 
 
+/* =========================
+   PILIH FILE
+========================= */
+
 inputFile.addEventListener(
     "change",
     function () {
@@ -44,13 +48,16 @@ inputFile.addEventListener(
             infoFile.style.display =
                 "none";
 
-            infoFile.innerHTML = "";
+            infoFile.innerHTML =
+                "";
 
             return;
         }
 
+
         const namaFile =
             file.name;
+
 
         const ekstensi =
             namaFile
@@ -58,9 +65,11 @@ inputFile.addEventListener(
                 .pop()
                 .toLowerCase();
 
+
         if (
-            !EXTENSI_DIIJINKAN
-                .includes(ekstensi)
+            !EXTENSI_DIIJINKAN.includes(
+                ekstensi
+            )
         ) {
 
             alert(
@@ -75,7 +84,10 @@ inputFile.addEventListener(
             return;
         }
 
-        if (file.size > MAX_SIZE) {
+
+        if (
+            file.size > MAX_SIZE
+        ) {
 
             alert(
                 "Ukuran file maksimal 20 MB."
@@ -89,23 +101,30 @@ inputFile.addEventListener(
             return;
         }
 
+
         infoFile.innerHTML = `
-            📎 <strong>${escapeHTML(
+            <strong>${escapeHTML(
                 file.name
             )}</strong><br>
-            📦 Ukuran: ${formatUkuran(
+            Ukuran: ${formatUkuran(
                 file.size
             )}<br>
-            📄 Tipe: ${escapeHTML(
-                file.type || ekstensi.toUpperCase()
+            Tipe: ${escapeHTML(
+                file.type ||
+                ekstensi.toUpperCase()
             )}
         `;
+
 
         infoFile.style.display =
             "block";
     }
 );
 
+
+/* =========================
+   UPLOAD PENGUMUMAN
+========================= */
 
 async function uploadPengumuman() {
 
@@ -115,23 +134,28 @@ async function uploadPengumuman() {
             .value
             .trim();
 
-    const keterangan =
-        document
-            .getElementById("keterangan")
-            .value
-            .trim();
 
     const file =
         document
             .getElementById("file")
             .files[0];
 
+
     const status =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
+
 
     const button =
-        document.getElementById("btnUpload");
+        document.getElementById(
+            "btnUpload"
+        );
 
+
+    /* =========================
+       VALIDASI JUDUL
+    ========================= */
 
     if (!judul) {
 
@@ -143,6 +167,10 @@ async function uploadPengumuman() {
     }
 
 
+    /* =========================
+       VALIDASI FILE
+    ========================= */
+
     if (!file) {
 
         alert(
@@ -153,7 +181,9 @@ async function uploadPengumuman() {
     }
 
 
-    if (file.size > MAX_SIZE) {
+    if (
+        file.size > MAX_SIZE
+    ) {
 
         alert(
             "Ukuran file maksimal 20 MB."
@@ -171,8 +201,9 @@ async function uploadPengumuman() {
 
 
     if (
-        !EXTENSI_DIIJINKAN
-            .includes(ekstensi)
+        !EXTENSI_DIIJINKAN.includes(
+            ekstensi
+        )
     ) {
 
         alert(
@@ -183,17 +214,23 @@ async function uploadPengumuman() {
     }
 
 
-    button.disabled = true;
+    /* =========================
+       MULAI UPLOAD
+    ========================= */
+
+    button.disabled =
+        true;
+
 
     status.innerHTML =
-        "⏳ Mempersiapkan upload...";
+        "Mempersiapkan upload...";
 
 
     try {
 
-        /*
-         * Membuat nama file unik
-         */
+        /* =========================
+           NAMA FILE UNIK
+        ========================= */
 
         const namaBersih =
             file.name
@@ -206,6 +243,7 @@ async function uploadPengumuman() {
                     /\s+/g,
                     "-"
                 );
+
 
         const namaUnik =
             Date.now() +
@@ -221,12 +259,12 @@ async function uploadPengumuman() {
             namaUnik;
 
 
-        /*
-         * Upload ke Supabase Storage
-         */
+        /* =========================
+           UPLOAD STORAGE
+        ========================= */
 
         status.innerHTML =
-            "⏳ Mengupload file ke Storage...";
+            "Mengupload file...";
 
 
         const {
@@ -242,6 +280,7 @@ async function uploadPengumuman() {
                         contentType:
                             file.type ||
                             "application/octet-stream",
+
                         upsert: false
                     }
                 );
@@ -261,9 +300,9 @@ async function uploadPengumuman() {
         }
 
 
-        /*
-         * Membuat URL publik
-         */
+        /* =========================
+           PUBLIC URL
+        ========================= */
 
         const {
             data: urlData
@@ -271,20 +310,21 @@ async function uploadPengumuman() {
             supabaseClient
                 .storage
                 .from("pengumuman")
-                .getPublicUrl(path);
+                .getPublicUrl(
+                    path
+                );
 
 
         const urlFile =
             urlData.publicUrl;
 
 
-        /*
-         * Menyimpan informasi
-         * file ke database
-         */
+        /* =========================
+           SIMPAN DATABASE
+        ========================= */
 
         status.innerHTML =
-            "⏳ Menyimpan informasi dokumen...";
+            "Menyimpan informasi dokumen...";
 
 
         const {
@@ -296,10 +336,6 @@ async function uploadPengumuman() {
                     {
                         judul:
                             judul,
-
-                        keterangan:
-                            keterangan ||
-                            null,
 
                         nama_file:
                             path,
@@ -328,10 +364,9 @@ async function uploadPengumuman() {
             );
 
 
-            /*
-             * Jika database gagal,
-             * hapus file dari Storage
-             */
+            /* =========================
+               HAPUS FILE JIKA DATABASE GAGAL
+            ========================= */
 
             await supabaseClient
                 .storage
@@ -348,30 +383,32 @@ async function uploadPengumuman() {
         }
 
 
-        /*
-         * Berhasil
-         */
+        /* =========================
+           BERHASIL
+        ========================= */
 
         status.innerHTML =
-            "✅ Dokumen berhasil diupload.";
+            "Dokumen berhasil diupload.";
 
 
         document
             .getElementById("judul")
-            .value = "";
+            .value =
+            "";
 
-        document
-            .getElementById("keterangan")
-            .value = "";
 
         document
             .getElementById("file")
-            .value = "";
+            .value =
+            "";
+
 
         infoFile.style.display =
             "none";
 
-        infoFile.innerHTML = "";
+
+        infoFile.innerHTML =
+            "";
 
 
     } catch (error) {
@@ -381,8 +418,9 @@ async function uploadPengumuman() {
             error
         );
 
+
         status.innerHTML =
-            "❌ Gagal upload: " +
+            "Gagal upload: " +
             escapeHTML(
                 error.message
             );
@@ -390,9 +428,14 @@ async function uploadPengumuman() {
     }
 
 
-    button.disabled = false;
+    button.disabled =
+        false;
 }
 
+
+/* =========================
+   FORMAT UKURAN
+========================= */
 
 function formatUkuran(bytes) {
 
@@ -400,11 +443,20 @@ function formatUkuran(bytes) {
         return "0 B";
     }
 
+
     if (bytes < 1024) {
-        return bytes + " B";
+
+        return (
+            bytes +
+            " B"
+        );
     }
 
-    if (bytes < 1024 * 1024) {
+
+    if (
+        bytes <
+        1024 * 1024
+    ) {
 
         return (
             (bytes / 1024)
@@ -413,13 +465,20 @@ function formatUkuran(bytes) {
         );
     }
 
+
     return (
-        (bytes / (1024 * 1024))
+        (bytes /
+            (1024 * 1024)
+        )
             .toFixed(1) +
         " MB"
     );
 }
 
+
+/* =========================
+   ESCAPE HTML
+========================= */
 
 function escapeHTML(value) {
 
@@ -429,6 +488,7 @@ function escapeHTML(value) {
     ) {
         return "";
     }
+
 
     return String(value)
         .replace(
