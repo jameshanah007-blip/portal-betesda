@@ -14,24 +14,15 @@ async function ambilPengumuman() {
     const container =
         document.getElementById("daftarPengumuman");
 
-    if (!container) {
-        return;
-    }
+    if (!container) return;
 
     container.innerHTML = `
         <div class="state-message">
             <div class="state-icon">📄</div>
-
-            <h3>
-                Memuat dokumen...
-            </h3>
-
-            <p>
-                Mohon tunggu sebentar.
-            </p>
+            <h3>Memuat dokumen...</h3>
+            <p>Mohon tunggu sebentar.</p>
         </div>
     `;
-
 
     try {
 
@@ -41,24 +32,18 @@ async function ambilPengumuman() {
         } = await supabaseClient
             .from("pengumuman")
             .select("*")
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            );
-
+            .order("created_at", {
+                ascending: false
+            });
 
         if (error) {
             throw error;
         }
 
-
         daftarDataPengumuman =
             Array.isArray(data)
                 ? data
                 : [];
-
 
         tampilkanPengumuman();
 
@@ -69,22 +54,11 @@ async function ambilPengumuman() {
             error
         );
 
-
         container.innerHTML = `
             <div class="state-message">
-
-                <div class="state-icon">
-                    ⚠️
-                </div>
-
-                <h3>
-                    Dokumen belum dapat dimuat
-                </h3>
-
-                <p>
-                    Silakan coba lagi beberapa saat.
-                </p>
-
+                <div class="state-icon">⚠️</div>
+                <h3>Dokumen belum dapat dimuat</h3>
+                <p>Silakan coba lagi beberapa saat.</p>
             </div>
         `;
     }
@@ -92,7 +66,7 @@ async function ambilPengumuman() {
 
 
 // =====================================================
-// TAMPILKAN DATA
+// TAMPILKAN DOKUMEN
 // =====================================================
 
 function tampilkanPengumuman() {
@@ -100,11 +74,7 @@ function tampilkanPengumuman() {
     const container =
         document.getElementById("daftarPengumuman");
 
-
-    if (!container) {
-        return;
-    }
-
+    if (!container) return;
 
     if (
         !daftarDataPengumuman ||
@@ -113,38 +83,24 @@ function tampilkanPengumuman() {
 
         container.innerHTML = `
             <div class="state-message">
-
-                <div class="state-icon">
-                    📂
-                </div>
-
-                <h3>
-                    Belum ada dokumen
-                </h3>
-
-                <p>
-                    Dokumen jemaat akan ditampilkan di sini.
-                </p>
-
+                <div class="state-icon">📂</div>
+                <h3>Belum ada dokumen</h3>
+                <p>Dokumen jemaat akan ditampilkan di sini.</p>
             </div>
         `;
 
         return;
     }
 
-
     container.innerHTML =
         daftarDataPengumuman
-            .map(
-                (item) =>
-                    buatCardDokumen(item)
-            )
+            .map(buatCardDokumen)
             .join("");
 }
 
 
 // =====================================================
-// BUAT CARD DOKUMEN
+// BUAT CARD
 // =====================================================
 
 function buatCardDokumen(item) {
@@ -152,45 +108,25 @@ function buatCardDokumen(item) {
     const id =
         item?.id ?? "";
 
-
     const nama =
         item?.nama_asli ||
         item?.nama_file ||
         "Dokumen";
 
-
     const jenis =
         getJenisFile(nama);
-
 
     const format =
         getLabelFormat(jenis);
 
-
     const icon =
         getIconFile(jenis);
 
-
     const ukuran =
-        formatUkuran(
-            item?.ukuran_file
-        );
-
+        formatUkuran(item?.ukuran_file);
 
     const tanggal =
-        formatTanggal(
-            item?.created_at
-        );
-
-
-    const meta = [
-        format,
-        tanggal,
-        ukuran
-    ]
-        .filter(Boolean)
-        .join(" • ");
-
+        formatTanggal(item?.created_at);
 
     return `
         <article
@@ -198,7 +134,7 @@ function buatCardDokumen(item) {
             data-id="${escapeAttribute(id)}"
             tabindex="0"
             role="button"
-            aria-label="Buka ${escapeHtml(nama)}"
+            aria-label="Buka ${escapeAttribute(nama)}"
         >
 
             <div
@@ -208,19 +144,15 @@ function buatCardDokumen(item) {
                 ${icon}
             </div>
 
-
             <div class="dokumen-info">
 
                 <h2 class="dokumen-title">
                     ${escapeHtml(nama)}
                 </h2>
 
-
                 <div class="dokumen-meta">
 
-                    <span
-                        class="format-badge ${jenis}"
-                    >
+                    <span class="format-badge ${jenis}">
                         ${escapeHtml(format)}
                     </span>
 
@@ -240,7 +172,6 @@ function buatCardDokumen(item) {
 
             </div>
 
-
             <div
                 class="open-arrow"
                 aria-hidden="true"
@@ -254,8 +185,7 @@ function buatCardDokumen(item) {
 
 
 // =====================================================
-// EVENT DELEGATION
-// Lebih aman daripada onclick inline
+// KLIK DOKUMEN
 // =====================================================
 
 document.addEventListener(
@@ -267,38 +197,27 @@ document.addEventListener(
                 ".dokumen-card"
             );
 
-
-        if (!card) {
-            return;
-        }
-
+        if (!card) return;
 
         const id =
             card.dataset.id;
 
-
-        if (!id) {
-            return;
-        }
-
-
         const item =
             daftarDataPengumuman.find(
-                (data) =>
+                data =>
                     String(data.id) ===
                     String(id)
             );
 
+        if (!item) return;
 
-        if (item) {
-            bukaDokumen(item);
-        }
+        bukaDokumen(item);
     }
 );
 
 
 // =====================================================
-// SUPPORT KEYBOARD
+// KEYBOARD
 // =====================================================
 
 document.addEventListener(
@@ -312,32 +231,24 @@ document.addEventListener(
             return;
         }
 
-
         const card =
             event.target.closest(
                 ".dokumen-card"
             );
 
-
-        if (!card) {
-            return;
-        }
-
+        if (!card) return;
 
         event.preventDefault();
-
 
         const id =
             card.dataset.id;
 
-
         const item =
             daftarDataPengumuman.find(
-                (data) =>
+                data =>
                     String(data.id) ===
                     String(id)
             );
-
 
         if (item) {
             bukaDokumen(item);
@@ -347,39 +258,139 @@ document.addEventListener(
 
 
 // =====================================================
-// BUKA DOKUMEN BERDASARKAN ID
-// Bisa dipanggil dari tempat lain jika diperlukan
+// BUKA DOKUMEN
 // =====================================================
 
-function bukaDokumenById(id) {
+function bukaDokumen(item) {
 
-    const item =
-        daftarDataPengumuman.find(
-            (data) =>
-                String(data.id) ===
-                String(id)
+    const nama =
+        item?.nama_asli ||
+        item?.nama_file ||
+        "Dokumen";
+
+    const url =
+        item?.url_file ||
+        "";
+
+    if (!url) {
+
+        alert(
+            "File dokumen tidak tersedia."
         );
 
+        return;
+    }
 
-    if (!item) {
-        console.warn(
-            "Dokumen tidak ditemukan:",
-            id
+    const jenis =
+        getJenisFile(nama);
+
+
+    // =================================================
+    // KHUSUS PDF
+    //
+    // JANGAN menggunakan iframe.
+    // Langsung buka URL PDF.
+    // =================================================
+
+    if (jenis === "pdf") {
+
+        bukaPDFLangsung(url);
+
+        return;
+    }
+
+
+    // =================================================
+    // GAMBAR
+    // =================================================
+
+    if (jenis === "image") {
+
+        bukaModalGambar(
+            nama,
+            url
         );
 
         return;
     }
 
 
-    bukaDokumen(item);
+    // =================================================
+    // FILE LAIN
+    // =================================================
+
+    bukaModalFile(
+        item,
+        nama,
+        url,
+        jenis
+    );
 }
 
 
 // =====================================================
-// BUKA DOKUMEN
+// BUKA PDF LANGSUNG DI HP
 // =====================================================
 
-function bukaDokumen(item) {
+function bukaPDFLangsung(url) {
+
+    try {
+
+        /*
+         * Pada HP, kita tidak memakai iframe.
+         *
+         * window.open() akan menyerahkan
+         * URL PDF kepada browser HP.
+         */
+
+        const halamanPDF =
+            window.open(
+                url,
+                "_blank"
+            );
+
+
+        /*
+         * Jika browser memblokir window.open,
+         * gunakan navigasi langsung.
+         */
+
+        if (
+            !halamanPDF ||
+            halamanPDF.closed ||
+            typeof halamanPDF.closed === "undefined"
+        ) {
+
+            window.location.href =
+                url;
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Gagal membuka PDF:",
+            error
+        );
+
+        /*
+         * Fallback terakhir:
+         * langsung menuju URL PDF.
+         */
+
+        window.location.href =
+            url;
+    }
+}
+
+
+// =====================================================
+// MODAL GAMBAR
+// =====================================================
+
+function bukaModalGambar(
+    nama,
+    url
+) {
 
     const modal =
         document.getElementById("modal");
@@ -396,6 +407,67 @@ function bukaDokumen(item) {
     const btnDownload =
         document.getElementById("btnDownload");
 
+    if (
+        !modal ||
+        !modalJudul ||
+        !modalNamaFile ||
+        !modalContent ||
+        !btnDownload
+    ) {
+        return;
+    }
+
+    modalJudul.textContent =
+        nama;
+
+    modalNamaFile.textContent =
+        "GAMBAR";
+
+    modalContent.innerHTML = `
+        <img
+            src="${escapeAttribute(url)}"
+            alt="${escapeAttribute(nama)}"
+        >
+    `;
+
+    btnDownload.href =
+        buatUrlDownload(
+            url,
+            nama
+        );
+
+    btnDownload.style.display =
+        "inline-flex";
+
+    bukaModal();
+}
+
+
+// =====================================================
+// MODAL FILE LAIN
+// =====================================================
+
+function bukaModalFile(
+    item,
+    nama,
+    url,
+    jenis
+) {
+
+    const modal =
+        document.getElementById("modal");
+
+    const modalJudul =
+        document.getElementById("modalJudul");
+
+    const modalNamaFile =
+        document.getElementById("modalNamaFile");
+
+    const modalContent =
+        document.getElementById("modalContent");
+
+    const btnDownload =
+        document.getElementById("btnDownload");
 
     if (
         !modal ||
@@ -407,249 +479,26 @@ function bukaDokumen(item) {
         return;
     }
 
-
-    const nama =
-        item?.nama_asli ||
-        item?.nama_file ||
-        "Dokumen";
-
-
-    const url =
-        item?.url_file ||
-        "";
-
-
-    if (!url) {
-
-        modalJudul.textContent =
-            "Dokumen tidak tersedia";
-
-        modalNamaFile.textContent =
-            nama;
-
-        modalContent.innerHTML = `
-            <div class="file-open-box">
-
-                <div class="file-open-icon">
-                    ⚠️
-                </div>
-
-                <h3>
-                    File tidak tersedia
-                </h3>
-
-                <p>
-                    Tautan dokumen belum tersedia
-                    atau file sudah tidak dapat diakses.
-                </p>
-
-            </div>
-        `;
-
-
-        btnDownload.style.display =
-            "none";
-
-
-        bukaModal();
-
-        return;
-    }
-
-
-    const jenis =
-        getJenisFile(nama);
-
-
     modalJudul.textContent =
         nama;
 
     modalNamaFile.textContent =
         getLabelFormat(jenis);
 
-
-    btnDownload.style.display =
-        "inline-flex";
-
-
-    btnDownload.href =
-        buatUrlDownload(
-            url,
-            nama
-        );
-
-
-    // =================================================
-    // PDF
-    // =================================================
-
-    if (jenis === "pdf") {
-
-        modalContent.innerHTML = `
-
-            <iframe
-                src="${escapeAttribute(url)}"
-                title="${escapeAttribute(nama)}"
-                loading="lazy"
-            ></iframe>
-
-            <div
-                style="
-                    display:flex;
-                    justify-content:center;
-                    padding:12px;
-                    background:#ffffff;
-                    border-top:1px solid #e2e8f0;
-                "
-            >
-
-                <a
-                    href="${escapeAttribute(url)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="btn-open-file"
-                    style="width:100%;max-width:420px;"
-                >
-                    📄 Buka PDF
-                </a>
-
-            </div>
-        `;
-
-    }
-
-    // =================================================
-    // GAMBAR
-    // =================================================
-
-    else if (jenis === "image") {
-
-        modalContent.innerHTML = `
-
-            <img
-                src="${escapeAttribute(url)}"
-                alt="${escapeAttribute(nama)}"
-                loading="lazy"
-            />
-
-        `;
-    }
-
-    // =================================================
-    // FILE WORD
-    // =================================================
-
-    else if (jenis === "word") {
-
-        modalContent.innerHTML =
-            buatFileOpenBox(
-                "📝",
-                nama,
-                "Dokumen Word siap dibuka.",
-                url,
-                "Buka Dokumen"
-            );
-    }
-
-    // =================================================
-    // FILE EXCEL
-    // =================================================
-
-    else if (jenis === "excel") {
-
-        modalContent.innerHTML =
-            buatFileOpenBox(
-                "📊",
-                nama,
-                "Dokumen Excel siap dibuka.",
-                url,
-                "Buka Dokumen"
-            );
-    }
-
-    // =================================================
-    // FILE POWERPOINT
-    // =================================================
-
-    else if (jenis === "powerpoint") {
-
-        modalContent.innerHTML =
-            buatFileOpenBox(
-                "📽️",
-                nama,
-                "Presentasi siap dibuka.",
-                url,
-                "Buka Presentasi"
-            );
-    }
-
-    // =================================================
-    // ZIP / RAR
-    // =================================================
-
-    else if (jenis === "zip") {
-
-        modalContent.innerHTML =
-            buatFileOpenBox(
-                "🗜️",
-                nama,
-                "File arsip siap dibuka atau disimpan.",
-                url,
-                "Buka File"
-            );
-    }
-
-    // =================================================
-    // FILE LAIN
-    // =================================================
-
-    else {
-
-        modalContent.innerHTML =
-            buatFileOpenBox(
-                "📄",
-                nama,
-                "Dokumen siap dibuka.",
-                url,
-                "Buka File"
-            );
-    }
-
-
-    bukaModal();
-}
-
-
-// =====================================================
-// KOTAK BUKA FILE
-// =====================================================
-
-function buatFileOpenBox(
-    icon,
-    nama,
-    deskripsi,
-    url,
-    teksTombol
-) {
-
-    return `
-
+    modalContent.innerHTML = `
         <div class="file-open-box">
 
             <div class="file-open-icon">
-                ${icon}
+                ${getIconFile(jenis)}
             </div>
-
 
             <h3>
                 ${escapeHtml(nama)}
             </h3>
 
-
             <p>
-                ${escapeHtml(deskripsi)}
+                File siap dibuka.
             </p>
-
 
             <a
                 href="${escapeAttribute(url)}"
@@ -657,12 +506,22 @@ function buatFileOpenBox(
                 rel="noopener noreferrer"
                 class="btn-open-file"
             >
-                ${escapeHtml(teksTombol)}
+                Buka File
             </a>
 
         </div>
-
     `;
+
+    btnDownload.href =
+        buatUrlDownload(
+            url,
+            nama
+        );
+
+    btnDownload.style.display =
+        "inline-flex";
+
+    bukaModal();
 }
 
 
@@ -675,22 +534,16 @@ function bukaModal() {
     const modal =
         document.getElementById("modal");
 
-
-    if (!modal) {
-        return;
-    }
-
+    if (!modal) return;
 
     modal.classList.add(
         "active"
     );
 
-
     modal.setAttribute(
         "aria-hidden",
         "false"
     );
-
 
     document.body.style.overflow =
         "hidden";
@@ -707,40 +560,26 @@ function tutupModal() {
         document.getElementById("modal");
 
     const modalContent =
-        document.getElementById("modalContent");
+        document.getElementById(
+            "modalContent"
+        );
 
-
-    if (!modal) {
-        return;
-    }
-
+    if (!modal) return;
 
     modal.classList.remove(
         "active"
     );
-
 
     modal.setAttribute(
         "aria-hidden",
         "true"
     );
 
-
     document.body.style.overflow =
         "";
 
-
     if (modalContent) {
-
-        setTimeout(
-            function () {
-
-                modalContent.innerHTML =
-                    "";
-
-            },
-            200
-        );
+        modalContent.innerHTML = "";
     }
 }
 
@@ -753,7 +592,6 @@ const btnTutup =
     document.getElementById(
         "btnTutup"
     );
-
 
 if (btnTutup) {
 
@@ -773,7 +611,6 @@ const modal =
         "modal"
     );
 
-
 if (modal) {
 
     modal.addEventListener(
@@ -791,7 +628,7 @@ if (modal) {
 
 
 // =====================================================
-// TOMBOL ESCAPE
+// ESC
 // =====================================================
 
 document.addEventListener(
@@ -799,31 +636,30 @@ document.addEventListener(
     function (event) {
 
         if (
-            event.key === "Escape"
+            event.key !== "Escape"
         ) {
+            return;
+        }
 
-            const modal =
-                document.getElementById(
-                    "modal"
-                );
+        const modal =
+            document.getElementById(
+                "modal"
+            );
 
-
-            if (
-                modal &&
-                modal.classList.contains(
-                    "active"
-                )
-            ) {
-
-                tutupModal();
-            }
+        if (
+            modal &&
+            modal.classList.contains(
+                "active"
+            )
+        ) {
+            tutupModal();
         }
     }
 );
 
 
 // =====================================================
-// BUAT URL DOWNLOAD
+// DOWNLOAD URL
 // =====================================================
 
 function buatUrlDownload(
@@ -835,35 +671,26 @@ function buatUrlDownload(
         return "#";
     }
 
-
     try {
 
-        const encodedName =
+        const namaEncoded =
             encodeURIComponent(
                 nama || "dokumen"
             );
-
 
         const separator =
             url.includes("?")
                 ? "&"
                 : "?";
 
-
         return (
             url +
             separator +
             "download=" +
-            encodedName
+            namaEncoded
         );
 
     } catch (error) {
-
-        console.warn(
-            "Gagal membuat URL download:",
-            error
-        );
-
 
         return url;
     }
@@ -871,7 +698,7 @@ function buatUrlDownload(
 
 
 // =====================================================
-// DETEKSI JENIS FILE
+// JENIS FILE
 // =====================================================
 
 function getJenisFile(
@@ -882,25 +709,18 @@ function getJenisFile(
         return "file";
     }
 
-
     const nama =
-        String(
-            namaFile
-        )
+        String(namaFile)
             .toLowerCase()
             .split("?")[0]
             .split("#")[0];
 
-
     const ekstensi =
         nama.includes(".")
-            ? nama
-                .split(".")
-                .pop()
+            ? nama.split(".").pop()
             : "";
 
 
-    // PDF
     if (
         ekstensi === "pdf"
     ) {
@@ -908,7 +728,6 @@ function getJenisFile(
     }
 
 
-    // Gambar
     if (
         [
             "jpg",
@@ -924,7 +743,6 @@ function getJenisFile(
     }
 
 
-    // Word
     if (
         [
             "doc",
@@ -935,7 +753,6 @@ function getJenisFile(
     }
 
 
-    // Excel
     if (
         [
             "xls",
@@ -947,7 +764,6 @@ function getJenisFile(
     }
 
 
-    // PowerPoint
     if (
         [
             "ppt",
@@ -958,7 +774,6 @@ function getJenisFile(
     }
 
 
-    // ZIP / RAR
     if (
         [
             "zip",
@@ -975,7 +790,7 @@ function getJenisFile(
 
 
 // =====================================================
-// LABEL FORMAT
+// LABEL
 // =====================================================
 
 function getLabelFormat(
@@ -1009,7 +824,7 @@ function getLabelFormat(
 
 
 // =====================================================
-// ICON FILE
+// ICON
 // =====================================================
 
 function getIconFile(
@@ -1043,7 +858,7 @@ function getIconFile(
 
 
 // =====================================================
-// FORMAT UKURAN FILE
+// UKURAN FILE
 // =====================================================
 
 function formatUkuran(
@@ -1058,20 +873,15 @@ function formatUkuran(
         return "";
     }
 
-
     const ukuran =
         Number(bytes);
 
-
     if (
-        !Number.isFinite(
-            ukuran
-        ) ||
+        !Number.isFinite(ukuran) ||
         ukuran <= 0
     ) {
         return "";
     }
-
 
     const units = [
         "B",
@@ -1079,7 +889,6 @@ function formatUkuran(
         "MB",
         "GB"
     ];
-
 
     const index =
         Math.min(
@@ -1090,14 +899,12 @@ function formatUkuran(
             units.length - 1
         );
 
-
     const nilai =
         ukuran /
         Math.pow(
             1024,
             index
         );
-
 
     return (
         nilai.toFixed(
@@ -1112,7 +919,7 @@ function formatUkuran(
 
 
 // =====================================================
-// FORMAT TANGGAL
+// TANGGAL
 // =====================================================
 
 function formatTanggal(
@@ -1123,14 +930,10 @@ function formatTanggal(
         return "";
     }
 
-
     try {
 
         const date =
-            new Date(
-                tanggal
-            );
-
+            new Date(tanggal);
 
         if (
             Number.isNaN(
@@ -1139,7 +942,6 @@ function formatTanggal(
         ) {
             return "";
         }
-
 
         return date.toLocaleDateString(
             "id-ID",
