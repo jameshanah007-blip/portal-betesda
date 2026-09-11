@@ -101,7 +101,7 @@ async function uploadFoto() {
 
         // Upload ke Storage
         const { error: uploadError } =
-            await supabase.storage
+            await supabaseClient.storage
                 .from("galeri-jemaat")
                 .upload(path, file);
 
@@ -115,7 +115,7 @@ async function uploadFoto() {
 
         // Ambil URL foto
         const { data: urlData } =
-            supabase.storage
+            supabaseClient.storage
                 .from("galeri-jemaat")
                 .getPublicUrl(path);
 
@@ -126,7 +126,7 @@ async function uploadFoto() {
 
         // Simpan informasi ke database
         const { error: databaseError } =
-            await supabase
+            await supabaseClient
                 .from("galeri_jemaat")
                 .insert([{
 
@@ -146,7 +146,7 @@ async function uploadFoto() {
 
             // Jika database gagal,
             // hapus foto yang sudah terupload
-            await supabase.storage
+            await supabaseClient.storage
                 .from("galeri-jemaat")
                 .remove([path]);
 
