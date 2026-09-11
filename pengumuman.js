@@ -5,7 +5,7 @@ async function tampilkanPengumuman() {
 
     container.innerHTML = `
         <div class="loading">
-            ⏳ Memuat pengumuman...
+            Memuat dokumen...
         </div>
     `;
 
@@ -26,7 +26,7 @@ async function tampilkanPengumuman() {
 
         container.innerHTML = `
             <div class="error">
-                ❌ Gagal memuat pengumuman.<br>
+                Gagal memuat dokumen.<br><br>
                 ${escapeHTML(error.message)}
             </div>
         `;
@@ -34,23 +34,28 @@ async function tampilkanPengumuman() {
         return;
     }
 
+
     if (!data || data.length === 0) {
 
         container.innerHTML = `
             <div class="kosong">
-                📢<br><br>
-                Belum ada pengumuman atau dokumen.
+                Belum ada dokumen atau informasi.
             </div>
         `;
 
         return;
     }
 
+
     container.innerHTML = data
         .map(item => buatKartu(item))
         .join("");
 }
 
+
+/* ==================================================
+   BUAT KARTU
+================================================== */
 
 function buatKartu(item) {
 
@@ -59,50 +64,60 @@ function buatKartu(item) {
         item.nama_file ||
         "Dokumen";
 
-    const ikon =
-        ikonFile(namaFile);
+
+    const jenisFile =
+        getJenisFile(namaFile);
+
 
     const ukuran =
         formatUkuran(item.ukuran_file);
 
+
     const tanggal =
         formatTanggal(item.created_at);
 
-    let urlDownload =
-        item.url_file;
 
-    if (urlDownload) {
+    const url =
+        item.url_file || "";
 
-        urlDownload +=
-            "?download=" +
-            encodeURIComponent(namaFile);
-    }
 
     return `
-        <div class="kartu">
+
+        <article
+            class="kartu"
+            onclick="bukaDokumen(
+                ${escapeJS(JSON.stringify(item))}
+            )"
+        >
 
             <div class="kartu-header">
 
-                <div class="ikon-file">
-                    ${ikon}
+
+                <div
+                    class="ikon-file ${jenisFile.className}"
+                >
+                    ${jenisFile.label}
                 </div>
+
 
                 <div class="kartu-info">
 
                     <h3>
                         ${escapeHTML(
                             item.judul ||
-                            "Pengumuman Jemaat"
+                            "Dokumen Jemaat"
                         )}
                     </h3>
 
+
                     <div class="tanggal">
-                        📅 ${tanggal}
+                        ${tanggal}
                     </div>
 
                 </div>
 
             </div>
+
 
             ${
                 item.keterangan
@@ -118,33 +133,311 @@ function buatKartu(item) {
                 ""
             }
 
+
             <div class="file-info">
-                📎 ${escapeHTML(namaFile)}
-                ${ukuran ? " • " + ukuran : ""}
+
+                <span>
+                    📎
+                </span>
+
+                <span class="file-name">
+                    ${escapeHTML(namaFile)}
+                </span>
+
+                ${
+                    ukuran
+                    ?
+                    `<span>• ${ukuran}</span>`
+                    :
+                    ""
+                }
+
             </div>
 
-            <a
-                class="tombol-download"
-                href="${escapeAttribute(urlDownload)}"
-                target="_blank"
-                rel="noopener"
-            >
-                📥 Download Dokumen
-            </a>
 
-        </div>
+            <div class="lihat-label">
+
+                <span>
+                    Buka dokumen
+                </span>
+
+                <span>
+                    ›
+                </span>
+
+            </div>
+
+        </article>
     `;
 }
 
 
-function ikonFile(namaFile) {
+/* ==================================================
+   BUKA DOKUMEN
+================================================== */
+
+function bukaDokumen(item) {
+
+    const modal =
+        document.getElementById("modal");
+
+    const modalContent =
+        document.getElementById(
+            "modalContent"
+        );
+
+    const modalJudul =
+        document.getElementById(
+            "modalJudul"
+        );
+
+    const modalNamaFile =
+        document.getElementById(
+            "modalNamaFile"
+        );
+
+    const btnDownload =
+        document.getElementById(
+            "btnDownload"
+        );
+
+
+    const namaFile =
+        item.nama_asli ||
+        item.nama_file ||
+        "Dokumen";
+
+
+    const url =
+        item.url_file || "";
+
+
+    const jenis =
+        getJenisFile(namaFile);
+
+
+    modalJudul.textContent =
+        item.judul ||
+        "Dokumen Jemaat";
+
+
+    modalNamaFile.textContent =
+        namaFile;
+
+
+    btnDownload.href =
+        buatUrlDownload(
+            url,
+            namaFile
+        );
+
+
+    /*
+       PDF
+    */
+
+    if (
+        jenis.type === "pdf"
+    ) {
+
+        modalContent.innerHTML = `
+
+            <iframe
+                src="${escapeAttribute(url)}"
+                title="${escapeAttribute(
+                    namaFile
+                )}"
+            ></iframe>
+
+        `;
+
+    }
+
+
+    /*
+       GAMBAR
+    */
+
+    else if (
+        jenis.type === "image"
+    ) {
+
+        modalContent.innerHTML = `
+
+            <img
+                src="${escapeAttribute(url)}"
+                alt="${escapeAttribute(
+                    namaFile
+                )}"
+            >
+
+        `;
+
+    }
+
+
+    /*
+       FILE LAIN
+    */
+
+    else {
+
+        modalContent.innerHTML = `
+
+            <div class="file-preview-info">
+
+                <div class="preview-icon">
+                    ${jenis.label}
+                </div>
+
+                <h3>
+                    ${escapeHTML(namaFile)}
+                </h3>
+
+                <p>
+                    Format file ini tidak dapat
+                    ditampilkan langsung di browser.
+                </p>
+
+                <a
+                    class="btn-buka-file"
+                    href="${escapeAttribute(
+                        buatUrlDownload(
+                            url,
+                            namaFile
+                        )
+                    )}"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    Buka File
+                </a>
+
+            </div>
+
+        `;
+    }
+
+
+    modal.classList.add("aktif");
+
+
+    /*
+       Mencegah halaman belakang
+       ikut scroll di HP
+    */
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+/* ==================================================
+   TUTUP MODAL
+================================================== */
+
+function tutupModal() {
+
+    const modal =
+        document.getElementById("modal");
+
+
+    modal.classList.remove(
+        "aktif"
+    );
+
+
+    document.body.style.overflow =
+        "";
+
+
+    document.getElementById(
+        "modalContent"
+    ).innerHTML = "";
+}
+
+
+/* ==================================================
+   KLIK AREA LUAR
+================================================== */
+
+function tutupModalJikaKlikLuar(
+    event
+) {
+
+    if (
+        event.target.id === "modal"
+    ) {
+
+        tutupModal();
+
+    }
+}
+
+
+/* ==================================================
+   URL DOWNLOAD
+================================================== */
+
+function buatUrlDownload(
+    url,
+    namaFile
+) {
+
+    if (!url) {
+        return "#";
+    }
+
+
+    const separator =
+        url.includes("?")
+        ? "&"
+        : "?";
+
+
+    return (
+        url +
+        separator +
+        "download=" +
+        encodeURIComponent(
+            namaFile
+        )
+    );
+}
+
+
+/* ==================================================
+   JENIS FILE
+================================================== */
+
+function getJenisFile(
+    namaFile
+) {
 
     const nama =
         namaFile.toLowerCase();
 
-    if (nama.endsWith(".pdf")) {
-        return "📕";
+
+    /*
+       PDF
+    */
+
+    if (
+        nama.endsWith(".pdf")
+    ) {
+
+        return {
+            type: "pdf",
+            label: "PDF",
+            className: "file-pdf"
+        };
+
     }
+
+
+    /*
+       WORD
+    */
 
     if (
         nama.endsWith(".doc") ||
@@ -152,8 +445,19 @@ function ikonFile(namaFile) {
         nama.endsWith(".odt") ||
         nama.endsWith(".rtf")
     ) {
-        return "📝";
+
+        return {
+            type: "word",
+            label: "WORD",
+            className: "file-word"
+        };
+
     }
+
+
+    /*
+       EXCEL
+    */
 
     if (
         nama.endsWith(".xls") ||
@@ -161,75 +465,157 @@ function ikonFile(namaFile) {
         nama.endsWith(".ods") ||
         nama.endsWith(".csv")
     ) {
-        return "📊";
+
+        return {
+            type: "excel",
+            label: "EXCEL",
+            className: "file-excel"
+        };
+
     }
+
+
+    /*
+       POWERPOINT
+    */
 
     if (
         nama.endsWith(".ppt") ||
         nama.endsWith(".pptx") ||
         nama.endsWith(".odp")
     ) {
-        return "📽️";
+
+        return {
+            type: "ppt",
+            label: "PPT",
+            className: "file-ppt"
+        };
+
     }
+
+
+    /*
+       GAMBAR
+    */
 
     if (
         nama.endsWith(".jpg") ||
         nama.endsWith(".jpeg") ||
         nama.endsWith(".png") ||
         nama.endsWith(".gif") ||
-        nama.endsWith(".webp")
+        nama.endsWith(".webp") ||
+        nama.endsWith(".svg")
     ) {
-        return "🖼️";
+
+        return {
+            type: "image",
+            label: "IMAGE",
+            className: "file-image"
+        };
+
     }
+
+
+    /*
+       ZIP
+    */
 
     if (
         nama.endsWith(".zip") ||
         nama.endsWith(".rar") ||
         nama.endsWith(".7z")
     ) {
-        return "📦";
+
+        return {
+            type: "archive",
+            label: "ZIP",
+            className: "file-zip"
+        };
+
     }
 
-    if (nama.endsWith(".txt")) {
-        return "📄";
-    }
 
-    return "📁";
+    /*
+       FILE LAIN
+    */
+
+    return {
+        type: "other",
+        label: "FILE",
+        className: "file-other"
+    };
 }
 
 
-function formatUkuran(bytes) {
+/* ==================================================
+   FORMAT UKURAN
+================================================== */
 
-    if (!bytes || bytes <= 0) {
+function formatUkuran(
+    bytes
+) {
+
+    if (
+        !bytes ||
+        bytes <= 0
+    ) {
+
         return "";
+
     }
 
-    if (bytes < 1024) {
-        return bytes + " B";
-    }
 
-    if (bytes < 1024 * 1024) {
+    if (
+        bytes < 1024
+    ) {
+
         return (
-            (bytes / 1024).toFixed(1) +
+            bytes +
+            " B"
+        );
+
+    }
+
+
+    if (
+        bytes <
+        1024 * 1024
+    ) {
+
+        return (
+            (bytes / 1024)
+                .toFixed(1) +
             " KB"
         );
+
     }
 
+
     return (
-        (bytes / (1024 * 1024)).toFixed(1) +
+        (bytes /
+            (1024 * 1024)
+        ).toFixed(1) +
         " MB"
     );
 }
 
 
-function formatTanggal(tanggal) {
+/* ==================================================
+   FORMAT TANGGAL
+================================================== */
+
+function formatTanggal(
+    tanggal
+) {
 
     if (!tanggal) {
         return "-";
     }
 
+
     const d =
         new Date(tanggal);
+
 
     return d.toLocaleDateString(
         "id-ID",
@@ -242,26 +628,92 @@ function formatTanggal(tanggal) {
 }
 
 
-function escapeHTML(value) {
+/* ==================================================
+   ESCAPE HTML
+================================================== */
 
-    if (value === null ||
-        value === undefined) {
+function escapeHTML(
+    value
+) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
         return "";
+
     }
 
+
     return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
 
-function escapeAttribute(value) {
+/* ==================================================
+   ESCAPE ATTRIBUTE
+================================================== */
 
-    return escapeHTML(value);
+function escapeAttribute(
+    value
+) {
+
+    return escapeHTML(
+        value
+    );
 }
 
+
+/* ==================================================
+   ESCAPE JAVASCRIPT
+================================================== */
+
+function escapeJS(
+    value
+) {
+
+    return String(value)
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+        .replace(
+            /'/g,
+            "\\'"
+        )
+        .replace(
+            /\r/g,
+            "\\r"
+        )
+        .replace(
+            /\n/g,
+            "\\n"
+        );
+}
+
+
+/* ==================================================
+   JALANKAN
+================================================== */
 
 tampilkanPengumuman();
