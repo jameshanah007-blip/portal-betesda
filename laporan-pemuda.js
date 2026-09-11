@@ -657,42 +657,36 @@ function renderLaporan(
 
     if (footer) {
 
-        footer.innerHTML = `
+         footer.innerHTML = `
 
-            <tr>
+        <tr>
 
-                <td colspan="3">
-                    <strong>TOTAL</strong>
-                </td>
+            <td colspan="3" style="text-align: center;">
+                <strong>TOTAL</strong>
+            </td>
 
-                <td>
-                    <strong>
-                        ${formatRupiah(
-                            jumlahPemasukan
-                        )}
-                    </strong>
-                </td>
+            <td style="text-align: center;">
+                <strong>
+                    ${formatRupiah(jumlahPemasukan)}
+                </strong>
+            </td>
 
-                <td>
-                    <strong>
-                        ${formatRupiah(
-                            jumlahPengeluaran
-                        )}
-                    </strong>
-                </td>
+            <td style="text-align: center;">
+                <strong>
+                    ${formatRupiah(jumlahPengeluaran)}
+                </strong>
+            </td>
 
-                <td>
-                    <strong>
-                        ${formatRupiah(
-                            saldoBerjalan
-                        )}
-                    </strong>
-                </td>
+            <td style="text-align: center;">
+                <strong>
+                    ${formatRupiah(saldoBerjalan)}
+                </strong>
+            </td>
 
-            </tr>
+        </tr>
 
-        `;
-    }
+    `;
+}
 
 
     // ==================================================
