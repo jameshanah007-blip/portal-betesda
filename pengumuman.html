@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
 
-    <title>Dokumen Jemaat</title>
+    <title>Informasi & Dokumen</title>
 
     <style>
         * {
@@ -25,145 +27,161 @@
                 Roboto,
                 Arial,
                 sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #f8fafc 0%,
+                    #eef2f7 100%
+                );
+
+            color: #172033;
+            min-height: 100vh;
         }
 
         /* =========================
            TOP BAR
         ========================= */
 
-        .top-bar {
+        .topbar {
             position: sticky;
             top: 0;
             z-index: 50;
 
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(12px);
-
-            border-bottom: 1px solid #e5e7eb;
-
-            padding:
-                calc(10px + env(safe-area-inset-top))
-                14px
-                10px;
-        }
-
-        .btn-kembali {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 7px;
 
-            padding: 9px 13px;
+            min-height: 64px;
+            padding: 10px 16px;
 
-            background: #ffffff;
-            color: #1f4e79;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
 
-            border: 1px solid #d7e1ec;
-            border-radius: 10px;
-
-            text-decoration: none;
-
-            font-size: 14px;
-            font-weight: 600;
-
-            transition: 0.2s ease;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
         }
 
-        .btn-kembali:active {
-            transform: scale(0.97);
-        }
-
-        /* =========================
-           HEADER
-        ========================= */
-
-        .hero {
-            padding: 28px 18px 20px;
-            text-align: center;
-        }
-
-        .hero-badge {
+        .btn-back {
             display: inline-flex;
             align-items: center;
             justify-content: center;
 
-            padding: 6px 12px;
+            width: 42px;
+            height: 42px;
 
-            background: #eaf2f9;
-            color: #1f4e79;
+            border-radius: 12px;
 
-            border-radius: 999px;
+            background: #f1f5f9;
+            color: #172033;
 
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            text-decoration: none;
 
-            margin-bottom: 12px;
+            font-size: 21px;
+            font-weight: 600;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .btn-back:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-back:active {
+            transform: scale(0.94);
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            width: 100%;
+            max-width: 1100px;
+
+            margin: 0 auto;
+            padding: 0 18px 40px;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            padding: 34px 4px 26px;
         }
 
         .hero h1 {
-            margin: 0;
+            margin: 0 0 10px;
 
-            color: #173b5f;
+            font-size: clamp(
+                30px,
+                7vw,
+                46px
+            );
 
-            font-size: 24px;
-            line-height: 1.25;
-            font-weight: 750;
+            line-height: 1.12;
+            letter-spacing: -1.2px;
+
+            color: #111827;
         }
 
         .hero p {
-            max-width: 520px;
+            margin: 0;
 
-            margin: 9px auto 0;
+            max-width: 650px;
 
-            color: #6b7280;
+            font-size: 15px;
+            line-height: 1.7;
 
-            font-size: 14px;
-            line-height: 1.5;
+            color: #64748b;
         }
 
         /* =========================
-           CONTAINER
-        ========================= */
-
-        .container {
-            width: 100%;
-            max-width: 900px;
-
-            margin: 0 auto;
-
-            padding:
-                0 14px
-                calc(35px + env(safe-area-inset-bottom));
-        }
-
-        /* =========================
-           LIST
+           DOCUMENT LIST
         ========================= */
 
         #daftarPengumuman {
-            display: flex;
-            flex-direction: column;
-            gap: 13px;
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(
+                        280px,
+                        1fr
+                    )
+                );
+
+            gap: 16px;
         }
 
         /* =========================
            CARD
         ========================= */
 
-        .kartu {
+        .dokumen-card {
             position: relative;
 
-            background: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 14px;
 
-            border: 1px solid #e8edf3;
-            border-radius: 16px;
+            padding: 17px;
 
-            padding: 16px;
+            min-width: 0;
+
+            background: rgba(255, 255, 255, 0.94);
+
+            border: 1px solid
+                rgba(15, 23, 42, 0.07);
+
+            border-radius: 18px;
 
             box-shadow:
-                0 4px 14px rgba(15, 23, 42, 0.055);
+                0 8px 25px
+                rgba(15, 23, 42, 0.055);
 
             cursor: pointer;
 
@@ -173,294 +191,264 @@
                 border-color 0.2s ease;
         }
 
-        .kartu:active {
+        .dokumen-card:hover {
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(37, 99, 235, 0.18);
+
+            box-shadow:
+                0 14px 32px
+                rgba(15, 23, 42, 0.09);
+        }
+
+        .dokumen-card:active {
             transform: scale(0.985);
         }
 
-        @media (hover: hover) {
-
-            .kartu:hover {
-                transform: translateY(-2px);
-
-                border-color: #d2dfeb;
-
-                box-shadow:
-                    0 8px 24px rgba(15, 23, 42, 0.09);
-            }
-        }
-
-        .kartu-header {
-            display: flex;
-            align-items: flex-start;
-
-            gap: 13px;
-        }
-
         /* =========================
-           FILE BADGE
+           FILE ICON
         ========================= */
 
-        .ikon-file {
+        .file-icon {
+            flex: 0 0 auto;
+
             width: 52px;
             height: 58px;
-
-            min-width: 52px;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            border-radius: 12px;
+            border-radius: 14px;
 
             background: #f1f5f9;
 
-            color: #1f4e79;
-
-            font-size: 11px;
-            font-weight: 800;
-
-            letter-spacing: 0.3px;
-
-            position: relative;
-
-            overflow: hidden;
+            font-size: 27px;
         }
 
-        .ikon-file::before {
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            right: 0;
-
-            width: 15px;
-            height: 15px;
-
-            background: #ffffff;
-
-            clip-path: polygon(0 0, 100% 100%, 0 100%);
+        .file-icon.pdf {
+            background: #fff1f2;
         }
 
-        .file-pdf {
-            background: #fff0f0;
-            color: #c62828;
+        .file-icon.image {
+            background: #eff6ff;
         }
 
-        .file-word {
-            background: #edf4ff;
-            color: #185abc;
+        .file-icon.word {
+            background: #eff6ff;
         }
 
-        .file-excel {
-            background: #edf8f1;
-            color: #18864b;
+        .file-icon.excel {
+            background: #f0fdf4;
         }
 
-        .file-ppt {
-            background: #fff5eb;
-            color: #c75b12;
+        .file-icon.powerpoint {
+            background: #fff7ed;
         }
 
-        .file-image {
-            background: #f3efff;
-            color: #7048b8;
+        .file-icon.zip {
+            background: #faf5ff;
         }
 
-        .file-zip {
-            background: #fff8df;
-            color: #a66a00;
-        }
-
-        .file-other {
+        .file-icon.file {
             background: #f1f5f9;
-            color: #475569;
         }
 
         /* =========================
-           CARD INFO
+           CARD CONTENT
         ========================= */
 
-        .kartu-info {
-            flex: 1;
+        .dokumen-info {
             min-width: 0;
+            flex: 1;
         }
 
-        .kartu-info h3 {
-            margin: 2px 0 6px;
+        .dokumen-title {
+            margin: 0 0 6px;
 
-            color: #1f4e79;
-
-            font-size: 16px;
-            line-height: 1.35;
-
+            font-size: 15px;
             font-weight: 700;
 
+            line-height: 1.4;
+
+            color: #172033;
+
+            word-break: break-word;
             overflow-wrap: anywhere;
         }
 
-        .tanggal {
-            color: #8a94a3;
-
-            font-size: 12px;
-        }
-
-        /* =========================
-           KETERANGAN
-        ========================= */
-
-        .keterangan {
-            margin: 13px 0 12px;
-
-            color: #4b5563;
-
-            font-size: 13px;
-            line-height: 1.6;
-
-            white-space: pre-line;
-
-            overflow-wrap: anywhere;
-        }
-
-        /* =========================
-           FILE INFO
-        ========================= */
-
-        .file-info {
+        .dokumen-meta {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+
             gap: 7px;
 
-            padding: 9px 10px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .format-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 4px 8px;
+
+            border-radius: 7px;
+
+            background: #f1f5f9;
+
+            color: #64748b;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 0.4px;
+        }
+
+        .format-badge.pdf {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .format-badge.image {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .format-badge.word {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .format-badge.excel {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .format-badge.powerpoint {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+
+        .format-badge.zip {
+            background: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        /* =========================
+           OPEN ARROW
+        ========================= */
+
+        .open-arrow {
+            flex: 0 0 auto;
+
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
 
             background: #f8fafc;
 
-            border: 1px solid #edf1f5;
-
-            border-radius: 9px;
-
             color: #64748b;
 
-            font-size: 11px;
-            line-height: 1.4;
-
-            overflow-wrap: anywhere;
-        }
-
-        .file-name {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .lihat-label {
-            margin-top: 12px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            color: #1f4e79;
-
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .lihat-label span:last-child {
             font-size: 18px;
-            line-height: 1;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .dokumen-card:hover .open-arrow {
+            background: #eff6ff;
+            color: #2563eb;
+            transform: translateX(2px);
         }
 
         /* =========================
-           LOADING / EMPTY / ERROR
+           EMPTY / LOADING
         ========================= */
 
-        .loading,
-        .kosong,
-        .error {
-            background: #ffffff;
+        .state-message {
+            grid-column: 1 / -1;
 
-            border: 1px solid #e8edf3;
-
-            border-radius: 16px;
-
-            padding: 30px 18px;
+            padding: 50px 20px;
 
             text-align: center;
 
-            color: #6b7280;
-
-            font-size: 14px;
-        }
-
-        .loading {
-            animation: pulse 1.5s infinite;
-        }
-
-        .kosong {
             color: #64748b;
         }
 
-        .error {
-            color: #b42318;
-
-            background: #fff8f7;
-
-            border-color: #f5d0cc;
+        .state-icon {
+            font-size: 38px;
+            margin-bottom: 12px;
         }
 
-        @keyframes pulse {
+        .state-message h3 {
+            margin: 0 0 7px;
 
-            0%,
-            100% {
-                opacity: 1;
-            }
+            font-size: 17px;
+            color: #334155;
+        }
 
-            50% {
-                opacity: 0.55;
-            }
+        .state-message p {
+            margin: 0;
+
+            font-size: 13px;
+            line-height: 1.6;
         }
 
         /* =========================
-           MODAL VIEWER
+           MODAL
         ========================= */
 
         .modal {
-            display: none;
-
             position: fixed;
             inset: 0;
 
             z-index: 100;
 
-            background: rgba(15, 23, 42, 0.72);
-
-            padding: 12px;
-
+            display: none;
             align-items: center;
             justify-content: center;
+
+            padding: 14px;
+
+            background:
+                rgba(15, 23, 42, 0.62);
+
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
-        .modal.aktif {
+        .modal.active {
             display: flex;
         }
 
         .modal-box {
             width: 100%;
-            max-width: 900px;
+            max-width: 850px;
 
-            height: min(94vh, 900px);
-
-            background: #ffffff;
-
-            border-radius: 18px;
-
-            overflow: hidden;
+            max-height: 94vh;
 
             display: flex;
             flex-direction: column;
 
+            overflow: hidden;
+
+            background: #ffffff;
+
+            border-radius: 20px;
+
             box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.25);
+                0 25px 70px
+                rgba(0, 0, 0, 0.25);
         }
 
         /* =========================
@@ -470,57 +458,70 @@
         .modal-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
 
-            gap: 10px;
+            gap: 12px;
 
-            padding: 12px 14px;
+            padding: 16px 18px;
 
-            border-bottom: 1px solid #e5e7eb;
-
-            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
         }
 
-        .modal-title {
-            flex: 1;
+        .modal-heading {
             min-width: 0;
         }
 
-        .modal-title h2 {
-            margin: 0;
+        .modal-heading h2 {
+            margin: 0 0 4px;
 
-            color: #1f2937;
+            font-size: 17px;
+            line-height: 1.35;
 
-            font-size: 15px;
-            line-height: 1.3;
+            color: #172033;
 
+            word-break: break-word;
             overflow-wrap: anywhere;
         }
 
-        .modal-title p {
-            margin: 3px 0 0;
+        .modal-heading p {
+            margin: 0;
 
-            color: #8a94a3;
+            font-size: 12px;
 
-            font-size: 11px;
+            color: #94a3b8;
+
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
-        .btn-tutup {
-            width: 36px;
-            height: 36px;
+        .btn-close {
+            flex: 0 0 auto;
 
-            min-width: 36px;
+            width: 38px;
+            height: 38px;
 
             border: 0;
-
-            border-radius: 10px;
+            border-radius: 11px;
 
             background: #f1f5f9;
-
-            color: #334155;
-
-            font-size: 21px;
+            color: #475569;
 
             cursor: pointer;
+
+            font-size: 20px;
+            line-height: 1;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .btn-close:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-close:active {
+            transform: scale(0.94);
         }
 
         /* =========================
@@ -528,22 +529,24 @@
         ========================= */
 
         .modal-content {
+            position: relative;
+
             flex: 1;
 
-            min-height: 0;
-
-            background: #eef1f5;
+            min-height: 220px;
 
             overflow: auto;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #f8fafc;
         }
 
         .modal-content iframe {
+            display: block;
+
             width: 100%;
-            height: 100%;
+            height: 65vh;
+
+            min-height: 350px;
 
             border: 0;
 
@@ -553,82 +556,86 @@
         .modal-content img {
             display: block;
 
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            max-height: 65vh;
 
             object-fit: contain;
+
+            padding: 15px;
+
+            background: #ffffff;
         }
 
-        .file-preview-info {
-            width: 100%;
+        .file-open-box {
+            min-height: 280px;
 
-            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            padding: 35px 20px;
 
             text-align: center;
         }
 
-        .preview-icon {
-            width: 72px;
-            height: 82px;
-
-            margin: 0 auto 15px;
-
-            border-radius: 14px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: #ffffff;
-
-            color: #1f4e79;
-
-            font-size: 15px;
-            font-weight: 800;
-
-            box-shadow:
-                0 5px 15px rgba(0, 0, 0, 0.08);
+        .file-open-icon {
+            font-size: 58px;
+            margin-bottom: 15px;
         }
 
-        .file-preview-info h3 {
-            margin: 0;
+        .file-open-box h3 {
+            margin: 0 0 8px;
 
-            color: #1f2937;
-
-            font-size: 16px;
-            line-height: 1.4;
-
-            overflow-wrap: anywhere;
+            font-size: 18px;
+            color: #334155;
         }
 
-        .file-preview-info p {
-            margin: 8px 0 18px;
+        .file-open-box p {
+            max-width: 500px;
 
-            color: #64748b;
+            margin: 0 0 20px;
 
             font-size: 13px;
-            line-height: 1.5;
+            line-height: 1.6;
+
+            color: #64748b;
         }
 
-        .btn-buka-file {
+        .btn-open-file {
             display: inline-flex;
-
             align-items: center;
             justify-content: center;
 
             min-height: 44px;
 
-            padding: 11px 18px;
+            padding: 0 18px;
 
-            background: #1f4e79;
+            border-radius: 12px;
+
+            background: #2563eb;
             color: #ffffff;
-
-            border-radius: 10px;
 
             text-decoration: none;
 
             font-size: 14px;
             font-weight: 700;
+
+            box-shadow:
+                0 7px 18px
+                rgba(37, 99, 235, 0.22);
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .btn-open-file:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-open-file:active {
+            transform: scale(0.97);
         }
 
         /* =========================
@@ -636,76 +643,186 @@
         ========================= */
 
         .modal-footer {
-            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            padding: 13px 16px;
+
+            border-top: 1px solid #e2e8f0;
 
             background: #ffffff;
-
-            border-top: 1px solid #e5e7eb;
-
-            display: flex;
-            justify-content: flex-end;
         }
 
         .btn-download {
             display: inline-flex;
-
             align-items: center;
             justify-content: center;
 
-            min-height: 40px;
+            min-height: 42px;
 
-            padding: 9px 14px;
+            padding: 0 16px;
 
-            background: #1f4e79;
+            border-radius: 11px;
+
+            background: #172033;
             color: #ffffff;
-
-            border-radius: 9px;
 
             text-decoration: none;
 
             font-size: 13px;
             font-weight: 700;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .btn-download:hover {
+            background: #0f172a;
+        }
+
+        .btn-download:active {
+            transform: scale(0.97);
         }
 
         /* =========================
-           DESKTOP
+           MOBILE
         ========================= */
 
-        @media (min-width: 600px) {
+        @media (max-width: 600px) {
+
+            main {
+                padding:
+                    0 14px 30px;
+            }
+
+            .topbar {
+                min-height: 58px;
+                padding: 8px 12px;
+            }
+
+            .btn-back {
+                width: 40px;
+                height: 40px;
+
+                border-radius: 11px;
+            }
 
             .hero {
-                padding-top: 38px;
-                padding-bottom: 28px;
+                padding:
+                    28px 3px 22px;
             }
 
             .hero h1 {
                 font-size: 30px;
+                letter-spacing: -0.8px;
             }
 
-            .container {
-                padding-left: 20px;
-                padding-right: 20px;
+            .hero p {
+                font-size: 14px;
+                line-height: 1.65;
             }
 
             #daftarPengumuman {
-                display: grid;
-
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-
-                gap: 16px;
+                grid-template-columns: 1fr;
+                gap: 12px;
             }
 
-            .kartu {
-                padding: 18px;
+            .dokumen-card {
+                padding: 14px;
+
+                border-radius: 16px;
+
+                gap: 12px;
+            }
+
+            .file-icon {
+                width: 48px;
+                height: 53px;
+
+                border-radius: 13px;
+
+                font-size: 24px;
+            }
+
+            .dokumen-title {
+                font-size: 14px;
+            }
+
+            .open-arrow {
+                width: 31px;
+                height: 31px;
+
+                font-size: 16px;
+            }
+
+            .modal {
+                padding: 0;
+            }
+
+            .modal-box {
+                width: 100%;
+                height: 100%;
+                max-height: 100vh;
+
+                border-radius: 0;
+            }
+
+            .modal-header {
+                padding:
+                    13px 14px;
+            }
+
+            .modal-heading h2 {
+                font-size: 15px;
+            }
+
+            .modal-content iframe {
+                height: calc(100vh - 150px);
+                min-height: 300px;
+            }
+
+            .modal-content img {
+                max-height:
+                    calc(100vh - 150px);
+            }
+
+            .modal-footer {
+                padding:
+                    10px 12px;
+
+                justify-content: stretch;
+            }
+
+            .btn-download {
+                width: 100%;
             }
         }
 
-        @media (min-width: 900px) {
+        /* =========================
+           SMALL PHONE
+        ========================= */
 
-            #daftarPengumuman {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
+        @media (max-width: 380px) {
+
+            .hero h1 {
+                font-size: 27px;
+            }
+
+            .hero p {
+                font-size: 13px;
+            }
+
+            .file-icon {
+                width: 44px;
+                height: 50px;
+            }
+
+            .dokumen-card {
+                padding: 12px;
             }
         }
     </style>
@@ -717,68 +834,78 @@
          TOP BAR
     ========================= -->
 
-    <div class="top-bar">
-
-        <a href="index.html" class="btn-kembali">
-            ← Kembali
+    <header class="topbar">
+        <a
+            href="index.html"
+            class="btn-back"
+            aria-label="Kembali"
+        >
+            ←
         </a>
-
-    </div>
-
-
-    <!-- =========================
-         HEADER
-    ========================= -->
-
-    <section class="hero">
-
-        <div class="hero-badge">
-            DOKUMEN JEMAAT
-        </div>
-
-        <h1>
-            Informasi &amp; Dokumen
-        </h1>
-
-        <p>
-            Akses informasi dan dokumen kegiatan jemaat dengan mudah.
-        </p>
-
-    </section>
+    </header>
 
 
     <!-- =========================
-         CONTENT
+         MAIN
     ========================= -->
 
-    <main class="container">
+    <main>
 
-        <div id="daftarPengumuman">
+        <section class="hero">
+            <h1>
+                Informasi &amp; Dokumen
+            </h1>
 
-            <div class="loading">
-                Memuat dokumen...
+            <p>
+                Akses informasi dan dokumen kegiatan jemaat dengan mudah.
+            </p>
+        </section>
+
+
+        <!-- =========================
+             DAFTAR DOKUMEN
+        ========================= -->
+
+        <section
+            id="daftarPengumuman"
+            aria-live="polite"
+        >
+            <div class="state-message">
+                <div class="state-icon">📄</div>
+
+                <h3>
+                    Memuat dokumen...
+                </h3>
+
+                <p>
+                    Mohon tunggu sebentar.
+                </p>
             </div>
-
-        </div>
+        </section>
 
     </main>
 
 
     <!-- =========================
-         MODAL VIEWER
+         MODAL
     ========================= -->
 
     <div
         id="modal"
         class="modal"
-        onclick="tutupModalJikaKlikLuar(event)"
+        aria-hidden="true"
     >
 
-        <div class="modal-box">
+        <div
+            class="modal-box"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalJudul"
+        >
 
             <div class="modal-header">
 
-                <div class="modal-title">
+                <div class="modal-heading">
 
                     <h2 id="modalJudul">
                         Dokumen
@@ -792,8 +919,8 @@
 
                 <button
                     type="button"
-                    class="btn-tutup"
-                    onclick="tutupModal()"
+                    id="btnTutup"
+                    class="btn-close"
                     aria-label="Tutup"
                 >
                     ×
@@ -816,7 +943,7 @@
                     class="btn-download"
                     href="#"
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
                     download
                 >
                     Download
@@ -840,5 +967,4 @@
     <script src="pengumuman.js"></script>
 
 </body>
-
 </html>
