@@ -1,11 +1,26 @@
-const inputFile =
-    document.getElementById("file");
+/* =========================================================
+   KELOLA PENGUMUMAN
+   Upload file untuk HP & komputer
+   Supabase Storage + Database
+   ========================================================= */
 
-const infoFile =
-    document.getElementById("infoFile");
 
-const MAX_SIZE =
-    20 * 1024 * 1024;
+/* =========================================================
+   ELEMENT HTML
+========================================================= */
+
+const inputFile = document.getElementById("file");
+const infoFile = document.getElementById("infoFile");
+const judulInput = document.getElementById("judul");
+const status = document.getElementById("status");
+const button = document.getElementById("btnUpload");
+
+
+/* =========================================================
+   KONFIGURASI
+========================================================= */
+
+const MAX_SIZE = 20 * 1024 * 1024; // 20 MB
 
 const EXTENSI_DIIJINKAN = [
     "pdf",
@@ -32,43 +47,65 @@ const EXTENSI_DIIJINKAN = [
 ];
 
 
-/* =========================
+/* =========================================================
+   CEK SUPABASE
+========================================================= */
+
+if (
+    typeof supabaseClient === "undefined" ||
+    !supabaseClient
+) {
+    console.error(
+        "supabaseClient tidak ditemukan."
+    );
+
+    if (status) {
+        status.innerHTML =
+            "Koneksi Supabase belum tersedia.";
+    }
+}
+
+
+/* =========================================================
    PILIH FILE
-========================= */
+========================================================= */
 
 inputFile.addEventListener(
     "change",
     function () {
 
-        const file =
-            this.files[0];
-
+        const file = this.files?.[0];
 
         if (!file) {
 
-            infoFile.style.display =
-                "none";
-
-            infoFile.innerHTML =
-                "";
+            infoFile.style.display = "none";
+            infoFile.innerHTML = "";
 
             return;
         }
 
 
-        const namaFile =
-            file.name;
-
-
-        const ekstensi =
-            namaFile
-                .split(".")
-                .pop()
-                .toLowerCase();
+        console.log("File dipilih:", file);
 
 
         /* =========================
-           CEK EKSTENSI
+           NAMA FILE
+        ========================= */
+
+        const namaFile =
+            file.name || "file";
+
+
+        /* =========================
+           EKSTENSI
+        ========================= */
+
+        const ekstensi =
+            ambilEkstensi(namaFile);
+
+
+        /* =========================
+           CEK FORMAT
         ========================= */
 
         if (
@@ -78,13 +115,15 @@ inputFile.addEventListener(
         ) {
 
             alert(
-                "Format file belum didukung."
+                "Format file belum didukung.\n\n" +
+                "Format yang diperbolehkan:\n" +
+                EXTENSI_DIIJINKAN.join(", ")
             );
 
             this.value = "";
 
-            infoFile.style.display =
-                "none";
+            infoFile.style.display = "none";
+            infoFile.innerHTML = "";
 
             return;
         }
@@ -94,30 +133,30 @@ inputFile.addEventListener(
            CEK UKURAN
         ========================= */
 
-        if (
-            file.size > MAX_SIZE
-        ) {
+        if (file.size > MAX_SIZE) {
 
             alert(
-                "Ukuran file maksimal 20 MB."
+                "Ukuran file maksimal 20 MB.\n\n" +
+                "Ukuran file Anda: " +
+                formatUkuran(file.size)
             );
 
             this.value = "";
 
-            infoFile.style.display =
-                "none";
+            infoFile.style.display = "none";
+            infoFile.innerHTML = "";
 
             return;
         }
 
 
         /* =========================
-           TAMPILKAN INFO FILE
+           TAMPILKAN INFO
         ========================= */
 
         infoFile.innerHTML = `
             <strong>
-                ${escapeHTML(file.name)}
+                ${escapeHTML(namaFile)}
             </strong>
             <br>
             Ukuran:
@@ -126,51 +165,41 @@ inputFile.addEventListener(
             Tipe:
             ${escapeHTML(
                 file.type ||
-                ekstensi.toUpperCase()
+                "Tipe tidak terdeteksi"
             )}
         `;
 
-
-        infoFile.style.display =
-            "block";
+        infoFile.style.display = "block";
     }
 );
 
 
-/* =========================
-   UPLOAD PENGUMUMAN
-========================= */
+/* =========================================================
+   FUNGSI UPLOAD
+========================================================= */
 
 async function uploadPengumuman() {
 
+    console.log(
+        "Memulai proses upload..."
+    );
+
+
+    /* =====================================================
+       AMBIL DATA
+    ===================================================== */
+
     const judul =
-        document
-            .getElementById("judul")
-            .value
-            .trim();
+        judulInput.value.trim();
 
 
     const file =
-        document
-            .getElementById("file")
-            .files[0];
+        inputFile.files?.[0];
 
 
-    const status =
-        document.getElementById(
-            "status"
-        );
-
-
-    const button =
-        document.getElementById(
-            "btnUpload"
-        );
-
-
-    /* =========================
+    /* =====================================================
        CEK JUDUL
-    ========================= */
+    ===================================================== */
 
     if (!judul) {
 
@@ -178,13 +207,15 @@ async function uploadPengumuman() {
             "Silakan isi judul pengumuman."
         );
 
+        judulInput.focus();
+
         return;
     }
 
 
-    /* =========================
+    /* =====================================================
        CEK FILE
-    ========================= */
+    ===================================================== */
 
     if (!file) {
 
@@ -196,31 +227,64 @@ async function uploadPengumuman() {
     }
 
 
-    /* =========================
-       CEK UKURAN
-    ========================= */
+    console.log(
+        "Nama file:",
+        file.name
+    );
+
+    console.log(
+        "Ukuran file:",
+        file.size
+    );
+
+    console.log(
+        "Tipe file:",
+        file.type
+    );
+
+
+    /* =====================================================
+       CEK FILE VALID
+    ===================================================== */
 
     if (
-        file.size > MAX_SIZE
+        !Number.isFinite(file.size) ||
+        file.size <= 0
     ) {
 
         alert(
-            "Ukuran file maksimal 20 MB."
+            "File tidak dapat dibaca oleh perangkat.\n\n" +
+            "Silakan pilih file lain."
         );
 
         return;
     }
 
 
-    /* =========================
+    /* =====================================================
+       CEK UKURAN
+    ===================================================== */
+
+    if (file.size > MAX_SIZE) {
+
+        alert(
+            "Ukuran file maksimal 20 MB.\n\n" +
+            "Ukuran file Anda: " +
+            formatUkuran(file.size)
+        );
+
+        return;
+    }
+
+
+    /* =====================================================
        CEK EKSTENSI
-    ========================= */
+    ===================================================== */
 
     const ekstensi =
-        file.name
-            .split(".")
-            .pop()
-            .toLowerCase();
+        ambilEkstensi(
+            file.name
+        );
 
 
     if (
@@ -230,49 +294,88 @@ async function uploadPengumuman() {
     ) {
 
         alert(
-            "Format file belum didukung."
+            "Format file tidak didukung."
         );
 
         return;
     }
 
 
-    /* =========================
-       DISABLE BUTTON
-    ========================= */
+    /* =====================================================
+       CEK SUPABASE
+    ===================================================== */
+
+    if (
+        typeof supabaseClient === "undefined" ||
+        !supabaseClient
+    ) {
+
+        tampilkanStatus(
+            "Supabase belum terhubung.",
+            true
+        );
+
+        return;
+    }
+
+
+    /* =====================================================
+       MATIKAN TOMBOL
+    ===================================================== */
 
     button.disabled = true;
 
+    button.innerHTML =
+        "Mengupload...";
 
-    status.innerHTML =
-        "Mempersiapkan upload...";
+
+    tampilkanStatus(
+        "Mempersiapkan upload..."
+    );
 
 
     try {
 
-        /* =========================
-           NAMA FILE
-        ========================= */
 
-        const namaBersih =
-            file.name
-                .normalize("NFKD")
-                .replace(
-                    /[^\w.\- ]/g,
-                    ""
-                )
-                .replace(
-                    /\s+/g,
-                    "-"
+        /* =================================================
+           BERSIHKAN NAMA FILE
+        ================================================= */
+
+        let namaBersih =
+            bersihkanNamaFile(
+                file.name
+            );
+
+
+        if (!namaBersih) {
+
+            namaBersih =
+                "dokumen." +
+                ekstensi;
+        }
+
+
+        /* =================================================
+           BUAT NAMA FILE UNIK
+        ================================================= */
+
+        const waktu =
+            Date.now();
+
+
+        const random =
+            Math.random()
+                .toString(36)
+                .substring(
+                    2,
+                    10
                 );
 
 
         const namaUnik =
-            Date.now() +
+            waktu +
             "-" +
-            Math.random()
-                .toString(36)
-                .substring(2, 9) +
+            random +
             "-" +
             namaBersih;
 
@@ -281,15 +384,23 @@ async function uploadPengumuman() {
             namaUnik;
 
 
-        /* =========================
-           UPLOAD KE STORAGE
-        ========================= */
+        console.log(
+            "Path file:",
+            path
+        );
 
-        status.innerHTML =
-            "Mengupload file ke Storage...";
+
+        /* =================================================
+           UPLOAD KE SUPABASE STORAGE
+        ================================================= */
+
+        tampilkanStatus(
+            "Mengupload file ke Storage..."
+        );
 
 
         const {
+            data: uploadData,
             error: uploadError
         } =
             await supabaseClient
@@ -299,14 +410,30 @@ async function uploadPengumuman() {
                     path,
                     file,
                     {
-                        contentType:
-                            file.type ||
-                            "application/octet-stream",
+                        cacheControl:
+                            "3600",
 
-                        upsert: false
+                        contentType:
+                            tentukanContentType(
+                                file,
+                                ekstensi
+                            ),
+
+                        upsert:
+                            false
                     }
                 );
 
+
+        console.log(
+            "Upload Storage:",
+            uploadData
+        );
+
+
+        /* =================================================
+           CEK ERROR STORAGE
+        ================================================= */
 
         if (uploadError) {
 
@@ -316,15 +443,21 @@ async function uploadPengumuman() {
             );
 
             throw new Error(
-                "Storage: " +
-                uploadError.message
+                jelaskanErrorStorage(
+                    uploadError
+                )
             );
         }
 
 
-        /* =========================
-           PUBLIC URL
-        ========================= */
+        /* =================================================
+           BUAT PUBLIC URL
+        ================================================= */
+
+        tampilkanStatus(
+            "Membuat alamat file..."
+        );
+
 
         const {
             data: urlData
@@ -337,19 +470,38 @@ async function uploadPengumuman() {
                 );
 
 
+        if (
+            !urlData ||
+            !urlData.publicUrl
+        ) {
+
+            throw new Error(
+                "Alamat file tidak berhasil dibuat."
+            );
+        }
+
+
         const urlFile =
             urlData.publicUrl;
 
 
-        /* =========================
-           SIMPAN DATABASE
-        ========================= */
+        console.log(
+            "URL file:",
+            urlFile
+        );
 
-        status.innerHTML =
-            "Menyimpan informasi dokumen...";
+
+        /* =================================================
+           SIMPAN KE DATABASE
+        ================================================= */
+
+        tampilkanStatus(
+            "Menyimpan data pengumuman..."
+        );
 
 
         const {
+            data: databaseData,
             error: databaseError
         } =
             await supabaseClient
@@ -359,12 +511,6 @@ async function uploadPengumuman() {
 
                         judul:
                             judul,
-
-                        /*
-                         * Kolom ini tetap dikirim
-                         * karena struktur tabel lama
-                         * masih menggunakannya.
-                         */
 
                         keterangan:
                             null,
@@ -380,17 +526,27 @@ async function uploadPengumuman() {
 
                         tipe_file:
                             file.type ||
-                            ekstensi,
+                            tentukanContentType(
+                                file,
+                                ekstensi
+                            ),
 
                         ukuran_file:
                             file.size
                     }
-                ]);
+                ])
+                .select();
 
 
-        /* =========================
-           DATABASE ERROR
-        ========================= */
+        console.log(
+            "Database:",
+            databaseData
+        );
+
+
+        /* =================================================
+           CEK ERROR DATABASE
+        ================================================= */
 
         if (databaseError) {
 
@@ -400,56 +556,58 @@ async function uploadPengumuman() {
             );
 
 
-            /*
-             * Hapus file dari Storage
-             * jika database gagal.
-             */
+            /* =========================
+               HAPUS FILE STORAGE
+            ========================= */
 
-            await supabaseClient
-                .storage
-                .from("pengumuman")
-                .remove([
-                    path
-                ]);
+            try {
+
+                await supabaseClient
+                    .storage
+                    .from("pengumuman")
+                    .remove([
+                        path
+                    ]);
+
+            } catch (hapusError) {
+
+                console.error(
+                    "Gagal menghapus file:",
+                    hapusError
+                );
+            }
 
 
             throw new Error(
-                "Database: " +
-                databaseError.message
+                jelaskanErrorDatabase(
+                    databaseError
+                )
             );
         }
 
 
-        /* =========================
+        /* =================================================
            BERHASIL
-        ========================= */
+        ================================================= */
 
-        status.innerHTML =
-            "Dokumen berhasil diupload.";
+        tampilkanStatus(
+            "✓ Dokumen berhasil diupload.",
+            false
+        );
 
 
-        /* =========================
+        /* =================================================
            RESET FORM
-        ========================= */
+        ================================================= */
 
-        document
-            .getElementById("judul")
-            .value =
-            "";
+        judulInput.value = "";
 
-
-        document
-            .getElementById("file")
-            .value =
-            "";
-
+        inputFile.value = "";
 
         infoFile.style.display =
             "none";
 
-
-        infoFile.innerHTML =
-            "";
+        infoFile.innerHTML = "";
 
 
     } catch (error) {
@@ -460,37 +618,393 @@ async function uploadPengumuman() {
         );
 
 
-        status.innerHTML =
+        tampilkanStatus(
             "Gagal upload: " +
-            escapeHTML(
-                error.message
+            error.message,
+            true
+        );
+
+    } finally {
+
+        /* =================================================
+           AKTIFKAN KEMBALI TOMBOL
+        ================================================= */
+
+        button.disabled = false;
+
+        button.innerHTML =
+            "Upload Dokumen";
+    }
+}
+
+
+/* =========================================================
+   AMBIL EKSTENSI FILE
+========================================================= */
+
+function ambilEkstensi(
+    namaFile
+) {
+
+    if (!namaFile) {
+        return "";
+    }
+
+
+    const bagian =
+        namaFile
+            .toLowerCase()
+            .split(".");
+
+
+    if (
+        bagian.length < 2
+    ) {
+        return "";
+    }
+
+
+    return bagian
+        .pop()
+        .trim();
+}
+
+
+/* =========================================================
+   BERSIHKAN NAMA FILE
+========================================================= */
+
+function bersihkanNamaFile(
+    namaFile
+) {
+
+    if (!namaFile) {
+        return "";
+    }
+
+
+    let nama =
+        namaFile
+            .normalize("NFKD")
+            .replace(
+                /[\u0300-\u036f]/g,
+                ""
             );
 
+
+    nama =
+        nama.replace(
+            /[^a-zA-Z0-9._-]/g,
+            "-"
+        );
+
+
+    nama =
+        nama.replace(
+            /-+/g,
+            "-"
+        );
+
+
+    nama =
+        nama.replace(
+            /^[-.]+|[-.]+$/g,
+            ""
+        );
+
+
+    return nama;
+}
+
+
+/* =========================================================
+   CONTENT TYPE
+========================================================= */
+
+function tentukanContentType(
+    file,
+    ekstensi
+) {
+
+    /* Jika perangkat memberikan MIME type,
+       gunakan MIME type tersebut. */
+
+    if (
+        file &&
+        file.type
+    ) {
+
+        return file.type;
     }
 
 
     /* =========================
-       AKTIFKAN KEMBALI BUTTON
+       MIME FALLBACK
     ========================= */
 
-    button.disabled =
-        false;
+    const mime = {
+
+        pdf:
+            "application/pdf",
+
+        doc:
+            "application/msword",
+
+        docx:
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+
+        xls:
+            "application/vnd.ms-excel",
+
+        xlsx:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+
+        ppt:
+            "application/vnd.ms-powerpoint",
+
+        pptx:
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+
+        jpg:
+            "image/jpeg",
+
+        jpeg:
+            "image/jpeg",
+
+        png:
+            "image/png",
+
+        gif:
+            "image/gif",
+
+        webp:
+            "image/webp",
+
+        txt:
+            "text/plain",
+
+        csv:
+            "text/csv",
+
+        rtf:
+            "application/rtf",
+
+        zip:
+            "application/zip",
+
+        rar:
+            "application/vnd.rar",
+
+        "7z":
+            "application/x-7z-compressed",
+
+        odt:
+            "application/vnd.oasis.opendocument.text",
+
+        ods:
+            "application/vnd.oasis.opendocument.spreadsheet",
+
+        odp:
+            "application/vnd.oasis.opendocument.presentation"
+    };
+
+
+    return (
+        mime[ekstensi] ||
+        "application/octet-stream"
+    );
 }
 
 
-/* =========================
-   FORMAT UKURAN
-========================= */
+/* =========================================================
+   ERROR STORAGE
+========================================================= */
 
-function formatUkuran(bytes) {
+function jelaskanErrorStorage(
+    error
+) {
+
+    const message =
+        error?.message ||
+        "";
+
+
+    const lower =
+        message.toLowerCase();
+
+
+    if (
+        lower.includes(
+            "row-level security"
+        )
+    ) {
+
+        return (
+            "Upload ditolak oleh keamanan " +
+            "Supabase Storage. Periksa policy " +
+            "bucket pengumuman."
+        );
+    }
+
+
+    if (
+        lower.includes(
+            "not found"
+        )
+    ) {
+
+        return (
+            "Bucket Storage 'pengumuman' " +
+            "tidak ditemukan."
+        );
+    }
+
+
+    if (
+        lower.includes(
+            "duplicate"
+        )
+    ) {
+
+        return (
+            "Nama file sudah digunakan. " +
+            "Silakan coba lagi."
+        );
+    }
+
+
+    if (
+        lower.includes(
+            "payload"
+        )
+    ) {
+
+        return (
+            "File terlalu besar untuk proses upload."
+        );
+    }
+
+
+    if (
+        lower.includes(
+            "network"
+        )
+    ) {
+
+        return (
+            "Koneksi internet bermasalah. " +
+            "Periksa koneksi HP Anda."
+        );
+    }
+
+
+    return (
+        message ||
+        "Upload file ke Storage gagal."
+    );
+}
+
+
+/* =========================================================
+   ERROR DATABASE
+========================================================= */
+
+function jelaskanErrorDatabase(
+    error
+) {
+
+    const message =
+        error?.message ||
+        "";
+
+
+    const lower =
+        message.toLowerCase();
+
+
+    if (
+        lower.includes(
+            "row-level security"
+        )
+    ) {
+
+        return (
+            "File berhasil diupload, tetapi " +
+            "data pengumuman ditolak oleh " +
+            "keamanan database Supabase."
+        );
+    }
+
+
+    if (
+        lower.includes(
+            "column"
+        )
+    ) {
+
+        return (
+            "Struktur tabel pengumuman " +
+            "tidak sesuai dengan program."
+        );
+    }
+
+
+    return (
+        message ||
+        "Data pengumuman gagal disimpan."
+    );
+}
+
+
+/* =========================================================
+   TAMPILKAN STATUS
+========================================================= */
+
+function tampilkanStatus(
+    pesan,
+    error = false
+) {
+
+    status.innerHTML =
+        escapeHTML(pesan);
+
+
+    status.style.background =
+        error
+            ? "#fef2f2"
+            : "#f8fafc";
+
+
+    status.style.color =
+        error
+            ? "#b91c1c"
+            : "#475569";
+
+
+    status.style.border =
+        error
+            ? "1px solid #fecaca"
+            : "1px solid #e5eaf0";
+}
+
+
+/* =========================================================
+   FORMAT UKURAN FILE
+========================================================= */
+
+function formatUkuran(
+    bytes
+) {
 
     if (!bytes) {
-
         return "0 B";
     }
 
 
-    if (bytes < 1024) {
+    if (
+        bytes <
+        1024
+    ) {
 
         return (
             bytes +
@@ -513,20 +1027,22 @@ function formatUkuran(bytes) {
 
 
     return (
-        (bytes /
+        (
+            bytes /
             (1024 * 1024)
-        )
-            .toFixed(1) +
+        ).toFixed(1) +
         " MB"
     );
 }
 
 
-/* =========================
+/* =========================================================
    ESCAPE HTML
-========================= */
+========================================================= */
 
-function escapeHTML(value) {
+function escapeHTML(
+    value
+) {
 
     if (
         value === null ||
