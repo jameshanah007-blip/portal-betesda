@@ -2,7 +2,10 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Kelola Pengumuman - GPIL Jemaat Betesda Purwosari</title>
 
@@ -11,161 +14,483 @@
             box-sizing: border-box;
         }
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f7fa;
-            color: #222;
+        :root {
+            --primary: #1f4e79;
+            --primary-dark: #163a5c;
+            --primary-light: #eef5fb;
+
+            --text: #172033;
+            --muted: #64748b;
+
+            --border: #e2e8f0;
+            --background: #f5f7fb;
+            --white: #ffffff;
         }
 
+        body {
+            margin: 0;
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            background: var(--background);
+            color: var(--text);
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
         header {
-            background: #1f4e79;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary-dark),
+                    var(--primary)
+                );
+
             color: white;
             text-align: center;
-            padding: 20px 15px;
+
+            padding: 27px 18px 28px;
+
+            box-shadow:
+                0 4px 18px rgba(15, 23, 42, 0.10);
         }
 
         header h1 {
             margin: 0;
-            font-size: 20px;
+
+            font-size: 21px;
+            font-weight: 700;
+
+            letter-spacing: -0.3px;
         }
 
         header p {
-            margin: 6px 0 0;
-            font-size: 14px;
+            margin: 7px 0 0;
+
+            font-size: 13px;
+            opacity: 0.88;
         }
+
+        /* =========================
+           CONTAINER
+        ========================= */
 
         .container {
             width: 100%;
-            max-width: 650px;
-            margin: auto;
-            padding: 18px 12px 30px;
+            max-width: 620px;
+
+            margin: 0 auto;
+
+            padding: 18px 14px 30px;
         }
+
+        /* =========================
+           KEMBALI
+        ========================= */
 
         .btn-kembali {
-            display: block;
-            width: 100%;
-            padding: 13px;
-            margin-bottom: 20px;
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 10px 18px;
+
+            margin-bottom: 16px;
+
             background: white;
-            color: #1f4e79;
-            border: 1px solid #1f4e79;
-            border-radius: 10px;
-            text-align: center;
+            color: #334155;
+
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
             text-decoration: none;
-            font-weight: bold;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            box-shadow:
+                0 2px 8px rgba(15, 23, 42, 0.04);
+
+            transition:
+                all 0.2s ease;
         }
+
+        .btn-kembali:hover {
+            color: var(--primary);
+
+            background: #f8fafc;
+
+            box-shadow:
+                0 6px 16px rgba(15, 23, 42, 0.08);
+        }
+
+        .btn-kembali:active {
+            transform: scale(0.97);
+        }
+
+        /* =========================
+           CARD
+        ========================= */
 
         .card {
-            background: white;
-            border-radius: 14px;
-            padding: 20px 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: var(--white);
+
+            border: 1px solid #e8edf3;
+
+            border-radius: 18px;
+
+            padding: 22px 18px;
+
+            box-shadow:
+                0 8px 28px rgba(15, 23, 42, 0.07);
         }
 
-        h2 {
-            margin: 0 0 6px;
-            text-align: center;
-            color: #1f4e79;
-            font-size: 22px;
-        }
-
-        .subjudul {
-            margin: 0 0 22px;
-            text-align: center;
-            color: #666;
-            font-size: 14px;
-        }
+        /* =========================
+           FORM
+        ========================= */
 
         .form-group {
-            margin-bottom: 17px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 7px;
-            font-weight: bold;
+
+            margin-bottom: 8px;
+
+            color: #334155;
+
             font-size: 14px;
+            font-weight: 600;
         }
 
-        input[type="text"],
-        textarea,
-        input[type="file"] {
+        input[type="text"] {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 9px;
-            font-family: Arial, sans-serif;
+
+            padding: 13px 14px;
+
+            border: 1px solid #d8e0e8;
+            border-radius: 11px;
+
+            background: white;
+            color: var(--text);
+
+            font-family: inherit;
             font-size: 15px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
         }
 
-        textarea {
-            min-height: 100px;
-            resize: vertical;
+        input[type="text"]::placeholder {
+            color: #94a3b8;
         }
 
-        input[type="file"] {
-            background: #fafafa;
+        input[type="text"]:focus {
+            border-color: var(--primary);
+
+            box-shadow:
+                0 0 0 3px rgba(31, 78, 121, 0.10);
         }
+
+        /* =========================
+           FILE PICKER
+        ========================= */
+
+        .file-picker {
+            position: relative;
+
+            width: 100%;
+
+            min-height: 125px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 18px;
+
+            border: 1.5px dashed #b8c7d8;
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #fbfdff,
+                    #f6f9fc
+                );
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .file-picker:hover {
+            border-color: var(--primary);
+
+            background: var(--primary-light);
+        }
+
+        .file-picker:active {
+            transform: scale(0.99);
+        }
+
+        .file-picker input[type="file"] {
+            position: absolute;
+
+            width: 1px;
+            height: 1px;
+
+            opacity: 0;
+
+            pointer-events: none;
+        }
+
+        .file-picker-content {
+            text-align: center;
+
+            pointer-events: none;
+        }
+
+        .file-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-width: 125px;
+
+            padding: 11px 18px;
+
+            border-radius: 10px;
+
+            background: var(--primary);
+            color: white;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            box-shadow:
+                0 5px 12px rgba(31, 78, 121, 0.18);
+        }
+
+        .file-hint {
+            margin-top: 9px;
+
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+        /* =========================
+           INFO FILE
+        ========================= */
 
         .info-file {
-            margin-top: 9px;
-            padding: 11px;
-            background: #f1f5f8;
-            border-radius: 9px;
+            margin-top: 11px;
+
+            padding: 12px 13px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e5eaf0;
+
+            border-radius: 11px;
+
+            color: #475569;
+
             font-size: 13px;
-            color: #555;
-            line-height: 1.5;
+
+            line-height: 1.55;
+
             display: none;
         }
 
-        .format-info {
-            margin-top: 10px;
-            padding: 12px;
-            background: #eef5fa;
-            border-radius: 9px;
-            font-size: 12px;
-            line-height: 1.6;
-            color: #555;
-        }
-
-        .format-info strong {
-            color: #1f4e79;
-        }
+        /* =========================
+           UPLOAD BUTTON
+        ========================= */
 
         .btn-upload {
             display: block;
+
             width: 100%;
-            padding: 14px;
-            margin-top: 20px;
-            background: #1f4e79;
-            color: white;
+
+            padding: 14px 18px;
+
+            margin-top: 6px;
+
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    #28649a
+                );
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 15px;
+            font-weight: 700;
+
             cursor: pointer;
+
+            box-shadow:
+                0 7px 17px rgba(31, 78, 121, 0.20);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                opacity 0.2s ease;
+        }
+
+        .btn-upload:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 10px 22px rgba(31, 78, 121, 0.25);
+        }
+
+        .btn-upload:active {
+            transform: scale(0.98);
         }
 
         .btn-upload:disabled {
-            background: #999;
+            background: #94a3b8;
+
+            box-shadow: none;
+
             cursor: not-allowed;
+
+            opacity: 0.8;
+
+            transform: none;
         }
 
+        /* =========================
+           STATUS
+        ========================= */
+
         #status {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 9px;
+            margin-top: 14px;
+
+            padding: 11px 12px;
+
+            border-radius: 10px;
+
             text-align: center;
-            font-size: 14px;
+
+            color: #475569;
+
+            font-size: 13px;
+
             line-height: 1.5;
         }
 
+        /* =========================
+           FOOTER
+        ========================= */
+
         footer {
+            padding: 5px 10px 25px;
+
             text-align: center;
-            padding: 20px 10px;
-            color: #777;
+
+            color: #94a3b8;
+
             font-size: 12px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 23px 15px 24px;
+            }
+
+            header h1 {
+                font-size: 18px;
+            }
+
+            header p {
+                font-size: 12px;
+            }
+
+            .container {
+                padding: 15px 12px 28px;
+            }
+
+            .btn-kembali {
+                padding: 9px 16px;
+
+                margin-bottom: 14px;
+
+                font-size: 13px;
+            }
+
+            .card {
+                padding: 20px 15px;
+
+                border-radius: 16px;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            label {
+                font-size: 13px;
+            }
+
+            input[type="text"] {
+                padding: 12px;
+
+                font-size: 14px;
+            }
+
+            .file-picker {
+                min-height: 118px;
+            }
+
+            .file-button {
+                min-width: 115px;
+
+                padding: 10px 16px;
+
+                font-size: 13px;
+            }
+
+            .file-hint {
+                font-size: 11px;
+            }
+
+            .btn-upload {
+                padding: 13px 16px;
+
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -173,24 +498,27 @@
 <body>
 
 <header>
+
     <h1>GPIL Jemaat Betesda Purwosari</h1>
+
     <p>Kelola Pengumuman dan Dokumen</p>
+
 </header>
+
 
 <div class="container">
 
-    <a href="pengumuman.html" class="btn-kembali">
-        ← Kembali ke Pengumuman
+    <a
+        href="kelola-admin.html"
+        class="btn-kembali"
+    >
+        Kembali
     </a>
+
 
     <div class="card">
 
-        <h2>📢 Upload Pengumuman</h2>
-
-        <p class="subjudul">
-            Tambahkan surat atau dokumen untuk jemaat
-        </p>
-
+        <!-- Judul -->
         <div class="form-group">
 
             <label for="judul">
@@ -200,57 +528,63 @@
             <input
                 type="text"
                 id="judul"
-                placeholder="Contoh: Surat Undangan Rapat Jemaat"
+                placeholder="Masukkan judul pengumuman"
             >
 
         </div>
 
+
+        <!-- Pilih File -->
         <div class="form-group">
 
-            <label for="keterangan">
-                Keterangan
+            <label>
+                Dokumen / File
             </label>
 
-            <textarea
-                id="keterangan"
-                placeholder="Tuliskan keterangan singkat tentang dokumen ini..."
-            ></textarea>
-
-        </div>
-
-        <div class="form-group">
-
-            <label for="file">
-                Pilih Dokumen / File
-            </label>
-
-            <input
-                type="file"
-                id="file"
-                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.webp,.txt,.csv,.rtf,.odt,.ods,.odp,.zip,.rar,.7z"
+            <label
+                class="file-picker"
+                for="file"
             >
 
-            <div id="infoFile" class="info-file"></div>
+                <input
+                    type="file"
+                    id="file"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.webp,.txt,.csv,.rtf,.odt,.ods,.odp,.zip,.rar,.7z"
+                >
 
-            <div class="format-info">
-                <strong>Format yang didukung:</strong><br>
-                PDF, Word, Excel, PowerPoint, JPG, JPEG, PNG,
-                GIF, WEBP, TXT, CSV, RTF, ODT, ODS, ODP,
-                ZIP, RAR, 7Z dan format dokumen umum lainnya.
-                <br><br>
-                <strong>Maksimal ukuran:</strong> 20 MB
-            </div>
+                <div class="file-picker-content">
+
+                    <div class="file-button">
+                        Pilih File
+                    </div>
+
+                    <div class="file-hint">
+                        Maksimal ukuran 20 MB
+                    </div>
+
+                </div>
+
+            </label>
+
+
+            <div
+                id="infoFile"
+                class="info-file"
+            ></div>
 
         </div>
 
+
+        <!-- Tombol Upload -->
         <button
             type="button"
             id="btnUpload"
             class="btn-upload"
             onclick="uploadPengumuman()"
         >
-            📤 Upload Dokumen
+            Upload Dokumen
         </button>
+
 
         <div id="status"></div>
 
@@ -258,12 +592,16 @@
 
 </div>
 
+
 <footer>
     GPIL Jemaat Betesda Purwosari
 </footer>
 
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase-client.js"></script>
+
 <script src="kelola-pengumuman.js"></script>
 
 </body>
