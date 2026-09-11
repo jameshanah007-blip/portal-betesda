@@ -2,6 +2,11 @@ const inputFoto = document.getElementById("foto");
 const preview = document.getElementById("preview");
 const previewImage = document.getElementById("previewImage");
 
+
+// ===============================
+// PREVIEW FOTO
+// ===============================
+
 inputFoto.addEventListener("change", function () {
 
     const file = this.files[0];
@@ -33,8 +38,13 @@ inputFoto.addEventListener("change", function () {
     };
 
     reader.readAsDataURL(file);
+
 });
 
+
+// ===============================
+// UPLOAD FOTO
+// ===============================
 
 async function uploadFoto() {
 
@@ -50,6 +60,10 @@ async function uploadFoto() {
     const button =
         document.getElementById("btnUpload");
 
+
+    // ===============================
+    // CEK FILE
+    // ===============================
 
     if (!file) {
 
@@ -76,14 +90,22 @@ async function uploadFoto() {
     }
 
 
+    // ===============================
+    // NONAKTIFKAN TOMBOL
+    // ===============================
+
     button.disabled = true;
 
-    status.textContent = "Mengupload foto...";
+    status.textContent =
+        "Mengupload foto...";
 
 
     try {
 
-        // Membuat nama file unik
+        // ===============================
+        // MEMBUAT NAMA FILE UNIK
+        // ===============================
+
         const namaUnik =
             Date.now() +
             "-" +
@@ -95,11 +117,17 @@ async function uploadFoto() {
                 .replace(/\s+/g, "-");
 
 
-        const path =
-            namaUnik;
+        const path = namaUnik;
 
 
-        // Upload ke Storage
+        // ===============================
+        // UPLOAD KE STORAGE
+        // ===============================
+
+        status.textContent =
+            "Mengupload foto ke Storage...";
+
+
         const { error: uploadError } =
             await supabaseClient.storage
                 .from("galeri-jemaat")
@@ -108,12 +136,23 @@ async function uploadFoto() {
 
         if (uploadError) {
 
-            throw uploadError;
+            console.error(
+                "ERROR STORAGE:",
+                uploadError
+            );
+
+            throw new Error(
+                "Storage: " +
+                uploadError.message
+            );
 
         }
 
 
-        // Ambil URL foto
+        // ===============================
+        // AMBIL URL FOTO
+        // ===============================
+
         const { data: urlData } =
             supabaseClient.storage
                 .from("galeri-jemaat")
@@ -124,7 +163,14 @@ async function uploadFoto() {
             urlData.publicUrl;
 
 
-        // Simpan informasi ke database
+        // ===============================
+        // SIMPAN KE DATABASE
+        // ===============================
+
+        status.textContent =
+            "Menyimpan informasi foto...";
+
+
         const { error: databaseError } =
             await supabaseClient
                 .from("galeri_jemaat")
@@ -144,15 +190,31 @@ async function uploadFoto() {
 
         if (databaseError) {
 
-            // Jika database gagal,
-            // hapus foto yang sudah terupload
+            console.error(
+                "ERROR DATABASE:",
+                databaseError
+            );
+
+
+            // Hapus foto dari Storage
+            // jika database gagal
+
             await supabaseClient.storage
                 .from("galeri-jemaat")
                 .remove([path]);
 
-            throw databaseError;
+
+            throw new Error(
+                "Database: " +
+                databaseError.message
+            );
+
         }
 
+
+        // ===============================
+        // BERHASIL
+        // ===============================
 
         status.textContent =
             "✅ Foto berhasil diupload.";
@@ -167,14 +229,23 @@ async function uploadFoto() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "UPLOAD ERROR:",
+            error
+        );
+
 
         status.textContent =
-            "❌ Gagal upload: " +
+            "❌ Gagal: " +
             error.message;
 
     }
 
 
+    // ===============================
+    // AKTIFKAN KEMBALI TOMBOL
+    // ===============================
+
     button.disabled = false;
+
 }
