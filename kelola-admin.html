@@ -1,599 +1,127 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="theme-color" content="#1f4e79">
-
-    <meta
-        name="description"
-        content="Halaman pengelolaan admin GPIL Jemaat Betesda Purwosari"
-    >
 
     <title>Kelola Admin - GPIL Jemaat Betesda Purwosari</title>
 
-    <!-- CSS UTAMA -->
     <link rel="stylesheet" href="style.css">
 
     <style>
-
-        /* =========================================
-           RESET
-        ========================================= */
-
-        .halaman-admin,
-        .halaman-admin * {
-            box-sizing: border-box;
-        }
-
-
-        /* =========================================
-           HALAMAN ADMIN
-        ========================================= */
-
-        .halaman-admin {
-            width: 100%;
-            padding: 15px 12px 35px;
-        }
-
-
-        /* =========================================
-           HEADER ADMIN
-        ========================================= */
-
-        .admin-header {
-            width: 100%;
-            max-width: 650px;
-            margin: 0 auto 20px;
-            padding: 18px 16px;
-
-            background: linear-gradient(
-                135deg,
-                #1f4e79,
-                #2f6f9f
-            );
-
-            border-radius: 16px;
-
-            color: white;
-            text-align: center;
-
-            box-shadow:
-                0 4px 12px rgba(31, 78, 121, 0.18);
-        }
-
-        .admin-header-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            width: 58px;
-            height: 58px;
-
-            margin: 0 auto 10px;
-
-            background: rgba(255, 255, 255, 0.15);
-
-            border-radius: 50%;
-
-            font-size: 29px;
-        }
-
-        .admin-header h2 {
-            margin: 0 0 6px;
-
-            font-size: 22px;
-            line-height: 1.3;
-        }
-
-        .admin-header p {
-            margin: 0;
-
-            color: rgba(255, 255, 255, 0.88);
-
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-
-        /* =========================================
-           TOMBOL KEMBALI
-        ========================================= */
-
-        .btn-kembali {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            width: 100%;
-            max-width: 650px;
-
-            min-height: 48px;
-
-            margin: 0 auto 18px;
-            padding: 12px 16px;
-
-            background: #666;
-            color: white;
-
-            border-radius: 10px;
-
-            text-decoration: none;
-
-            font-size: 14px;
-            font-weight: 600;
-
-            text-align: center;
-
-            transition:
-                background 0.2s ease,
-                transform 0.15s ease;
-        }
-
-        .btn-kembali:hover {
-            background: #555;
-        }
-
-        .btn-kembali:active {
-            transform: scale(0.98);
-        }
-
-
-        /* =========================================
-           JUDUL BAGIAN
-        ========================================= */
-
-        .admin-section-title {
-            width: 100%;
-            max-width: 650px;
-
-            margin: 0 auto 12px;
-        }
-
-        .admin-section-title h3 {
-            margin: 0;
-
-            color: #1f4e79;
-
-            font-size: 17px;
-        }
-
-        .admin-section-title p {
-            margin: 4px 0 0;
-
-            color: #777;
-
-            font-size: 12.5px;
-            line-height: 1.4;
-        }
-
-
-        /* =========================================
-           RINGKASAN
-        ========================================= */
-
-        .ringkasan-admin {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 8px;
-
-            width: 100%;
-            max-width: 650px;
-
-            margin: 0 auto 22px;
-        }
-
-        .ringkasan-card {
-            padding: 13px 7px;
-
-            background: #ffffff;
-
-            border: 1px solid #e8edf1;
-
-            border-radius: 11px;
-
-            text-align: center;
-
-            box-shadow:
-                0 2px 6px rgba(0, 0, 0, 0.04);
-        }
-
-        .ringkasan-icon {
-            display: block;
-
-            margin-bottom: 4px;
-
-            font-size: 20px;
-        }
-
-        .ringkasan-card strong {
-            display: block;
-
-            color: #1f4e79;
-
-            font-size: 13px;
-        }
-
-        .ringkasan-card small {
-            display: block;
-
-            margin-top: 2px;
-
-            color: #777;
-
-            font-size: 10px;
-        }
-
-
-        /* =========================================
-           MENU ADMIN
-        ========================================= */
+        /* ================================
+           HALAMAN KELOLA ADMIN
+        ================================= */
 
         .admin-menu {
             display: flex;
             flex-direction: column;
-
-            gap: 12px;
-
-            width: 100%;
-            max-width: 650px;
-
-            margin: 0 auto 22px;
+            gap: 15px;
+            margin-top: 20px;
         }
 
-
-        /* =========================================
-           KARTU ADMIN
-        ========================================= */
-
         .admin-card {
-            position: relative;
-
             display: flex;
             align-items: center;
+            gap: 15px;
 
-            width: 100%;
-            min-height: 88px;
-
-            padding: 14px;
+            padding: 18px;
 
             background: #ffffff;
-
-            border: 1px solid #e5e9ed;
-
             border-radius: 14px;
 
-            box-shadow:
-                0 2px 8px rgba(0, 0, 0, 0.06);
-
+            text-decoration: none;
             color: inherit;
 
-            text-decoration: none;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
 
-            transition:
-                transform 0.15s ease,
-                box-shadow 0.15s ease,
-                border-color 0.15s ease;
-
-            touch-action: manipulation;
+            transition: transform 0.2s ease,
+                        box-shadow 0.2s ease;
         }
 
         .admin-card:hover {
-            border-color: #c9d8e3;
-
-            box-shadow:
-                0 5px 14px rgba(0, 0, 0, 0.10);
-
             transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12);
         }
-
-        .admin-card:active {
-            transform: scale(0.98);
-        }
-
-
-        /* =========================================
-           ICON
-        ========================================= */
 
         .admin-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
             width: 52px;
             height: 52px;
+
             min-width: 52px;
 
-            background: #eef4f8;
-
-            border-radius: 13px;
-
-            font-size: 25px;
-        }
-
-
-        /* =========================================
-           TEKS
-        ========================================= */
-
-        .admin-text {
-            flex: 1;
-            min-width: 0;
-
-            margin-left: 13px;
-
-            padding-right: 5px;
-        }
-
-        .admin-text strong {
-            display: block;
-
-            margin-bottom: 4px;
-
-            color: #1f4e79;
-
-            font-size: 15px;
-
-            line-height: 1.35;
-        }
-
-        .admin-text small {
-            display: block;
-
-            color: #666;
-
-            font-size: 12.5px;
-
-            line-height: 1.45;
-        }
-
-
-        /* =========================================
-           LABEL
-        ========================================= */
-
-        .admin-label {
-            display: inline-block;
-
-            margin-top: 7px;
-
-            padding: 3px 7px;
-
-            background: #f0f5f8;
-
-            color: #55758b;
-
-            border-radius: 20px;
-
-            font-size: 10px;
-
-            font-weight: 600;
-        }
-
-
-        /* =========================================
-           PANAH
-        ========================================= */
-
-        .admin-arrow {
             display: flex;
             align-items: center;
             justify-content: center;
 
-            width: 24px;
-            min-width: 24px;
-
-            margin-left: 5px;
-
-            color: #999;
+            background: #f1f5f9;
+            border-radius: 12px;
 
             font-size: 27px;
-
-            line-height: 1;
-
-            transition:
-                color 0.15s ease,
-                transform 0.15s ease;
         }
 
-        .admin-card:hover .admin-arrow {
-            color: #1f4e79;
+        .admin-card h3 {
+            margin: 0 0 5px 0;
 
-            transform: translateX(3px);
+            font-size: 17px;
+            font-weight: 600;
+
+            color: #1e293b;
         }
 
-
-        /* =========================================
-           PETUNJUK
-        ========================================= */
-
-        .petunjuk-admin {
-            width: 100%;
-            max-width: 650px;
-
-            margin: 0 auto 20px;
-
-            padding: 15px;
-
-            background: #f5f7f9;
-
-            border-left: 4px solid #1f4e79;
-
-            border-radius: 10px;
-        }
-
-        .petunjuk-admin h3 {
-            margin: 0 0 7px;
-
-            color: #1f4e79;
-
-            font-size: 14px;
-        }
-
-        .petunjuk-admin ul {
+        .admin-card p {
             margin: 0;
 
-            padding-left: 19px;
-        }
-
-        .petunjuk-admin li {
-            margin-bottom: 5px;
-
-            color: #666;
-
-            font-size: 12px;
-
-            line-height: 1.5;
-        }
-
-        .petunjuk-admin li:last-child {
-            margin-bottom: 0;
-        }
-
-
-        /* =========================================
-           INFORMASI
-        ========================================= */
-
-        .info-admin {
-            width: 100%;
-            max-width: 650px;
-
-            margin: 0 auto;
-
-            padding: 14px 15px;
-
-            background: #eef4f8;
-
-            border-radius: 10px;
-
-            color: #5f6f78;
-
-            font-size: 12px;
-
+            font-size: 14px;
             line-height: 1.5;
 
-            text-align: center;
+            color: #64748b;
         }
 
+        /* ================================
+           MOBILE
+        ================================= */
 
-        /* =========================================
-           TABLET / DESKTOP
-        ========================================= */
+        @media (max-width: 600px) {
 
-        @media (min-width: 600px) {
-
-            .halaman-admin {
-                max-width: 680px;
-
-                margin: 0 auto;
-
-                padding:
-                    25px
-                    20px
-                    45px;
-            }
-
-            .admin-header {
-                padding: 22px;
-            }
-
-            .admin-header h2 {
-                font-size: 25px;
+            .admin-menu {
+                margin-top: 15px;
+                gap: 12px;
             }
 
             .admin-card {
-                min-height: 92px;
-
-                padding: 17px;
-            }
-
-            .admin-text strong {
-                font-size: 16px;
-            }
-
-            .admin-text small {
-                font-size: 13px;
-            }
-
-            .ringkasan-card {
                 padding: 15px;
-            }
-        }
-
-
-        /* =========================================
-           HP SANGAT KECIL
-        ========================================= */
-
-        @media (max-width: 360px) {
-
-            .halaman-admin {
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-
-            .admin-header {
-                padding: 16px 12px;
-            }
-
-            .admin-header h2 {
-                font-size: 20px;
-            }
-
-            .admin-card {
-                min-height: 82px;
-
-                padding: 12px;
+                border-radius: 12px;
             }
 
             .admin-icon {
-                width: 48px;
-                height: 48px;
-                min-width: 48px;
+                width: 46px;
+                height: 46px;
+                min-width: 46px;
 
-                font-size: 23px;
+                font-size: 24px;
             }
 
-            .admin-text {
-                margin-left: 10px;
+            .admin-card h3 {
+                font-size: 16px;
             }
 
-            .admin-text strong {
-                font-size: 14px;
-            }
-
-            .admin-text small {
-                font-size: 11.5px;
-            }
-
-            .ringkasan-card {
-                padding: 10px 5px;
+            .admin-card p {
+                font-size: 13px;
             }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
-    <!-- =========================================
+    <!-- ================================
          HEADER PORTAL
-    ========================================= -->
+    ================================= -->
 
-    <header class="header">
+    <header class="site-header">
 
-        <div class="header-content">
+        <div class="container">
 
             <h1>
                 GPIL Jemaat Betesda Purwosari
@@ -608,345 +136,118 @@
     </header>
 
 
-    <!-- =========================================
+    <!-- ================================
          KONTEN UTAMA
-    ========================================= -->
+    ================================= -->
 
     <main class="container">
 
-        <section class="halaman-admin">
+        <!-- Tombol Kembali -->
+        <a href="index.html" class="btn-kembali">
+            ← Kembali
+        </a>
 
 
-            <!-- TOMBOL KEMBALI -->
+        <!-- ============================
+             MENU ADMIN
+        ============================= -->
 
+        <section class="admin-menu">
+
+            <!-- Kelola Jadwal -->
             <a
-                href="index.html"
-                class="btn-kembali"
+                href="kelola-jadwal.html"
+                class="admin-card"
             >
-                ← Kembali ke Home
+
+                <div class="admin-icon">
+                    📅
+                </div>
+
+                <div>
+
+                    <h3>
+                        Kelola Jadwal Kumpulan
+                    </h3>
+
+                    <p>
+                        Tambah, ubah, dan hapus jadwal kumpulan.
+                    </p>
+
+                </div>
+
             </a>
 
 
-            <!-- HEADER ADMIN -->
-
-            <div class="admin-header">
-
-                <div
-                    class="admin-header-icon"
-                    aria-hidden="true"
-                >
-                    ⚙️
-                </div>
-
-                <h2>
-                    Kelola Admin
-                </h2>
-
-                <p>
-                    Pusat pengelolaan informasi
-                    GPIL Jemaat Betesda Purwosari
-                </p>
-
-            </div>
-
-
-            <!-- RINGKASAN -->
-
-            <div class="admin-section-title">
-
-                <h3>
-                    Ringkasan Pengelolaan
-                </h3>
-
-                <p>
-                    Pilih bagian yang ingin Anda kelola.
-                </p>
-
-            </div>
-
-
-            <div class="ringkasan-admin">
-
-
-                <div class="ringkasan-card">
-
-                    <span
-                        class="ringkasan-icon"
-                        aria-hidden="true"
-                    >
-                        📅
-                    </span>
-
-                    <strong>
-                        Jadwal
-                    </strong>
-
-                    <small>
-                        Kumpulan
-                    </small>
-
-                </div>
-
-
-                <div class="ringkasan-card">
-
-                    <span
-                        class="ringkasan-icon"
-                        aria-hidden="true"
-                    >
-                        📸
-                    </span>
-
-                    <strong>
-                        Galeri
-                    </strong>
-
-                    <small>
-                        Foto Jemaat
-                    </small>
-
-                </div>
-
-
-                <div class="ringkasan-card">
-
-                    <span
-                        class="ringkasan-icon"
-                        aria-hidden="true"
-                    >
-                        📢
-                    </span>
-
-                    <strong>
-                        Pengumuman
-                    </strong>
-
-                    <small>
-                        Informasi
-                    </small>
-
-                </div>
-
-            </div>
-
-
-            <!-- MENU PENGELOLAAN -->
-
-            <div class="admin-section-title">
-
-                <h3>
-                    Menu Pengelolaan
-                </h3>
-
-                <p>
-                    Gunakan menu berikut untuk mengubah
-                    informasi portal.
-                </p>
-
-            </div>
-
-
-            <nav
-                class="admin-menu"
-                aria-label="Menu pengelolaan admin"
+            <!-- Kelola Galeri -->
+            <a
+                href="kelola-galeri.html"
+                class="admin-card"
             >
 
+                <div class="admin-icon">
+                    📸
+                </div>
 
-                <!-- KELOLA JADWAL -->
+                <div>
 
-                <a
-                    href="kelola-jadwal.html"
-                    class="admin-card"
-                >
+                    <h3>
+                        Kelola Galeri Jemaat
+                    </h3>
 
-                    <span
-                        class="admin-icon"
-                        aria-hidden="true"
-                    >
-                        📅
-                    </span>
+                    <p>
+                        Kelola foto dan dokumentasi kegiatan jemaat.
+                    </p>
 
-                    <span class="admin-text">
+                </div>
 
-                        <strong>
-                            Kelola Jadwal Kumpulan
-                        </strong>
-
-                        <small>
-                            Tambah, ubah, hapus, dan kelola
-                            jadwal kumpulan jemaat.
-                        </small>
-
-                        <span class="admin-label">
-                            JADWAL
-                        </span>
-
-                    </span>
-
-                    <span
-                        class="admin-arrow"
-                        aria-hidden="true"
-                    >
-                        ›
-                    </span>
-
-                </a>
+            </a>
 
 
-                <!-- KELOLA GALERI -->
+            <!-- Kelola Pengumuman -->
+            <a
+                href="kelola-pengumuman.html"
+                class="admin-card"
+            >
 
-                <a
-                    href="kelola-galeri.html"
-                    class="admin-card"
-                >
+                <div class="admin-icon">
+                    📢
+                </div>
 
-                    <span
-                        class="admin-icon"
-                        aria-hidden="true"
-                    >
-                        📸
-                    </span>
+                <div>
 
-                    <span class="admin-text">
+                    <h3>
+                        Kelola Pengumuman
+                    </h3>
 
-                        <strong>
-                            Kelola Galeri Jemaat
-                        </strong>
+                    <p>
+                        Tambah dan kelola pengumuman jemaat.
+                    </p>
 
-                        <small>
-                            Upload, lihat, dan hapus foto
-                            kegiatan jemaat.
-                        </small>
+                </div>
 
-                        <span class="admin-label">
-                            GALERI
-                        </span>
-
-                    </span>
-
-                    <span
-                        class="admin-arrow"
-                        aria-hidden="true"
-                    >
-                        ›
-                    </span>
-
-                </a>
-
-
-                <!-- KELOLA PENGUMUMAN -->
-
-                <a
-                    href="kelola-pengumuman.html"
-                    class="admin-card"
-                >
-
-                    <span
-                        class="admin-icon"
-                        aria-hidden="true"
-                    >
-                        📢
-                    </span>
-
-                    <span class="admin-text">
-
-                        <strong>
-                            Kelola Pengumuman
-                        </strong>
-
-                        <small>
-                            Tambah, ubah, hapus, dan kelola
-                            pengumuman jemaat.
-                        </small>
-
-                        <span class="admin-label">
-                            PENGUMUMAN
-                        </span>
-
-                    </span>
-
-                    <span
-                        class="admin-arrow"
-                        aria-hidden="true"
-                    >
-                        ›
-                    </span>
-
-                </a>
-
-
-            </nav>
-
-
-            <!-- PETUNJUK -->
-
-            <div class="petunjuk-admin">
-
-                <h3>
-                    💡 Petunjuk Pengelolaan
-                </h3>
-
-                <ul>
-
-                    <li>
-                        Pilih menu sesuai informasi
-                        yang ingin dikelola.
-                    </li>
-
-                    <li>
-                        Pastikan informasi yang dimasukkan
-                        sudah benar sebelum disimpan.
-                    </li>
-
-                    <li>
-                        Untuk galeri, gunakan foto yang
-                        memiliki ukuran dan kualitas yang baik.
-                    </li>
-
-                    <li>
-                        Periksa kembali data setelah
-                        melakukan perubahan.
-                    </li>
-
-                </ul>
-
-            </div>
-
-
-            <!-- INFORMASI -->
-
-            <div class="info-admin">
-
-                ℹ️ Halaman ini merupakan pusat
-                pengelolaan informasi portal.
-                Data yang dikelola melalui menu di atas
-                akan ditampilkan kepada jemaat.
-
-            </div>
-
+            </a>
 
         </section>
 
     </main>
 
 
-    <!-- =========================================
+    <!-- ================================
          FOOTER
-    ========================================= -->
+    ================================= -->
 
-    <footer class="footer">
+    <footer>
 
-        <p>
-            GPIL Jemaat Betesda Purwosari
-        </p>
+        <div class="container">
 
-        <small>
-            Portal Informasi Jemaat
-        </small>
+            <p>
+                © GPIL Jemaat Betesda Purwosari
+            </p>
+
+        </div>
 
     </footer>
 
-
 </body>
-
 </html>
