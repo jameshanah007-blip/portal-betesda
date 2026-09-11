@@ -8,73 +8,634 @@
     <title>GPIL Jemaat Betesda Purwosari</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =====================================================
+           LAPORAN KEUANGAN
+           ===================================================== */
+
+        .laporan-halaman {
+            width: 100%;
+            max-width: 760px;
+            margin: 0 auto;
+            padding-bottom: 20px;
+        }
+
+
+        /* =====================================================
+           TOMBOL KEMBALI KE PORTAL
+           ===================================================== */
+
+        .btn-kembali-portal {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 42px;
+
+            padding: 0 18px;
+
+            margin-bottom: 20px;
+
+            border: 1px solid #d9e2ea;
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            color: #1f4e79;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            text-decoration: none;
+
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .btn-kembali-portal:hover {
+            background: #f4f8fb;
+
+            border-color: #b9cddd;
+
+            box-shadow:
+                0 5px 14px rgba(31, 78, 121, 0.08);
+        }
+
+        .btn-kembali-portal:active {
+            transform: scale(0.97);
+        }
+
+
+        /* =====================================================
+           HEADER LAPORAN
+           ===================================================== */
+
+        .laporan-header {
+            position: relative;
+
+            overflow: hidden;
+
+            margin-bottom: 20px;
+
+            padding: 28px 26px;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1f4e79 0%,
+                    #2f6f9f 100%
+                );
+
+            color: #ffffff;
+
+            box-shadow:
+                0 10px 28px rgba(31, 78, 121, 0.16);
+        }
+
+
+        .laporan-header::after {
+            content: "";
+
+            position: absolute;
+
+            width: 150px;
+            height: 150px;
+
+            right: -55px;
+            top: -65px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+
+        .laporan-header::before {
+            content: "";
+
+            position: absolute;
+
+            width: 90px;
+            height: 90px;
+
+            right: 70px;
+            bottom: -55px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+
+        .laporan-header-content {
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .laporan-label-atas {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 1.2px;
+
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+
+        .laporan-header h2 {
+            margin: 0 0 8px;
+
+            font-size: 26px;
+            font-weight: 700;
+
+            letter-spacing: -0.3px;
+        }
+
+
+        .laporan-header p {
+            max-width: 520px;
+
+            margin: 0;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+
+        /* =====================================================
+           DAFTAR LAPORAN
+           ===================================================== */
+
+        .laporan-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+        }
+
+
+        /* =====================================================
+           KARTU LAPORAN
+           ===================================================== */
+
+        .laporan-card {
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 18px;
+
+            border: 1px solid #e1e7ed;
+
+            border-radius: 18px;
+
+            background: #ffffff;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 3px 12px rgba(0, 0, 0, 0.04);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .laporan-card:hover {
+            transform: translateY(-2px);
+
+            border-color: #bfd0df;
+
+            background: #fcfdff;
+
+            box-shadow:
+                0 9px 24px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .laporan-card:active {
+            transform: scale(0.985);
+        }
+
+
+        /* =====================================================
+           ICON KARTU
+           ===================================================== */
+
+        .laporan-card-icon {
+            width: 52px;
+            height: 52px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background: #eef5fb;
+
+            font-size: 24px;
+        }
+
+
+        /* =====================================================
+           ISI KARTU
+           ===================================================== */
+
+        .laporan-card-content {
+            min-width: 0;
+
+            flex: 1;
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .laporan-card-label {
+            margin-bottom: 4px;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: 0.9px;
+
+            color: #718096;
+        }
+
+
+        .laporan-card-content strong {
+            display: block;
+
+            margin-bottom: 3px;
+
+            font-size: 18px;
+            font-weight: 700;
+
+            color: #1f2937;
+        }
+
+
+        .laporan-card-content small {
+            display: block;
+
+            font-size: 13px;
+
+            line-height: 1.4;
+
+            color: #718096;
+        }
+
+
+        /* =====================================================
+           TANDA PANAH
+           ===================================================== */
+
+        .laporan-arrow {
+            width: 36px;
+            height: 36px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #f2f6f9;
+
+            color: #1f4e79;
+
+            font-size: 26px;
+            font-weight: 400;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .laporan-card:hover .laporan-arrow {
+            background: #e7f0f7;
+
+            transform: translateX(2px);
+        }
+
+
+        /* =====================================================
+           TAMPILAN HP
+           ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .laporan-halaman {
+                max-width: 100%;
+
+                padding-bottom: 15px;
+            }
+
+
+            .btn-kembali-portal {
+                width: 100%;
+
+                min-height: 44px;
+
+                margin-bottom: 16px;
+
+                border-radius: 11px;
+
+                font-size: 14px;
+            }
+
+
+            .laporan-header {
+                margin-bottom: 16px;
+
+                padding: 22px 19px;
+
+                border-radius: 17px;
+            }
+
+
+            .laporan-label-atas {
+                font-size: 10px;
+
+                letter-spacing: 1px;
+            }
+
+
+            .laporan-header h2 {
+                font-size: 22px;
+            }
+
+
+            .laporan-header p {
+                font-size: 13px;
+
+                line-height: 1.55;
+            }
+
+
+            .laporan-card {
+                gap: 12px;
+
+                padding: 15px;
+
+                border-radius: 16px;
+            }
+
+
+            .laporan-card-icon {
+                width: 46px;
+                height: 46px;
+
+                border-radius: 12px;
+
+                font-size: 21px;
+            }
+
+
+            .laporan-card-label {
+                font-size: 9px;
+
+                letter-spacing: 0.7px;
+            }
+
+
+            .laporan-card-content strong {
+                font-size: 17px;
+            }
+
+
+            .laporan-card-content small {
+                font-size: 12px;
+            }
+
+
+            .laporan-arrow {
+                width: 32px;
+                height: 32px;
+
+                font-size: 23px;
+            }
+
+        }
+    </style>
+
 </head>
+
 
 <body>
 
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
     <header class="header">
+
         <div class="header-content">
-            <h1>GPIL Jemaat Betesda Purwosari</h1>
-            <p>Portal Informasi Jemaat</p>
+
+            <h1>
+                GPIL Jemaat Betesda Purwosari
+            </h1>
+
+            <p>
+                Portal Informasi Jemaat
+            </p>
+
         </div>
+
     </header>
 
 
-    <!-- MENU UTAMA -->
+
+    <!-- =====================================================
+         MENU UTAMA
+         ===================================================== -->
+
     <nav class="menu">
-
-        <button type="button" onclick="bukaHome()">
-            <span class="icon">🏠</span>
-            <span>Home</span>
-        </button>
-
-        <button type="button" onclick="window.location.href='jadwal-kumpulan.html'">
-    <span class="icon">📅</span>
-    <span>Jadwal Kumpulan</span>
-</button>
-
-<button type="button" onclick="bukaLaporan()">
-            <span class="icon">💰</span>
-            <span>Laporan Keuangan</span>
-        </button>
-        
-<button type="button" onclick="window.location.href='galeri.html'">
-    <span class="icon">📸</span>
-    <span>Galeri Jemaat</span>
-</button>
-        
-<button type="button" onclick="window.location.href='pengumuman.html'">
-    <span class="icon">📢</span>
-    <span>Informasi Jemaat</span>
-</button>
-
-<button type="button" onclick="window.location.href='kelola-admin.html'">
-    <span class="icon">⚙️</span>
-    <span>Kelola Admin</span>
-</button>
-        
-    </nav>
-
-
-    <!-- ISI PORTAL -->
-    <main class="container">
 
 
         <!-- HOME -->
-        <section id="home" class="halaman">
+
+        <button
+            type="button"
+            onclick="bukaHome()">
+
+            <span class="icon">
+                🏠
+            </span>
+
+            <span>
+                Home
+            </span>
+
+        </button>
+
+
+
+        <!-- JADWAL KUMPULAN -->
+
+        <button
+            type="button"
+            onclick="window.location.href='jadwal-kumpulan.html'">
+
+            <span class="icon">
+                📅
+            </span>
+
+            <span>
+                Jadwal Kumpulan
+            </span>
+
+        </button>
+
+
+
+        <!-- LAPORAN KEUANGAN -->
+
+        <button
+            type="button"
+            onclick="bukaLaporan()">
+
+            <span class="icon">
+                💰
+            </span>
+
+            <span>
+                Laporan Keuangan
+            </span>
+
+        </button>
+
+
+
+        <!-- GALERI -->
+
+        <button
+            type="button"
+            onclick="window.location.href='galeri.html'">
+
+            <span class="icon">
+                📸
+            </span>
+
+            <span>
+                Galeri Jemaat
+            </span>
+
+        </button>
+
+
+
+        <!-- INFORMASI -->
+
+        <button
+            type="button"
+            onclick="window.location.href='pengumuman.html'">
+
+            <span class="icon">
+                📢
+            </span>
+
+            <span>
+                Informasi Jemaat
+            </span>
+
+        </button>
+
+
+
+        <!-- ADMIN -->
+
+        <button
+            type="button"
+            onclick="window.location.href='kelola-admin.html'">
+
+            <span class="icon">
+                ⚙️
+            </span>
+
+            <span>
+                Kelola Admin
+            </span>
+
+        </button>
+
+
+    </nav>
+
+
+
+    <!-- =====================================================
+         ISI PORTAL
+         ===================================================== -->
+
+    <main class="container">
+
+
+
+        <!-- =================================================
+             HOME
+             ================================================= -->
+
+        <section
+            id="home"
+            class="halaman">
+
 
             <div class="welcome-box">
+
 
                 <div class="welcome-icon">
                     ⛪
                 </div>
 
-                <h2>Selamat Datang</h2>
+
+                <h2>
+                    Selamat Datang
+                </h2>
+
 
                 <p>
                     Selamat datang di Portal
                     GPIL Jemaat Betesda Purwosari.
                 </p>
+
 
                 <p>
                     Portal ini menyediakan informasi
@@ -82,105 +643,267 @@
                     jemaat.
                 </p>
 
+
             </div>
+
 
         </section>
 
 
-        <!-- JADWAL KUMPULAN -->
-        <section id="jadwal" class="halaman" style="display: none;">
 
-            <h2>📅 Jadwal Kumpulan</h2>
+        <!-- =================================================
+             JADWAL KUMPULAN
+             ================================================= -->
+
+        <section
+            id="jadwal"
+            class="halaman"
+            style="display: none;">
+
+
+            <h2>
+                📅 Jadwal Kumpulan
+            </h2>
+
 
             <p class="deskripsi">
                 Pilih kelompok kumpulan yang ingin dilihat.
             </p>
 
+
             <div class="menu-card">
 
-                <button type="button" class="card-button">
-                    <span class="card-icon">🏠</span>
+
+                <!-- RUMAH TANGGA -->
+
+                <button
+                    type="button"
+                    class="card-button">
+
+
+                    <span class="card-icon">
+                        🏠
+                    </span>
+
 
                     <span class="card-text">
-                        <strong>Rumah Tangga</strong>
-                        <small>Jadwal kumpulan rumah tangga</small>
+
+                        <strong>
+                            Rumah Tangga
+                        </strong>
+
+                        <small>
+                            Jadwal kumpulan rumah tangga
+                        </small>
+
                     </span>
+
+
                 </button>
 
 
-                <button type="button" class="card-button">
-                    <span class="card-icon">👩</span>
+
+                <!-- PW -->
+
+                <button
+                    type="button"
+                    class="card-button">
+
+
+                    <span class="card-icon">
+                        👩
+                    </span>
+
 
                     <span class="card-text">
-                        <strong>Persekutuan Wanita (PW)</strong>
-                        <small>Jadwal kegiatan PW</small>
+
+                        <strong>
+                            Persekutuan Wanita (PW)
+                        </strong>
+
+                        <small>
+                            Jadwal kegiatan PW
+                        </small>
+
                     </span>
+
+
                 </button>
 
 
-                <button type="button" class="card-button">
-                    <span class="card-icon">👨</span>
+
+                <!-- PKB -->
+
+                <button
+                    type="button"
+                    class="card-button">
+
+
+                    <span class="card-icon">
+                        👨
+                    </span>
+
 
                     <span class="card-text">
-                        <strong>Persekutuan Kaum Bapak (PKB)</strong>
-                        <small>Jadwal kegiatan PKB</small>
+
+                        <strong>
+                            Persekutuan Kaum Bapak (PKB)
+                        </strong>
+
+                        <small>
+                            Jadwal kegiatan PKB
+                        </small>
+
                     </span>
+
+
                 </button>
+
 
             </div>
+
 
         </section>
 
 
-        <!-- LAPORAN KEUANGAN -->
-       <section id="laporan" class="halaman" style="display: none;">
 
-    <h2>💰 Laporan Keuangan</h2>
+        <!-- =================================================
+             LAPORAN KEUANGAN
+             ================================================= -->
 
-    <p class="deskripsi">
-        Silakan pilih laporan keuangan
-        yang ingin dilihat.
-    </p>
+        <section
+            id="laporan"
+            class="halaman laporan-halaman"
+            style="display: none;">
 
-    <div class="menu-card">
 
-        <!-- LAPORAN PEMUDA -->
-        <button type="button"
-            class="card-button"
-            onclick="bukaLaporanPemuda()">
+            <!-- TOMBOL KEMBALI -->
 
-            <span class="card-icon">📊</span>
+            <a
+                href="#home"
+                class="btn-kembali-portal">
 
-            <span class="card-text">
-                <strong>Laporan Keuangan Pemuda</strong>
-                <small>Keuangan Persekutuan Pemuda</small>
-            </span>
+                Kembali ke Portal
 
-            <span class="arrow">›</span>
+            </a>
 
-        </button>
 
-    </div>
 
-</section>
+            <!-- HEADER LAPORAN -->
+
+            <div class="laporan-header">
+
+
+                <div class="laporan-header-content">
+
+
+                    <span class="laporan-label-atas">
+                        INFORMASI KEUANGAN
+                    </span>
+
+
+                    <h2>
+                        Laporan Keuangan
+                    </h2>
+
+
+                    <p>
+                        Laporan keuangan Persekutuan Pemuda
+                        GPIL Jemaat Betesda Purwosari.
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- DAFTAR LAPORAN -->
+
+            <div class="laporan-list">
+
+
+                <!-- LAPORAN PEMUDA -->
+
+                <button
+                    type="button"
+                    class="laporan-card"
+                    onclick="bukaLaporanPemuda()">
+
+
+                    <div class="laporan-card-icon">
+                        📊
+                    </div>
+
+
+                    <div class="laporan-card-content">
+
+
+                        <span class="laporan-card-label">
+                            LAPORAN KEUANGAN
+                        </span>
+
+
+                        <strong>
+                            Pemuda
+                        </strong>
+
+
+                        <small>
+                            Keuangan Persekutuan Pemuda
+                        </small>
+
+
+                    </div>
+
+
+                    <div class="laporan-arrow">
+                        ›
+                    </div>
+
+
+                </button>
+
+
+            </div>
+
+
+        </section>
+
+
     </main>
 
 
-    <!-- FOOTER -->
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
     <footer class="footer">
+
 
         <p>
             GPIL Jemaat Betesda Purwosari
         </p>
 
+
         <small>
             Portal Informasi Jemaat
         </small>
 
+
     </footer>
 
 
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
     <script src="script.js"></script>
+
 
 </body>
 
