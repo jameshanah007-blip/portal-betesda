@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pengumuman - GPIL Jemaat Betesda Purwosari</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fa;
+            color: #222;
+        }
+
+        header {
+            background: #1f4e79;
+            color: white;
+            text-align: center;
+            padding: 20px 15px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        header p {
+            margin: 6px 0 0;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+            padding: 18px 12px 30px;
+        }
+
+        .top-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .btn-kembali {
+            display: block;
+            flex: 1;
+            padding: 13px;
+            background: white;
+            color: #1f4e79;
+            border: 1px solid #1f4e79;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .judul-halaman {
+            text-align: center;
+            margin: 10px 0 20px;
+        }
+
+        .judul-halaman h2 {
+            margin: 0;
+            color: #1f4e79;
+            font-size: 22px;
+        }
+
+        .judul-halaman p {
+            margin: 7px 0 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        #daftarPengumuman {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .kartu {
+            background: white;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .kartu-header {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .ikon-file {
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            border-radius: 12px;
+            background: #eef4f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+        }
+
+        .kartu-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .kartu-info h3 {
+            margin: 0;
+            font-size: 17px;
+            color: #1f4e79;
+            word-break: break-word;
+        }
+
+        .tanggal {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .keterangan {
+            margin: 13px 0;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #444;
+            white-space: pre-line;
+        }
+
+        .file-info {
+            font-size: 12px;
+            color: #666;
+            background: #f5f5f5;
+            padding: 8px 10px;
+            border-radius: 8px;
+            word-break: break-word;
+        }
+
+        .tombol-download {
+            display: block;
+            width: 100%;
+            margin-top: 12px;
+            padding: 13px;
+            background: #1f4e79;
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .tombol-download:active {
+            transform: scale(0.98);
+        }
+
+        .loading,
+        .kosong,
+        .error {
+            background: white;
+            border-radius: 12px;
+            padding: 25px 15px;
+            text-align: center;
+            color: #666;
+        }
+
+        .error {
+            color: #b00020;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 10px;
+            color: #777;
+            font-size: 12px;
+        }
+
+        @media (min-width: 600px) {
+            .container {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            #daftarPengumuman {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>GPIL Jemaat Betesda Purwosari</h1>
+    <p>Pusat Pengumuman dan Dokumen Jemaat</p>
+</header>
+
+<div class="container">
+
+    <div class="top-bar">
+        <a href="index.html" class="btn-kembali">
+            ← Kembali ke Home
+        </a>
+    </div>
+
+    <div class="judul-halaman">
+        <h2>📢 Pengumuman</h2>
+        <p>Informasi, surat dan dokumen kegiatan jemaat</p>
+    </div>
+
+    <div id="daftarPengumuman">
+        <div class="loading">
+            ⏳ Memuat pengumuman...
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    GPIL Jemaat Betesda Purwosari
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="pengumuman.js"></script>
+
+</body>
+</html>
