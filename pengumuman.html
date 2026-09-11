@@ -1,114 +1,285 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Pengumuman - GPIL Jemaat Betesda Purwosari</title>
+    <title>Dokumen Jemaat</title>
 
     <style>
         * {
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f7fa;
-            color: #222;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
         }
 
-        header {
-            background: #1f4e79;
-            color: white;
-            text-align: center;
-            padding: 20px 15px;
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+
+            border-bottom: 1px solid #e5e7eb;
+
+            padding:
+                calc(10px + env(safe-area-inset-top))
+                14px
+                10px;
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 20px;
-        }
+        .btn-kembali {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
 
-        header p {
-            margin: 6px 0 0;
+            padding: 9px 13px;
+
+            background: #ffffff;
+            color: #1f4e79;
+
+            border: 1px solid #d7e1ec;
+            border-radius: 10px;
+
+            text-decoration: none;
+
             font-size: 14px;
+            font-weight: 600;
+
+            transition: 0.2s ease;
         }
+
+        .btn-kembali:active {
+            transform: scale(0.97);
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .hero {
+            padding: 28px 18px 20px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 6px 12px;
+
+            background: #eaf2f9;
+            color: #1f4e79;
+
+            border-radius: 999px;
+
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+
+            margin-bottom: 12px;
+        }
+
+        .hero h1 {
+            margin: 0;
+
+            color: #173b5f;
+
+            font-size: 24px;
+            line-height: 1.25;
+            font-weight: 750;
+        }
+
+        .hero p {
+            max-width: 520px;
+
+            margin: 9px auto 0;
+
+            color: #6b7280;
+
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           CONTAINER
+        ========================= */
 
         .container {
             width: 100%;
             max-width: 900px;
-            margin: auto;
-            padding: 18px 12px 30px;
+
+            margin: 0 auto;
+
+            padding:
+                0 14px
+                calc(35px + env(safe-area-inset-bottom));
         }
 
-        .top-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-
-        .btn-kembali {
-            display: block;
-            flex: 1;
-            padding: 13px;
-            background: white;
-            color: #1f4e79;
-            border: 1px solid #1f4e79;
-            border-radius: 10px;
-            text-align: center;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 15px;
-        }
-
-        .judul-halaman {
-            text-align: center;
-            margin: 10px 0 20px;
-        }
-
-        .judul-halaman h2 {
-            margin: 0;
-            color: #1f4e79;
-            font-size: 22px;
-        }
-
-        .judul-halaman p {
-            margin: 7px 0 0;
-            color: #666;
-            font-size: 14px;
-        }
+        /* =========================
+           LIST
+        ========================= */
 
         #daftarPengumuman {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 13px;
         }
 
+        /* =========================
+           CARD
+        ========================= */
+
         .kartu {
-            background: white;
-            border-radius: 14px;
+            position: relative;
+
+            background: #ffffff;
+
+            border: 1px solid #e8edf3;
+            border-radius: 16px;
+
             padding: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+            box-shadow:
+                0 4px 14px rgba(15, 23, 42, 0.055);
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .kartu:active {
+            transform: scale(0.985);
+        }
+
+        @media (hover: hover) {
+
+            .kartu:hover {
+                transform: translateY(-2px);
+
+                border-color: #d2dfeb;
+
+                box-shadow:
+                    0 8px 24px rgba(15, 23, 42, 0.09);
+            }
         }
 
         .kartu-header {
             display: flex;
-            gap: 12px;
             align-items: flex-start;
+
+            gap: 13px;
         }
 
+        /* =========================
+           FILE BADGE
+        ========================= */
+
         .ikon-file {
-            width: 50px;
-            height: 50px;
-            min-width: 50px;
-            border-radius: 12px;
-            background: #eef4f9;
+            width: 52px;
+            height: 58px;
+
+            min-width: 52px;
+
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 27px;
+
+            border-radius: 12px;
+
+            background: #f1f5f9;
+
+            color: #1f4e79;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: 0.3px;
+
+            position: relative;
+
+            overflow: hidden;
         }
+
+        .ikon-file::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            right: 0;
+
+            width: 15px;
+            height: 15px;
+
+            background: #ffffff;
+
+            clip-path: polygon(0 0, 100% 100%, 0 100%);
+        }
+
+        .file-pdf {
+            background: #fff0f0;
+            color: #c62828;
+        }
+
+        .file-word {
+            background: #edf4ff;
+            color: #185abc;
+        }
+
+        .file-excel {
+            background: #edf8f1;
+            color: #18864b;
+        }
+
+        .file-ppt {
+            background: #fff5eb;
+            color: #c75b12;
+        }
+
+        .file-image {
+            background: #f3efff;
+            color: #7048b8;
+        }
+
+        .file-zip {
+            background: #fff8df;
+            color: #a66a00;
+        }
+
+        .file-other {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        /* =========================
+           CARD INFO
+        ========================= */
 
         .kartu-info {
             flex: 1;
@@ -116,90 +287,401 @@
         }
 
         .kartu-info h3 {
-            margin: 0;
-            font-size: 17px;
+            margin: 2px 0 6px;
+
             color: #1f4e79;
-            word-break: break-word;
+
+            font-size: 16px;
+            line-height: 1.35;
+
+            font-weight: 700;
+
+            overflow-wrap: anywhere;
         }
 
         .tanggal {
-            margin-top: 5px;
+            color: #8a94a3;
+
             font-size: 12px;
-            color: #777;
         }
+
+        /* =========================
+           KETERANGAN
+        ========================= */
 
         .keterangan {
-            margin: 13px 0;
-            font-size: 14px;
-            line-height: 1.5;
-            color: #444;
+            margin: 13px 0 12px;
+
+            color: #4b5563;
+
+            font-size: 13px;
+            line-height: 1.6;
+
             white-space: pre-line;
+
+            overflow-wrap: anywhere;
         }
+
+        /* =========================
+           FILE INFO
+        ========================= */
 
         .file-info {
-            font-size: 12px;
-            color: #666;
-            background: #f5f5f5;
-            padding: 8px 10px;
-            border-radius: 8px;
-            word-break: break-word;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 9px 10px;
+
+            background: #f8fafc;
+
+            border: 1px solid #edf1f5;
+
+            border-radius: 9px;
+
+            color: #64748b;
+
+            font-size: 11px;
+            line-height: 1.4;
+
+            overflow-wrap: anywhere;
         }
 
-.btn-upload {
-    display: block;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto 20px;
-    padding: 13px;
-    background: #1f4e79;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-}
-        
-        .tombol-download {
-            display: block;
-            width: 100%;
+        .file-name {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .lihat-label {
             margin-top: 12px;
-            padding: 13px;
-            background: #1f4e79;
-            color: white;
-            border-radius: 10px;
-            text-decoration: none;
-            text-align: center;
-            font-weight: bold;
-            font-size: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            color: #1f4e79;
+
+            font-size: 12px;
+            font-weight: 700;
         }
 
-        .tombol-download:active {
-            transform: scale(0.98);
+        .lihat-label span:last-child {
+            font-size: 18px;
+            line-height: 1;
         }
+
+        /* =========================
+           LOADING / EMPTY / ERROR
+        ========================= */
 
         .loading,
         .kosong,
         .error {
-            background: white;
-            border-radius: 12px;
-            padding: 25px 15px;
+            background: #ffffff;
+
+            border: 1px solid #e8edf3;
+
+            border-radius: 16px;
+
+            padding: 30px 18px;
+
             text-align: center;
-            color: #666;
+
+            color: #6b7280;
+
+            font-size: 14px;
+        }
+
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+
+        .kosong {
+            color: #64748b;
         }
 
         .error {
-            color: #b00020;
+            color: #b42318;
+
+            background: #fff8f7;
+
+            border-color: #f5d0cc;
         }
 
-        footer {
-            text-align: center;
-            padding: 20px 10px;
-            color: #777;
-            font-size: 12px;
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.55;
+            }
         }
+
+        /* =========================
+           MODAL VIEWER
+        ========================= */
+
+        .modal {
+            display: none;
+
+            position: fixed;
+            inset: 0;
+
+            z-index: 100;
+
+            background: rgba(15, 23, 42, 0.72);
+
+            padding: 12px;
+
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.aktif {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 900px;
+
+            height: min(94vh, 900px);
+
+            background: #ffffff;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            display: flex;
+            flex-direction: column;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        /* =========================
+           MODAL HEADER
+        ========================= */
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 12px 14px;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            background: #ffffff;
+        }
+
+        .modal-title {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .modal-title h2 {
+            margin: 0;
+
+            color: #1f2937;
+
+            font-size: 15px;
+            line-height: 1.3;
+
+            overflow-wrap: anywhere;
+        }
+
+        .modal-title p {
+            margin: 3px 0 0;
+
+            color: #8a94a3;
+
+            font-size: 11px;
+        }
+
+        .btn-tutup {
+            width: 36px;
+            height: 36px;
+
+            min-width: 36px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            background: #f1f5f9;
+
+            color: #334155;
+
+            font-size: 21px;
+
+            cursor: pointer;
+        }
+
+        /* =========================
+           MODAL CONTENT
+        ========================= */
+
+        .modal-content {
+            flex: 1;
+
+            min-height: 0;
+
+            background: #eef1f5;
+
+            overflow: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content iframe {
+            width: 100%;
+            height: 100%;
+
+            border: 0;
+
+            background: #ffffff;
+        }
+
+        .modal-content img {
+            display: block;
+
+            max-width: 100%;
+            max-height: 100%;
+
+            object-fit: contain;
+        }
+
+        .file-preview-info {
+            width: 100%;
+
+            padding: 30px 20px;
+
+            text-align: center;
+        }
+
+        .preview-icon {
+            width: 72px;
+            height: 82px;
+
+            margin: 0 auto 15px;
+
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #ffffff;
+
+            color: #1f4e79;
+
+            font-size: 15px;
+            font-weight: 800;
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .file-preview-info h3 {
+            margin: 0;
+
+            color: #1f2937;
+
+            font-size: 16px;
+            line-height: 1.4;
+
+            overflow-wrap: anywhere;
+        }
+
+        .file-preview-info p {
+            margin: 8px 0 18px;
+
+            color: #64748b;
+
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .btn-buka-file {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 44px;
+
+            padding: 11px 18px;
+
+            background: #1f4e79;
+            color: #ffffff;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           MODAL FOOTER
+        ========================= */
+
+        .modal-footer {
+            padding: 10px 12px;
+
+            background: #ffffff;
+
+            border-top: 1px solid #e5e7eb;
+
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-download {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 40px;
+
+            padding: 9px 14px;
+
+            background: #1f4e79;
+            color: #ffffff;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           DESKTOP
+        ========================= */
 
         @media (min-width: 600px) {
+
+            .hero {
+                padding-top: 38px;
+                padding-bottom: 28px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
             .container {
                 padding-left: 20px;
                 padding-right: 20px;
@@ -207,7 +689,23 @@
 
             #daftarPengumuman {
                 display: grid;
-                grid-template-columns: repeat(2, 1fr);
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+                gap: 16px;
+            }
+
+            .kartu {
+                padding: 18px;
+            }
+        }
+
+        @media (min-width: 900px) {
+
+            #daftarPengumuman {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
             }
         }
     </style>
@@ -215,43 +713,132 @@
 
 <body>
 
-<header>
-    <h1>GPIL Jemaat Betesda Purwosari</h1>
-    <p>Pusat Pengumuman dan Dokumen Jemaat</p>
-</header>
-
-<div class="container">
+    <!-- =========================
+         TOP BAR
+    ========================= -->
 
     <div class="top-bar">
+
         <a href="index.html" class="btn-kembali">
-            ← Kembali ke Home
+            ← Kembali
         </a>
+
     </div>
 
-    <div class="judul-halaman">
-        <h2>📢 Pengumuman</h2>
-        <p>Informasi, surat dan dokumen kegiatan jemaat</p>
-    </div>
 
-<a href="kelola-pengumuman.html" class="btn-upload">
-    📤 Upload Dokumen
-</a>
-    
-    <div id="daftarPengumuman">
-        <div class="loading">
-            ⏳ Memuat pengumuman...
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <section class="hero">
+
+        <div class="hero-badge">
+            DOKUMEN JEMAAT
         </div>
+
+        <h1>
+            Informasi &amp; Dokumen
+        </h1>
+
+        <p>
+            Akses informasi dan dokumen kegiatan jemaat dengan mudah.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         CONTENT
+    ========================= -->
+
+    <main class="container">
+
+        <div id="daftarPengumuman">
+
+            <div class="loading">
+                Memuat dokumen...
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         MODAL VIEWER
+    ========================= -->
+
+    <div
+        id="modal"
+        class="modal"
+        onclick="tutupModalJikaKlikLuar(event)"
+    >
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <div class="modal-title">
+
+                    <h2 id="modalJudul">
+                        Dokumen
+                    </h2>
+
+                    <p id="modalNamaFile">
+                        -
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-tutup"
+                    onclick="tutupModal()"
+                    aria-label="Tutup"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div
+                id="modalContent"
+                class="modal-content"
+            >
+            </div>
+
+
+            <div class="modal-footer">
+
+                <a
+                    id="btnDownload"
+                    class="btn-download"
+                    href="#"
+                    target="_blank"
+                    rel="noopener"
+                    download
+                >
+                    Download
+                </a>
+
+            </div>
+
+        </div>
+
     </div>
 
-</div>
 
-<footer>
-    GPIL Jemaat Betesda Purwosari
-</footer>
+    <!-- =========================
+         SUPABASE
+    ========================= -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-client.js"></script>
-<script src="pengumuman.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase-client.js"></script>
+
+    <script src="pengumuman.js"></script>
 
 </body>
+
 </html>
