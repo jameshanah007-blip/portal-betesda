@@ -1311,7 +1311,7 @@ function exportPDF() {
 
 
     doc.text(
-        "Saldo Awal: " +
+        "Saldo Bulan Lalu: " +
         saldoAwal,
         14,
         38
@@ -1402,15 +1402,15 @@ function exportPDF() {
             },
 
             3: {
-                halign: "right"
+                halign: "center"
             },
 
             4: {
-                halign: "right"
+                halign: "center"
             },
 
             5: {
-                halign: "right"
+                halign: "center"
             }
 
         }
