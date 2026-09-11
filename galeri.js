@@ -5,7 +5,7 @@ async function tampilkanGaleri() {
 
     loading.style.display = "block";
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from("galeri_jemaat")
         .select("*")
         .order("created_at", { ascending: false });
