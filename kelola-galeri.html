@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Kelola Galeri Jemaat</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f6f8;
+        }
+
+        .header {
+            background: #1f4e79;
+            color: white;
+            text-align: center;
+            padding: 20px 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px 12px;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #1f4e79;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background: #999;
+        }
+
+        .status {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .preview {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .preview img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .kembali {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #1f4e79;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header class="header">
+
+        <h1>📸 Kelola Galeri Jemaat</h1>
+
+    </header>
+
+    <main class="container">
+
+        <div class="box">
+
+            <h2>Upload Foto Kegiatan</h2>
+
+            <label for="judul">
+                Judul / Keterangan
+            </label>
+
+            <input
+                type="text"
+                id="judul"
+                placeholder="Contoh: Ibadah Natal Jemaat"
+            >
+
+            <label for="foto">
+                Pilih Foto
+            </label>
+
+            <input
+                type="file"
+                id="foto"
+                accept="image/*"
+            >
+
+            <div class="preview" id="preview">
+                <img id="previewImage" src="" alt="Preview">
+            </div>
+
+            <button
+                type="button"
+                id="btnUpload"
+                onclick="uploadFoto()">
+
+                📤 Upload Foto
+
+            </button>
+
+            <div
+                id="status"
+                class="status">
+            </div>
+
+        </div>
+
+        <a
+            href="galeri.html"
+            class="kembali">
+
+            ← Lihat Galeri Jemaat
+
+        </a>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase-client.js"></script>
+
+    <script src="kelola-galeri.js"></script>
+
+</body>
+
+</html>
