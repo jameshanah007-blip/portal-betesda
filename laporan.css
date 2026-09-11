@@ -207,6 +207,7 @@ table td:nth-child(3) {
 table tfoot td {
     font-weight: bold;
     background: #f0f0f0;
+    text-align: center !important;
 }
 
 .total-label {
