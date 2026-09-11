@@ -1,192 +1,251 @@
+// =====================================================
+// DATA GLOBAL
+// =====================================================
+
 let daftarDataPengumuman = [];
 
 
-/* ==================================================
-   TAMPILKAN PENGUMUMAN
-================================================== */
+// =====================================================
+// AMBIL DATA DARI SUPABASE
+// =====================================================
 
-async function tampilkanPengumuman() {
+async function ambilPengumuman() {
 
     const container =
         document.getElementById("daftarPengumuman");
 
+    if (!container) {
+        return;
+    }
+
     container.innerHTML = `
-        <div class="loading">
-            Memuat dokumen...
+        <div class="state-message">
+            <div class="state-icon">📄</div>
+
+            <h3>
+                Memuat dokumen...
+            </h3>
+
+            <p>
+                Mohon tunggu sebentar.
+            </p>
         </div>
     `;
 
 
-    const { data, error } =
-        await supabaseClient
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
             .from("pengumuman")
             .select("*")
-            .order("created_at", {
-                ascending: false
-            });
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
 
 
-    if (error) {
+        if (error) {
+            throw error;
+        }
+
+
+        daftarDataPengumuman =
+            Array.isArray(data)
+                ? data
+                : [];
+
+
+        tampilkanPengumuman();
+
+    } catch (error) {
 
         console.error(
-            "ERROR PENGUMUMAN:",
+            "Gagal mengambil pengumuman:",
             error
         );
 
-        container.innerHTML = `
-            <div class="error">
-                Gagal memuat dokumen.<br><br>
-                ${escapeHTML(error.message)}
-            </div>
-        `;
-
-        return;
-    }
-
-
-    if (!data || data.length === 0) {
 
         container.innerHTML = `
-            <div class="kosong">
-                Belum ada dokumen atau informasi.
+            <div class="state-message">
+
+                <div class="state-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    Dokumen belum dapat dimuat
+                </h3>
+
+                <p>
+                    Silakan coba lagi beberapa saat.
+                </p>
+
             </div>
         `;
-
-        return;
     }
-
-
-    /*
-       Simpan data ke variabel global
-       agar kartu cukup memanggil ID.
-    */
-
-    daftarDataPengumuman = data;
-
-
-    container.innerHTML = data
-        .map(item => buatKartu(item))
-        .join("");
 }
 
 
-/* ==================================================
-   BUAT KARTU
-================================================== */
+// =====================================================
+// TAMPILKAN DATA
+// =====================================================
 
-function buatKartu(item) {
+function tampilkanPengumuman() {
 
-    const namaFile =
-        item.nama_asli ||
-        item.nama_file ||
+    const container =
+        document.getElementById("daftarPengumuman");
+
+
+    if (!container) {
+        return;
+    }
+
+
+    if (
+        !daftarDataPengumuman ||
+        daftarDataPengumuman.length === 0
+    ) {
+
+        container.innerHTML = `
+            <div class="state-message">
+
+                <div class="state-icon">
+                    📂
+                </div>
+
+                <h3>
+                    Belum ada dokumen
+                </h3>
+
+                <p>
+                    Dokumen jemaat akan ditampilkan di sini.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        daftarDataPengumuman
+            .map(
+                (item) =>
+                    buatCardDokumen(item)
+            )
+            .join("");
+}
+
+
+// =====================================================
+// BUAT CARD DOKUMEN
+// =====================================================
+
+function buatCardDokumen(item) {
+
+    const id =
+        item?.id ?? "";
+
+
+    const nama =
+        item?.nama_asli ||
+        item?.nama_file ||
         "Dokumen";
 
 
-    const jenisFile =
-        getJenisFile(namaFile);
+    const jenis =
+        getJenisFile(nama);
+
+
+    const format =
+        getLabelFormat(jenis);
+
+
+    const icon =
+        getIconFile(jenis);
 
 
     const ukuran =
         formatUkuran(
-            item.ukuran_file
+            item?.ukuran_file
         );
 
 
     const tanggal =
         formatTanggal(
-            item.created_at
+            item?.created_at
         );
 
 
-    /*
-       Gunakan ID sebagai pengenal kartu.
-    */
-
-    const id =
-        String(item.id);
+    const meta = [
+        format,
+        tanggal,
+        ukuran
+    ]
+        .filter(Boolean)
+        .join(" • ");
 
 
     return `
         <article
-            class="kartu"
+            class="dokumen-card"
             data-id="${escapeAttribute(id)}"
-            onclick="bukaDokumenById('${escapeAttribute(id)}')"
+            tabindex="0"
+            role="button"
+            aria-label="Buka ${escapeHtml(nama)}"
         >
 
-            <div class="kartu-header">
-
-                <div
-                    class="ikon-file ${jenisFile.className}"
-                >
-                    ${jenisFile.label}
-                </div>
-
-
-                <div class="kartu-info">
-
-                    <h3>
-                        ${escapeHTML(
-                            item.judul ||
-                            "Dokumen Jemaat"
-                        )}
-                    </h3>
+            <div
+                class="file-icon ${jenis}"
+                aria-hidden="true"
+            >
+                ${icon}
+            </div>
 
 
-                    <div class="tanggal">
-                        ${tanggal}
-                    </div>
+            <div class="dokumen-info">
+
+                <h2 class="dokumen-title">
+                    ${escapeHtml(nama)}
+                </h2>
+
+
+                <div class="dokumen-meta">
+
+                    <span
+                        class="format-badge ${jenis}"
+                    >
+                        ${escapeHtml(format)}
+                    </span>
+
+                    ${
+                        tanggal
+                            ? `<span>${escapeHtml(tanggal)}</span>`
+                            : ""
+                    }
+
+                    ${
+                        ukuran
+                            ? `<span>${escapeHtml(ukuran)}</span>`
+                            : ""
+                    }
 
                 </div>
 
             </div>
 
 
-            ${
-                item.keterangan
-                ?
-                `
-                <div class="keterangan">
-                    ${escapeHTML(
-                        item.keterangan
-                    )}
-                </div>
-                `
-                :
-                ""
-            }
-
-
-            <div class="file-info">
-
-                <span>
-                    📎
-                </span>
-
-                <span class="file-name">
-                    ${escapeHTML(namaFile)}
-                </span>
-
-                ${
-                    ukuran
-                    ?
-                    `<span>• ${ukuran}</span>`
-                    :
-                    ""
-                }
-
-            </div>
-
-
-            <div class="lihat-label">
-
-                <span>
-                    Buka dokumen
-                </span>
-
-                <span>
-                    ›
-                </span>
-
+            <div
+                class="open-arrow"
+                aria-hidden="true"
+            >
+                ›
             </div>
 
         </article>
@@ -194,23 +253,116 @@ function buatKartu(item) {
 }
 
 
-/* ==================================================
-   BUKA DOKUMEN BERDASARKAN ID
-================================================== */
+// =====================================================
+// EVENT DELEGATION
+// Lebih aman daripada onclick inline
+// =====================================================
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        const card =
+            event.target.closest(
+                ".dokumen-card"
+            );
+
+
+        if (!card) {
+            return;
+        }
+
+
+        const id =
+            card.dataset.id;
+
+
+        if (!id) {
+            return;
+        }
+
+
+        const item =
+            daftarDataPengumuman.find(
+                (data) =>
+                    String(data.id) ===
+                    String(id)
+            );
+
+
+        if (item) {
+            bukaDokumen(item);
+        }
+    }
+);
+
+
+// =====================================================
+// SUPPORT KEYBOARD
+// =====================================================
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key !== "Enter" &&
+            event.key !== " "
+        ) {
+            return;
+        }
+
+
+        const card =
+            event.target.closest(
+                ".dokumen-card"
+            );
+
+
+        if (!card) {
+            return;
+        }
+
+
+        event.preventDefault();
+
+
+        const id =
+            card.dataset.id;
+
+
+        const item =
+            daftarDataPengumuman.find(
+                (data) =>
+                    String(data.id) ===
+                    String(id)
+            );
+
+
+        if (item) {
+            bukaDokumen(item);
+        }
+    }
+);
+
+
+// =====================================================
+// BUKA DOKUMEN BERDASARKAN ID
+// Bisa dipanggil dari tempat lain jika diperlukan
+// =====================================================
 
 function bukaDokumenById(id) {
 
     const item =
         daftarDataPengumuman.find(
-            data =>
+            (data) =>
                 String(data.id) ===
                 String(id)
         );
 
 
     if (!item) {
-
-        console.error(
+        console.warn(
             "Dokumen tidak ditemukan:",
             id
         );
@@ -223,75 +375,72 @@ function bukaDokumenById(id) {
 }
 
 
-/* ==================================================
-   BUKA DOKUMEN
-================================================== */
+// =====================================================
+// BUKA DOKUMEN
+// =====================================================
 
 function bukaDokumen(item) {
 
     const modal =
         document.getElementById("modal");
 
-
-    const modalContent =
-        document.getElementById(
-            "modalContent"
-        );
-
-
     const modalJudul =
-        document.getElementById(
-            "modalJudul"
-        );
-
+        document.getElementById("modalJudul");
 
     const modalNamaFile =
-        document.getElementById(
-            "modalNamaFile"
-        );
+        document.getElementById("modalNamaFile");
 
+    const modalContent =
+        document.getElementById("modalContent");
 
     const btnDownload =
-        document.getElementById(
-            "btnDownload"
-        );
+        document.getElementById("btnDownload");
 
 
-    const namaFile =
-        item.nama_asli ||
-        item.nama_file ||
+    if (
+        !modal ||
+        !modalJudul ||
+        !modalNamaFile ||
+        !modalContent ||
+        !btnDownload
+    ) {
+        return;
+    }
+
+
+    const nama =
+        item?.nama_asli ||
+        item?.nama_file ||
         "Dokumen";
 
 
     const url =
-        item.url_file ||
+        item?.url_file ||
         "";
 
 
-    const jenis =
-        getJenisFile(namaFile);
-
-
-    /*
-       Pastikan URL tersedia
-    */
-
     if (!url) {
 
-        modalContent.innerHTML = `
-            <div class="file-preview-info">
+        modalJudul.textContent =
+            "Dokumen tidak tersedia";
 
-                <div class="preview-icon">
-                    ${jenis.label}
+        modalNamaFile.textContent =
+            nama;
+
+        modalContent.innerHTML = `
+            <div class="file-open-box">
+
+                <div class="file-open-icon">
+                    ⚠️
                 </div>
 
                 <h3>
-                    ${escapeHTML(namaFile)}
+                    File tidak tersedia
                 </h3>
 
                 <p>
-                    File tidak memiliki alamat
-                    yang dapat dibuka.
+                    Tautan dokumen belum tersedia
+                    atau file sudah tidak dapat diakses.
                 </p>
 
             </div>
@@ -302,158 +451,244 @@ function bukaDokumen(item) {
             "none";
 
 
-        modal.classList.add(
-            "aktif"
-        );
-
-
-        document.body.style.overflow =
-            "hidden";
-
+        bukaModal();
 
         return;
     }
 
 
-    /*
-       Judul modal
-    */
+    const jenis =
+        getJenisFile(nama);
+
 
     modalJudul.textContent =
-        item.judul ||
-        "Dokumen Jemaat";
-
+        nama;
 
     modalNamaFile.textContent =
-        namaFile;
-
-
-    /*
-       Tombol download
-    */
-
-    btnDownload.href =
-        buatUrlDownload(
-            url,
-            namaFile
-        );
+        getLabelFormat(jenis);
 
 
     btnDownload.style.display =
         "inline-flex";
 
 
-    /*
-       ==============================
-       PDF
-       ==============================
-    */
+    btnDownload.href =
+        buatUrlDownload(
+            url,
+            nama
+        );
 
-    if (
-        jenis.type === "pdf"
-    ) {
+
+    // =================================================
+    // PDF
+    // =================================================
+
+    if (jenis === "pdf") {
 
         modalContent.innerHTML = `
 
             <iframe
                 src="${escapeAttribute(url)}"
-                title="${escapeAttribute(
-                    namaFile
-                )}"
-                style="
-                    width:100%;
-                    height:100%;
-                    border:0;
-                    background:white;
-                "
+                title="${escapeAttribute(nama)}"
+                loading="lazy"
             ></iframe>
 
+            <div
+                style="
+                    display:flex;
+                    justify-content:center;
+                    padding:12px;
+                    background:#ffffff;
+                    border-top:1px solid #e2e8f0;
+                "
+            >
+
+                <a
+                    href="${escapeAttribute(url)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn-open-file"
+                    style="width:100%;max-width:420px;"
+                >
+                    📄 Buka PDF
+                </a>
+
+            </div>
         `;
 
     }
 
+    // =================================================
+    // GAMBAR
+    // =================================================
 
-    /*
-       ==============================
-       GAMBAR
-       ==============================
-    */
-
-    else if (
-        jenis.type === "image"
-    ) {
+    else if (jenis === "image") {
 
         modalContent.innerHTML = `
 
             <img
                 src="${escapeAttribute(url)}"
-                alt="${escapeAttribute(
-                    namaFile
-                )}"
-            >
+                alt="${escapeAttribute(nama)}"
+                loading="lazy"
+            />
 
         `;
-
     }
 
+    // =================================================
+    // FILE WORD
+    // =================================================
 
-    /*
-       ==============================
-       FILE LAIN
-       ==============================
-    */
+    else if (jenis === "word") {
+
+        modalContent.innerHTML =
+            buatFileOpenBox(
+                "📝",
+                nama,
+                "Dokumen Word siap dibuka.",
+                url,
+                "Buka Dokumen"
+            );
+    }
+
+    // =================================================
+    // FILE EXCEL
+    // =================================================
+
+    else if (jenis === "excel") {
+
+        modalContent.innerHTML =
+            buatFileOpenBox(
+                "📊",
+                nama,
+                "Dokumen Excel siap dibuka.",
+                url,
+                "Buka Dokumen"
+            );
+    }
+
+    // =================================================
+    // FILE POWERPOINT
+    // =================================================
+
+    else if (jenis === "powerpoint") {
+
+        modalContent.innerHTML =
+            buatFileOpenBox(
+                "📽️",
+                nama,
+                "Presentasi siap dibuka.",
+                url,
+                "Buka Presentasi"
+            );
+    }
+
+    // =================================================
+    // ZIP / RAR
+    // =================================================
+
+    else if (jenis === "zip") {
+
+        modalContent.innerHTML =
+            buatFileOpenBox(
+                "🗜️",
+                nama,
+                "File arsip siap dibuka atau disimpan.",
+                url,
+                "Buka File"
+            );
+    }
+
+    // =================================================
+    // FILE LAIN
+    // =================================================
 
     else {
 
-        modalContent.innerHTML = `
-
-            <div class="file-preview-info">
-
-                <div
-                    class="
-                        preview-icon
-                        ${jenis.className}
-                    "
-                >
-                    ${jenis.label}
-                </div>
-
-
-                <h3>
-                    ${escapeHTML(
-                        namaFile
-                    )}
-                </h3>
-
-
-                <p>
-                    File ini tidak dapat
-                    ditampilkan langsung
-                    di browser.
-                </p>
-
-
-                <a
-                    class="btn-buka-file"
-                    href="${escapeAttribute(url)}"
-                    target="_blank"
-                    rel="noopener"
-                >
-                    Buka File
-                </a>
-
-            </div>
-
-        `;
+        modalContent.innerHTML =
+            buatFileOpenBox(
+                "📄",
+                nama,
+                "Dokumen siap dibuka.",
+                url,
+                "Buka File"
+            );
     }
 
 
-    /*
-       Tampilkan modal
-    */
+    bukaModal();
+}
+
+
+// =====================================================
+// KOTAK BUKA FILE
+// =====================================================
+
+function buatFileOpenBox(
+    icon,
+    nama,
+    deskripsi,
+    url,
+    teksTombol
+) {
+
+    return `
+
+        <div class="file-open-box">
+
+            <div class="file-open-icon">
+                ${icon}
+            </div>
+
+
+            <h3>
+                ${escapeHtml(nama)}
+            </h3>
+
+
+            <p>
+                ${escapeHtml(deskripsi)}
+            </p>
+
+
+            <a
+                href="${escapeAttribute(url)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-open-file"
+            >
+                ${escapeHtml(teksTombol)}
+            </a>
+
+        </div>
+
+    `;
+}
+
+
+// =====================================================
+// MODAL OPEN
+// =====================================================
+
+function bukaModal() {
+
+    const modal =
+        document.getElementById("modal");
+
+
+    if (!modal) {
+        return;
+    }
+
 
     modal.classList.add(
-        "aktif"
+        "active"
+    );
+
+
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
     );
 
 
@@ -462,20 +697,32 @@ function bukaDokumen(item) {
 }
 
 
-/* ==================================================
-   TUTUP MODAL
-================================================== */
+// =====================================================
+// MODAL CLOSE
+// =====================================================
 
 function tutupModal() {
 
     const modal =
-        document.getElementById(
-            "modal"
-        );
+        document.getElementById("modal");
+
+    const modalContent =
+        document.getElementById("modalContent");
+
+
+    if (!modal) {
+        return;
+    }
 
 
     modal.classList.remove(
-        "aktif"
+        "active"
+    );
+
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
     );
 
 
@@ -483,42 +730,105 @@ function tutupModal() {
         "";
 
 
-    const content =
-        document.getElementById(
-            "modalContent"
+    if (modalContent) {
+
+        setTimeout(
+            function () {
+
+                modalContent.innerHTML =
+                    "";
+
+            },
+            200
         );
-
-
-    content.innerHTML = "";
-}
-
-
-/* ==================================================
-   KLIK DI LUAR MODAL
-================================================== */
-
-function tutupModalJikaKlikLuar(
-    event
-) {
-
-    if (
-        event.target.id ===
-        "modal"
-    ) {
-
-        tutupModal();
-
     }
 }
 
 
-/* ==================================================
-   URL DOWNLOAD
-================================================== */
+// =====================================================
+// TOMBOL TUTUP
+// =====================================================
+
+const btnTutup =
+    document.getElementById(
+        "btnTutup"
+    );
+
+
+if (btnTutup) {
+
+    btnTutup.addEventListener(
+        "click",
+        tutupModal
+    );
+}
+
+
+// =====================================================
+// KLIK DI LUAR MODAL
+// =====================================================
+
+const modal =
+    document.getElementById(
+        "modal"
+    );
+
+
+if (modal) {
+
+    modal.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target === modal
+            ) {
+                tutupModal();
+            }
+        }
+    );
+}
+
+
+// =====================================================
+// TOMBOL ESCAPE
+// =====================================================
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            const modal =
+                document.getElementById(
+                    "modal"
+                );
+
+
+            if (
+                modal &&
+                modal.classList.contains(
+                    "active"
+                )
+            ) {
+
+                tutupModal();
+            }
+        }
+    }
+);
+
+
+// =====================================================
+// BUAT URL DOWNLOAD
+// =====================================================
 
 function buatUrlDownload(
     url,
-    namaFile
+    nama
 ) {
 
     if (!url) {
@@ -526,250 +836,338 @@ function buatUrlDownload(
     }
 
 
-    const separator =
-        url.includes("?")
-        ? "&"
-        : "?";
+    try {
+
+        const encodedName =
+            encodeURIComponent(
+                nama || "dokumen"
+            );
 
 
-    return (
-        url +
-        separator +
-        "download=" +
-        encodeURIComponent(
-            namaFile
-        )
-    );
+        const separator =
+            url.includes("?")
+                ? "&"
+                : "?";
+
+
+        return (
+            url +
+            separator +
+            "download=" +
+            encodedName
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Gagal membuat URL download:",
+            error
+        );
+
+
+        return url;
+    }
 }
 
 
-/* ==================================================
-   JENIS FILE
-================================================== */
+// =====================================================
+// DETEKSI JENIS FILE
+// =====================================================
 
 function getJenisFile(
     namaFile
 ) {
 
+    if (!namaFile) {
+        return "file";
+    }
+
+
     const nama =
-        namaFile.toLowerCase();
+        String(
+            namaFile
+        )
+            .toLowerCase()
+            .split("?")[0]
+            .split("#")[0];
 
 
-    /* PDF */
+    const ekstensi =
+        nama.includes(".")
+            ? nama
+                .split(".")
+                .pop()
+            : "";
 
+
+    // PDF
     if (
-        nama.endsWith(".pdf")
+        ekstensi === "pdf"
     ) {
-
-        return {
-            type: "pdf",
-            label: "PDF",
-            className: "file-pdf"
-        };
-
+        return "pdf";
     }
 
 
-    /* WORD */
-
+    // Gambar
     if (
-        nama.endsWith(".doc") ||
-        nama.endsWith(".docx") ||
-        nama.endsWith(".odt") ||
-        nama.endsWith(".rtf")
+        [
+            "jpg",
+            "jpeg",
+            "png",
+            "gif",
+            "webp",
+            "bmp",
+            "svg"
+        ].includes(ekstensi)
     ) {
-
-        return {
-            type: "word",
-            label: "WORD",
-            className: "file-word"
-        };
-
+        return "image";
     }
 
 
-    /* EXCEL */
-
+    // Word
     if (
-        nama.endsWith(".xls") ||
-        nama.endsWith(".xlsx") ||
-        nama.endsWith(".ods") ||
-        nama.endsWith(".csv")
+        [
+            "doc",
+            "docx"
+        ].includes(ekstensi)
     ) {
-
-        return {
-            type: "excel",
-            label: "EXCEL",
-            className: "file-excel"
-        };
-
+        return "word";
     }
 
 
-    /* POWERPOINT */
-
+    // Excel
     if (
-        nama.endsWith(".ppt") ||
-        nama.endsWith(".pptx") ||
-        nama.endsWith(".odp")
+        [
+            "xls",
+            "xlsx",
+            "csv"
+        ].includes(ekstensi)
     ) {
-
-        return {
-            type: "ppt",
-            label: "PPT",
-            className: "file-ppt"
-        };
-
+        return "excel";
     }
 
 
-    /* GAMBAR */
-
+    // PowerPoint
     if (
-        nama.endsWith(".jpg") ||
-        nama.endsWith(".jpeg") ||
-        nama.endsWith(".png") ||
-        nama.endsWith(".gif") ||
-        nama.endsWith(".webp") ||
-        nama.endsWith(".svg")
+        [
+            "ppt",
+            "pptx"
+        ].includes(ekstensi)
     ) {
-
-        return {
-            type: "image",
-            label: "IMAGE",
-            className: "file-image"
-        };
-
+        return "powerpoint";
     }
 
 
-    /* ZIP */
-
+    // ZIP / RAR
     if (
-        nama.endsWith(".zip") ||
-        nama.endsWith(".rar") ||
-        nama.endsWith(".7z")
+        [
+            "zip",
+            "rar",
+            "7z"
+        ].includes(ekstensi)
     ) {
-
-        return {
-            type: "archive",
-            label: "ZIP",
-            className: "file-zip"
-        };
-
+        return "zip";
     }
 
 
-    /* FILE LAIN */
-
-    return {
-        type: "other",
-        label: "FILE",
-        className: "file-other"
-    };
+    return "file";
 }
 
 
-/* ==================================================
-   FORMAT UKURAN
-================================================== */
+// =====================================================
+// LABEL FORMAT
+// =====================================================
+
+function getLabelFormat(
+    jenis
+) {
+
+    switch (jenis) {
+
+        case "pdf":
+            return "PDF";
+
+        case "image":
+            return "GAMBAR";
+
+        case "word":
+            return "WORD";
+
+        case "excel":
+            return "EXCEL";
+
+        case "powerpoint":
+            return "PRESENTASI";
+
+        case "zip":
+            return "ARSIP";
+
+        default:
+            return "DOKUMEN";
+    }
+}
+
+
+// =====================================================
+// ICON FILE
+// =====================================================
+
+function getIconFile(
+    jenis
+) {
+
+    switch (jenis) {
+
+        case "pdf":
+            return "📕";
+
+        case "image":
+            return "🖼️";
+
+        case "word":
+            return "📝";
+
+        case "excel":
+            return "📊";
+
+        case "powerpoint":
+            return "📽️";
+
+        case "zip":
+            return "🗜️";
+
+        default:
+            return "📄";
+    }
+}
+
+
+// =====================================================
+// FORMAT UKURAN FILE
+// =====================================================
 
 function formatUkuran(
     bytes
 ) {
 
     if (
-        !bytes ||
-        bytes <= 0
+        bytes === null ||
+        bytes === undefined ||
+        bytes === ""
     ) {
-
         return "";
-
     }
+
+
+    const ukuran =
+        Number(bytes);
 
 
     if (
-        bytes < 1024
+        !Number.isFinite(
+            ukuran
+        ) ||
+        ukuran <= 0
     ) {
-
-        return (
-            bytes +
-            " B"
-        );
-
+        return "";
     }
 
 
-    if (
-        bytes <
-        1024 * 1024
-    ) {
+    const units = [
+        "B",
+        "KB",
+        "MB",
+        "GB"
+    ];
 
-        return (
-            (bytes / 1024)
-                .toFixed(1) +
-            " KB"
+
+    const index =
+        Math.min(
+            Math.floor(
+                Math.log(ukuran) /
+                Math.log(1024)
+            ),
+            units.length - 1
         );
 
-    }
+
+    const nilai =
+        ukuran /
+        Math.pow(
+            1024,
+            index
+        );
 
 
     return (
-        (
-            bytes /
-            (1024 * 1024)
-        ).toFixed(1) +
-        " MB"
+        nilai.toFixed(
+            index === 0
+                ? 0
+                : 1
+        ) +
+        " " +
+        units[index]
     );
 }
 
 
-/* ==================================================
-   FORMAT TANGGAL
-================================================== */
+// =====================================================
+// FORMAT TANGGAL
+// =====================================================
 
 function formatTanggal(
     tanggal
 ) {
 
     if (!tanggal) {
-        return "-";
-    }
-
-
-    const d =
-        new Date(tanggal);
-
-
-    return d.toLocaleDateString(
-        "id-ID",
-        {
-            day: "2-digit",
-            month: "long",
-            year: "numeric"
-        }
-    );
-}
-
-
-/* ==================================================
-   ESCAPE HTML
-================================================== */
-
-function escapeHTML(
-    value
-) {
-
-    if (
-        value === null ||
-        value === undefined
-    ) {
-
         return "";
     }
 
 
-    return String(value)
+    try {
+
+        const date =
+            new Date(
+                tanggal
+            );
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return "";
+        }
+
+
+        return date.toLocaleDateString(
+            "id-ID",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+    } catch (error) {
+
+        return "";
+    }
+}
+
+
+// =====================================================
+// ESCAPE HTML
+// =====================================================
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
         .replace(
             /&/g,
             "&amp;"
@@ -793,20 +1191,29 @@ function escapeHTML(
 }
 
 
-/* ==================================================
-   ESCAPE ATTRIBUTE
-================================================== */
+// =====================================================
+// ESCAPE ATTRIBUTE
+// =====================================================
 
 function escapeAttribute(
     value
 ) {
 
-    return escapeHTML(value);
+    return escapeHtml(
+        value
+    );
 }
 
 
-/* ==================================================
-   JALANKAN
-================================================== */
+// =====================================================
+// JALANKAN
+// =====================================================
 
-tampilkanPengumuman();
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        ambilPengumuman();
+
+    }
+);
