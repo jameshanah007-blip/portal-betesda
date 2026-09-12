@@ -393,24 +393,6 @@ function renderLaporan(
         );
 
 
-    const totalPemasukan =
-        document.getElementById(
-            "totalPemasukan"
-        );
-
-
-    const totalPengeluaran =
-        document.getElementById(
-            "totalPengeluaran"
-        );
-
-
-    const saldoAkhir =
-        document.getElementById(
-            "saldoAkhir"
-        );
-
-
     // ==================================================
     // PERIODE
     // ==================================================
@@ -484,55 +466,32 @@ function renderLaporan(
         }
 
 
-        if (totalPemasukan) {
-
-            totalPemasukan.textContent =
-                formatRupiah(0);
-        }
-
-
-        if (totalPengeluaran) {
-
-            totalPengeluaran.textContent =
-                formatRupiah(0);
-        }
-
-
-        if (saldoAkhir) {
-
-            saldoAkhir.textContent =
-                formatRupiah(
-                    saldoAwal
-                );
-        }
-
-
         if (footer) {
 
             footer.innerHTML = `
                 <tr>
 
-                     <td colspan="3" style="text-align: center;">
-            <strong>TOTAL</strong>
-        </td>
-
-                   <td style="text-align: center;">
-            <strong>
-                ${formatRupiah(jumlahPemasukan)}
-            </strong>
-        </td>
+                    <td colspan="3" style="text-align: center;">
+                        <strong>TOTAL</strong>
+                    </td>
 
                     <td style="text-align: center;">
-            <strong>
-                ${formatRupiah(jumlahPengeluaran)}
-            </strong>
-        </td>
+                        <strong>
+                            ${formatRupiah(jumlahPemasukan)}
+                        </strong>
+                    </td>
 
-                   <td style="text-align: center;">
-            <strong>
-                ${formatRupiah(saldoBerjalan)}
-            </strong>
-        </td>
+                    <td style="text-align: center;">
+                        <strong>
+                            ${formatRupiah(jumlahPengeluaran)}
+                        </strong>
+                    </td>
+
+                    <td style="text-align: center;">
+                        <strong>
+                            ${formatRupiah(saldoBerjalan)}
+                        </strong>
+                    </td>
 
                 </tr>
             `;
@@ -617,25 +576,25 @@ function renderLaporan(
                     )}
                 </td>
 
-                 <td style="text-align: center;">
-        ${
-            pemasukan > 0
-                ? formatRupiah(pemasukan)
-                : "-"
-        }
-    </td>
+                <td style="text-align: center;">
+                    ${
+                        pemasukan > 0
+                            ? formatRupiah(pemasukan)
+                            : "-"
+                    }
+                </td>
 
                 <td style="text-align: center;">
-        ${
-            pengeluaran > 0
-                ? formatRupiah(pengeluaran)
-                : "-"
-        }
-    </td>
+                    ${
+                        pengeluaran > 0
+                            ? formatRupiah(pengeluaran)
+                            : "-"
+                    }
+                </td>
 
-               <td style="text-align: center;">
-        ${formatRupiah(saldoBerjalan)}
-    </td>
+                <td style="text-align: center;">
+                    ${formatRupiah(saldoBerjalan)}
+                </td>
 
             `;
 
@@ -657,66 +616,35 @@ function renderLaporan(
 
     if (footer) {
 
-         footer.innerHTML = `
+        footer.innerHTML = `
 
-        <tr>
+            <tr>
 
-            <td colspan="3" style="text-align: center;">
-                <strong>TOTAL</strong>
-            </td>
+                <td colspan="3" style="text-align: center;">
+                    <strong>TOTAL</strong>
+                </td>
 
-            <td style="text-align: center;">
-                <strong>
-                    ${formatRupiah(jumlahPemasukan)}
-                </strong>
-            </td>
+                <td style="text-align: center;">
+                    <strong>
+                        ${formatRupiah(jumlahPemasukan)}
+                    </strong>
+                </td>
 
-            <td style="text-align: center;">
-                <strong>
-                    ${formatRupiah(jumlahPengeluaran)}
-                </strong>
-            </td>
+                <td style="text-align: center;">
+                    <strong>
+                        ${formatRupiah(jumlahPengeluaran)}
+                    </strong>
+                </td>
 
-            <td style="text-align: center;">
-                <strong>
-                    ${formatRupiah(saldoBerjalan)}
-                </strong>
-            </td>
+                <td style="text-align: center;">
+                    <strong>
+                        ${formatRupiah(saldoBerjalan)}
+                    </strong>
+                </td>
 
-        </tr>
+            </tr>
 
-    `;
-}
-
-
-    // ==================================================
-    // RINGKASAN
-    // ==================================================
-
-    if (totalPemasukan) {
-
-        totalPemasukan.textContent =
-            formatRupiah(
-                jumlahPemasukan
-            );
-    }
-
-
-    if (totalPengeluaran) {
-
-        totalPengeluaran.textContent =
-            formatRupiah(
-                jumlahPengeluaran
-            );
-    }
-
-
-    if (saldoAkhir) {
-
-        saldoAkhir.textContent =
-            formatRupiah(
-                saldoBerjalan
-            );
+        `;
     }
 }
 
@@ -857,11 +785,16 @@ function formatTanggal(tanggal) {
 
 
 // ==================================================
-// FORMAT RUPIAH
+// FORMAT RIBUAN
 // ==================================================
 
 function formatRupiah(angka) {
-    return Number(angka || 0).toLocaleString("id-ID");
+
+    return Number(
+        angka || 0
+    ).toLocaleString(
+        "id-ID"
+    );
 }
 
 
@@ -929,34 +862,30 @@ function exportExcel() {
     }
 
 
-    const periode =
+    const periodeElement =
         document.getElementById(
             "periodeLaporan"
-        ).textContent;
+        );
+
+
+    const saldoAwalElement =
+        document.getElementById(
+            "saldoAwal"
+        );
+
+
+    const periode =
+        periodeElement
+            ? periodeElement.textContent
+            : "-";
 
 
     const saldoAwal =
-        document.getElementById(
-            "saldoAwal"
-        ).textContent;
-
-
-    const totalPemasukan =
-        document.getElementById(
-            "totalPemasukan"
-        ).textContent;
-
-
-    const totalPengeluaran =
-        document.getElementById(
-            "totalPengeluaran"
-        ).textContent;
-
-
-    const saldoAkhir =
-        document.getElementById(
-            "saldoAkhir"
-        ).textContent;
+        saldoAwalElement
+            ? parseRupiah(
+                saldoAwalElement.textContent
+            )
+            : 0;
 
 
     const dataExcel = [];
@@ -999,11 +928,20 @@ function exportExcel() {
     ]);
 
 
-    // Hitung saldo berjalan untuk Excel
+    // ==================================================
+    // HITUNG SALDO DAN TOTAL UNTUK EXCEL
+    // ==================================================
+
     let saldoBerjalan =
-        parseRupiah(
-            saldoAwal
-        );
+        saldoAwal;
+
+
+    let jumlahPemasukan =
+        0;
+
+
+    let jumlahPengeluaran =
+        0;
 
 
     laporanData.forEach(
@@ -1028,6 +966,9 @@ function exportExcel() {
                 pemasukan =
                     jumlah;
 
+                jumlahPemasukan +=
+                    jumlah;
+
                 saldoBerjalan +=
                     jumlah;
             }
@@ -1039,6 +980,9 @@ function exportExcel() {
             ) {
 
                 pengeluaran =
+                    jumlah;
+
+                jumlahPengeluaran +=
                     jumlah;
 
                 saldoBerjalan -=
@@ -1068,6 +1012,10 @@ function exportExcel() {
     );
 
 
+    // ==================================================
+    // TOTAL EXCEL
+    // ==================================================
+
     dataExcel.push([]);
 
 
@@ -1077,17 +1025,11 @@ function exportExcel() {
         "",
         "TOTAL",
 
-        parseRupiah(
-            totalPemasukan
-        ),
+        jumlahPemasukan,
 
-        parseRupiah(
-            totalPengeluaran
-        ),
+        jumlahPengeluaran,
 
-        parseRupiah(
-            saldoAkhir
-        )
+        saldoBerjalan
 
     ]);
 
@@ -1096,26 +1038,26 @@ function exportExcel() {
 
 
     dataExcel.push([
+
         "Total Pemasukan",
-        parseRupiah(
-            totalPemasukan
-        )
+        jumlahPemasukan
+
     ]);
 
 
     dataExcel.push([
+
         "Total Pengeluaran",
-        parseRupiah(
-            totalPengeluaran
-        )
+        jumlahPengeluaran
+
     ]);
 
 
     dataExcel.push([
+
         "Saldo Akhir",
-        parseRupiah(
-            saldoAkhir
-        )
+        saldoBerjalan
+
     ]);
 
 
@@ -1174,7 +1116,7 @@ function exportExcel() {
 
 
 // ==================================================
-// UBAH "Rp 10.000" MENJADI ANGKA 10000
+// UBAH FORMAT 10.000 MENJADI ANGKA 10000
 // ==================================================
 
 function parseRupiah(value) {
@@ -1274,10 +1216,16 @@ function exportPDF() {
     );
 
 
-    const periode =
+    const periodeElement =
         document.getElementById(
             "periodeLaporan"
-        ).textContent;
+        );
+
+
+    const periode =
+        periodeElement
+            ? periodeElement.textContent
+            : "-";
 
 
     doc.text(
@@ -1290,10 +1238,16 @@ function exportPDF() {
     );
 
 
-    const saldoAwal =
+    const saldoAwalElement =
         document.getElementById(
             "saldoAwal"
-        ).textContent;
+        );
+
+
+    const saldoAwal =
+        saldoAwalElement
+            ? saldoAwalElement.textContent
+            : "0";
 
 
     doc.text(
@@ -1325,6 +1279,16 @@ function exportPDF() {
         document.getElementById(
             "laporanTable"
         );
+
+
+    if (!table) {
+
+        alert(
+            "Tabel laporan tidak ditemukan."
+        );
+
+        return;
+    }
 
 
     // ==================================================
