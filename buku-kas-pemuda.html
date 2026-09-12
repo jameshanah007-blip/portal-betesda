@@ -141,15 +141,18 @@
             color: #666;
 
             margin-bottom: 8px;
+
             text-align: center;
         }
 
 
-       .card-value {
-    font-size: 22px;
-    font-weight: bold;
-    text-align: center;
-}
+        .card-value {
+            font-size: 22px;
+
+            font-weight: bold;
+
+            text-align: center;
+        }
 
 
         /* ================================
@@ -226,12 +229,7 @@
         }
 
 
-        /* ================================
-           DROPDOWN JENIS TRANSAKSI
-        ================================= */
-
         #jenis {
-
             appearance: auto;
 
             cursor: pointer;
@@ -267,7 +265,6 @@
 
 
         .btn-simpan:active {
-
             opacity: 0.8;
         }
 
@@ -361,13 +358,13 @@
         }
 
 
-/* Kolom Jumlah */
-th:nth-child(5),
-td:nth-child(5) {
-    text-align: center !important;
-}
+        th:nth-child(5),
+        td:nth-child(5) {
 
-        
+            text-align: center !important;
+        }
+
+
         th {
 
             background: #f0f2f4;
@@ -412,36 +409,6 @@ td:nth-child(5) {
 
 
         /* ================================
-           TOMBOL LAPORAN
-        ================================= */
-
-        .btn-laporan {
-
-            display: block;
-
-            width: 100%;
-
-            min-height: 50px;
-
-            padding: 13px;
-
-            background: #2e7d32;
-
-            color: white;
-
-            border-radius: 10px;
-
-            text-align: center;
-
-            text-decoration: none;
-
-            font-size: 17px;
-
-            font-weight: bold;
-        }
-
-
-        /* ================================
            DATA KOSONG
         ================================= */
 
@@ -472,6 +439,7 @@ td:nth-child(5) {
 
                 font-size: 18px;
             }
+
         }
 
     </style>
@@ -485,17 +453,21 @@ td:nth-child(5) {
 <div class="container">
 
 
-    <!-- KEMBALI -->
+    <!-- =================================
+         KEMBALI KE KELOLA LAPORAN
+    ================================= -->
 
     <a
-        href="index.html"
+        href="kelola-laporan-keuangan.html"
         class="btn-kembali"
     >
-        ← Kembali ke Portal
+        ← Kembali ke Kelola Laporan Keuangan
     </a>
 
 
-    <!-- HEADER -->
+    <!-- =================================
+         HEADER
+    ================================= -->
 
     <div class="header">
 
@@ -510,7 +482,9 @@ td:nth-child(5) {
     </div>
 
 
-    <!-- DASHBOARD -->
+    <!-- =================================
+         DASHBOARD
+    ================================= -->
 
     <div class="dashboard">
 
@@ -525,7 +499,7 @@ td:nth-child(5) {
                 class="card-value"
                 id="totalIncome"
             >
-                0
+                Rp 0
             </div>
 
         </div>
@@ -541,7 +515,7 @@ td:nth-child(5) {
                 class="card-value"
                 id="totalExpense"
             >
-                0
+                Rp 0
             </div>
 
         </div>
@@ -557,7 +531,7 @@ td:nth-child(5) {
                 class="card-value"
                 id="balance"
             >
-                0
+                Rp 0
             </div>
 
         </div>
@@ -566,7 +540,9 @@ td:nth-child(5) {
     </div>
 
 
-    <!-- FORM TRANSAKSI -->
+    <!-- =================================
+         FORM TRANSAKSI
+    ================================= -->
 
     <div class="form-box">
 
@@ -579,9 +555,7 @@ td:nth-child(5) {
         <form id="transactionForm">
 
 
-            <!-- ==========================
-                 TANGGAL
-            =========================== -->
+            <!-- TANGGAL -->
 
             <div class="form-group">
 
@@ -598,9 +572,7 @@ td:nth-child(5) {
             </div>
 
 
-            <!-- ==========================
-                 KETERANGAN
-            =========================== -->
+            <!-- KETERANGAN -->
 
             <div class="form-group">
 
@@ -608,14 +580,17 @@ td:nth-child(5) {
                     Keterangan
                 </label>
 
-                <input type="text" id="keterangan" required>
+                <input
+                    type="text"
+                    id="keterangan"
+                    placeholder="Contoh: Iuran Pemuda"
+                    required
+                >
 
             </div>
 
 
-            <!-- ==========================
-                 JUMLAH
-            =========================== -->
+            <!-- JUMLAH -->
 
             <div class="form-group">
 
@@ -623,14 +598,18 @@ td:nth-child(5) {
                     Jumlah
                 </label>
 
-               <input type="text" id="jumlah" inputmode="numeric" required>
+                <input
+                    type="text"
+                    id="jumlah"
+                    inputmode="numeric"
+                    placeholder="Contoh: 100.000"
+                    required
+                >
 
             </div>
 
 
-            <!-- ==========================
-                 JENIS TRANSAKSI
-            =========================== -->
+            <!-- JENIS -->
 
             <div class="form-group">
 
@@ -638,13 +617,10 @@ td:nth-child(5) {
                     Jenis Transaksi
                 </label>
 
-
                 <select
                     id="jenis"
                     required
                 >
-
-                    <!-- Tampilan awal kosong -->
 
                     <option
                         value=""
@@ -652,13 +628,12 @@ td:nth-child(5) {
                         disabled
                         hidden
                     >
+                        Pilih jenis transaksi
                     </option>
-
 
                     <option value="Pemasukan">
                         Pemasukan
                     </option>
-
 
                     <option value="Pengeluaran">
                         Pengeluaran
@@ -669,9 +644,7 @@ td:nth-child(5) {
             </div>
 
 
-            <!-- ==========================
-                 SIMPAN
-            =========================== -->
+            <!-- SIMPAN -->
 
             <button
                 type="submit"
@@ -682,9 +655,7 @@ td:nth-child(5) {
             </button>
 
 
-            <!-- ==========================
-                 BATAL EDIT
-            =========================== -->
+            <!-- BATAL -->
 
             <button
                 type="button"
@@ -701,7 +672,9 @@ td:nth-child(5) {
     </div>
 
 
-    <!-- RIWAYAT TRANSAKSI -->
+    <!-- =================================
+         RIWAYAT TRANSAKSI
+    ================================= -->
 
     <div class="riwayat-box">
 
@@ -763,20 +736,12 @@ td:nth-child(5) {
     </div>
 
 
-    <!-- LAPORAN -->
-
-    <a
-        href="laporan keuangan pemuda.html"
-        class="btn-laporan"
-    >
-        Lihat Laporan Keuangan
-    </a>
-
-
 </div>
 
 
-<!-- SUPABASE -->
+<!-- =================================
+     SUPABASE
+================================= -->
 
 <script
     src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
