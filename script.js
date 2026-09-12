@@ -70,7 +70,7 @@ function bukaLaporanPKB() {
 ========================= */
 
 function bukaLaporanPemuda() {
-    window.location.href = "buku-kas-pemuda.html";
+    window.location.href = "laporan keuangan pemuda.html";
 }
 
 
