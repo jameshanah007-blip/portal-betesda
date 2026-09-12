@@ -10,6 +10,11 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="theme-color"
+        content="#1f4e79"
+    >
+
     <title>Laporan Keuangan Pemuda</title>
 
     <link
@@ -17,373 +22,140 @@
         href="laporan.css"
     >
 
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 15px;
-            background: #f4f6f8;
-            font-family: Arial, sans-serif;
-        }
-
-        .laporan-container {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .btn-kembali {
-            display: block;
-            width: 100%;
-            min-height: 48px;
-
-            margin-bottom: 15px;
-            padding: 13px;
-
-            background: white;
-            color: #1f4e79;
-
-            border: 1px solid #1f4e79;
-            border-radius: 10px;
-
-            text-align: center;
-            text-decoration: none;
-
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .filter-box {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .filter-group {
-            margin-bottom: 12px;
-        }
-
-        .filter-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
-
-        input[type="month"] {
-            width: 100%;
-            min-height: 48px;
-
-            padding: 10px;
-
-            border: 1px solid #ccc;
-            border-radius: 8px;
-
-            font-size: 16px;
-        }
-
-        .btn-tampilkan {
-            width: 100%;
-            min-height: 50px;
-
-            border: none;
-            border-radius: 10px;
-
-            background: #1f4e79;
-            color: white;
-
-            font-size: 17px;
-            font-weight: bold;
-        }
-
-        .export-box {
-            display: grid;
-
-            grid-template-columns: 1fr;
-
-            gap: 10px;
-
-            margin-bottom: 15px;
-        }
-
-        .btn-export {
-            width: 100%;
-            min-height: 48px;
-
-            border: none;
-            border-radius: 10px;
-
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .btn-excel {
-            background: #2e7d32;
-            color: white;
-        }
-
-        .btn-pdf {
-            background: #b00020;
-            color: white;
-        }
-
-        .laporan-paper {
-            background: white;
-
-            padding: 15px;
-
-            border-radius: 10px;
-
-            margin-bottom: 20px;
-        }
-
-        .laporan-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .laporan-header h2 {
-            margin: 0 0 5px 0;
-            font-size: 20px;
-        }
-
-        .laporan-header p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-
-        .saldo-awal {
-            margin-bottom: 15px;
-
-            padding: 12px;
-
-            background: #f0f2f4;
-
-            border-radius: 8px;
-
-            font-weight: bold;
-        }
-
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            min-width: 650px;
-
-            border-collapse: collapse;
-        }
-
-        /* SEMUA SEL TABEL DIBERI GARIS */
-
-        th,
-        td {
-            padding: 10px 8px;
-
-            border: 1px solid #999;
-
-            font-size: 14px;
-        }
-
-        th {
-            background: #1f4e79;
-            color: white;
-
-            text-align: center;
-        }
-
-        /* PEMASUKAN, PENGELUARAN, SALDO RATA TENGAH */
-
-       #laporanTable th:nth-child(4),
-#laporanTable th:nth-child(5),
-#laporanTable th:nth-child(6),
-
-#laporanTable td:nth-child(4),
-#laporanTable td:nth-child(5),
-#laporanTable td:nth-child(6),
-
-#laporanFooter td:nth-child(4),
-#laporanFooter td:nth-child(5),
-#laporanFooter td:nth-child(6) {
-    text-align: center !important;
-        }
-
-        .keterangan {
-            min-width: 180px;
-        }
-
-        .kosong {
-            text-align: center;
-            padding: 20px;
-            color: #777;
-        }
-
-        /* TOTAL TANPA WARNA */
-
-        #laporanFooter td {
-            background: white;
-            font-weight: bold;
-        }
-
-        .ringkasan {
-            margin-top: 20px;
-        }
-
-        .ringkasan div {
-            padding: 10px 0;
-
-            border-bottom: 1px solid #ddd;
-
-            font-size: 15px;
-        }
-
-        .ringkasan strong {
-            float: right;
-            font-weight: bold;
-        }
-
-        /* RESPONSIVE */
-
-        @media (min-width: 600px) {
-
-            .export-box {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .filter-box {
-                display: grid;
-
-                grid-template-columns: 1fr 1fr;
-
-                gap: 10px;
-            }
-
-            .filter-group {
-                margin-bottom: 0;
-            }
-
-            .btn-tampilkan {
-                grid-column: 1 / 3;
-            }
-
-        }
-
-        /* CETAK */
-
-        @media print {
-
-            body {
-                background: white;
-                padding: 0;
-            }
-
-            .btn-kembali,
-            .filter-box,
-            .export-box {
-                display: none;
-            }
-
-            .laporan-container {
-                max-width: 100%;
-            }
-
-            .laporan-paper {
-                box-shadow: none;
-                border-radius: 0;
-                margin: 0;
-                padding: 10px;
-            }
-
-            .table-wrapper {
-                overflow: visible;
-            }
-
-            table {
-                min-width: 0;
-            }
-
-        }
-
-    </style>
-
 </head>
 
 
 <body>
 
 
-<div class="laporan-container">
+<div class="laporan-page">
 
 
-    <!-- TOMBOL KEMBALI -->
+    <!-- =====================================================
+         HEADER / TOMBOL KEMBALI
+    ====================================================== -->
 
-    <a
-        href="buku-kas-pemuda.html"
-        class="btn-kembali"
-    >
-        ← Kembali ke Buku Kas
-    </a>
+    <header class="laporan-header">
 
-
-    <!-- FILTER -->
-
-    <div class="filter-box">
-
-        <div class="filter-group">
-
-            <label for="bulanMulai">
-                Bulan Mulai
-            </label>
-
-            <input
-                type="month"
-                id="bulanMulai"
-            >
-
-        </div>
-
-
-        <div class="filter-group">
-
-            <label for="bulanSampai">
-                Bulan Sampai
-            </label>
-
-            <input
-                type="month"
-                id="bulanSampai"
-            >
-
-        </div>
-
-
-        <button
-            type="button"
-            id="btnTampilkan"
-            class="btn-tampilkan"
+        <a
+            href="index.html"
+            class="btn-kembali"
         >
-            Tampilkan Laporan
-        </button>
+            <span class="icon-kembali">←</span>
+            <span>Kembali ke Portal</span>
+        </a>
 
-    </div>
+    </header>
 
 
-    <!-- EXPORT -->
+    <!-- =====================================================
+         FILTER PERIODE
+    ====================================================== -->
 
-    <div class="export-box">
+    <section class="filter-container">
+
+
+        <div class="filter-title">
+
+            <div class="filter-icon">
+                📅
+            </div>
+
+            <div>
+
+                <h3>
+                    Periode Laporan
+                </h3>
+
+                <p>
+                    Pilih periode keuangan yang ingin ditampilkan
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="filter-form">
+
+
+            <div class="filter-item">
+
+                <label for="bulanMulai">
+                    Bulan Mulai
+                </label>
+
+                <input
+                    type="month"
+                    id="bulanMulai"
+                >
+
+            </div>
+
+
+            <div class="filter-arrow">
+                →
+            </div>
+
+
+            <div class="filter-item">
+
+                <label for="bulanSampai">
+                    Bulan Sampai
+                </label>
+
+                <input
+                    type="month"
+                    id="bulanSampai"
+                >
+
+            </div>
+
+
+            <button
+                type="button"
+                id="btnTampilkan"
+                class="btn-tampilkan"
+            >
+
+                <span class="button-icon">
+                    🔎
+                </span>
+
+                <span>
+                    Tampilkan Laporan
+                </span>
+
+            </button>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         TOMBOL EXPORT
+    ====================================================== -->
+
+    <section class="export-container">
+
 
         <button
             type="button"
             id="btnExcel"
             class="btn-export btn-excel"
         >
-            Export Excel
+
+            <span class="export-icon">
+                📊
+            </span>
+
+            <span>
+                Export Excel
+            </span>
+
         </button>
 
 
@@ -392,70 +164,157 @@
             id="btnPdf"
             class="btn-export btn-pdf"
         >
-            Export PDF
-        </button>
 
-    </div>
-
-
-    <!-- LAPORAN -->
-
-    <div class="laporan-paper">
-
-
-        <!-- HEADER -->
-
-        <div class="laporan-header">
-
-            <h2>
-                LAPORAN KEUANGAN
-            </h2>
-
-            <p>
-                Persekutuan Pemuda GPIL Jemaat Betesda Purwosari
-            </p>
-
-            <p id="periodeLaporan">
-                -
-            </p>
-
-        </div>
-
-
-        <!-- SALDO BULAN LALU -->
-
-        <div class="saldo-awal">
-
-            Saldo Bulan Lalu:
-
-            <span id="saldoAwal">
-                0
+            <span class="export-icon">
+                📄
             </span>
 
+            <span>
+                Export PDF
+            </span>
+
+        </button>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         KERTAS LAPORAN
+    ====================================================== -->
+
+    <main class="laporan-paper">
+
+
+        <!-- =================================================
+             JUDUL LAPORAN
+        ================================================== -->
+
+        <div class="paper-header">
+
+
+            <div class="paper-logo">
+                📊
+            </div>
+
+
+            <div class="paper-title">
+
+                <div class="label-laporan">
+                    LAPORAN KEUANGAN
+                </div>
+
+                <h1>
+                    PERSEKUTUAN PEMUDA
+                </h1>
+
+                <p>
+                    GPIL Jemaat Betesda Purwosari
+                </p>
+
+            </div>
+
+
+            <div
+                id="periodeLaporan"
+                class="periode-laporan"
+            >
+                -
+            </div>
+
+
         </div>
 
 
-        <!-- TABEL -->
+        <!-- =================================================
+             SALDO BULAN LALU
+        ================================================== -->
+
+        <section class="saldo-awal">
+
+
+            <div class="saldo-info">
+
+                <div class="saldo-icon">
+                    💰
+                </div>
+
+
+                <div>
+
+                    <span class="saldo-label">
+                        Saldo Bulan Lalu
+                    </span>
+
+                    <small>
+                        Saldo awal periode laporan
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <strong id="saldoAwal">
+                0
+            </strong>
+
+
+        </section>
+
+
+        <!-- =================================================
+             INFORMASI SCROLL HP
+        ================================================== -->
+
+        <div class="scroll-info">
+
+            <span>
+                ↔
+            </span>
+
+            Geser tabel ke kiri/kanan untuk melihat seluruh data
+
+        </div>
+
+
+        <!-- =================================================
+             TABEL TRANSAKSI
+        ================================================== -->
 
         <div class="table-wrapper">
 
+
             <table id="laporanTable">
+
 
                 <thead>
 
                     <tr>
 
-                        <th>No</th>
+                        <th>
+                            No
+                        </th>
 
-                        <th>Tanggal</th>
+                        <th>
+                            Tanggal
+                        </th>
 
-                        <th>Keterangan</th>
+                        <th>
+                            Keterangan
+                        </th>
 
-                        <th>Pemasukan</th>
+                        <th>
+                            Pemasukan
+                        </th>
 
-                        <th>Pengeluaran</th>
+                        <th>
+                            Pengeluaran
+                        </th>
 
-                        <th>Saldo</th>
+                        <th>
+                            Saldo
+                        </th>
 
                     </tr>
 
@@ -463,65 +322,105 @@
 
 
                 <tbody id="laporanBody">
+
                 </tbody>
 
 
                 <tfoot id="laporanFooter">
+
                 </tfoot>
 
+
             </table>
+
 
         </div>
 
 
-        <!-- Ringkasan di bawah tabel dihapus -->
+        <!-- =================================================
+             CATATAN
+        ================================================== -->
+
+        <div class="laporan-note">
+
+            <strong>
+                Catatan:
+            </strong>
+
+            <span>
+                Laporan ini bersumber dari Buku Kas Pemuda.
+            </span>
+
+        </div>
 
 
-        <!--
-        MENGETAHUI TIDAK DITAMPILKAN DI HALAMAN WEB.
-        MENGETAHUI AKAN DITAMPILKAN DI PDF DAN EXCEL.
-        -->
+    </main>
 
 
-    </div>
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="laporan-footer">
+
+        <p>
+            GPIL Jemaat Betesda Purwosari
+        </p>
+
+        <span>
+            Laporan Keuangan Persekutuan Pemuda
+        </span>
+
+    </footer>
 
 
 </div>
 
 
-<!-- LIBRARY EXCEL -->
+<!-- =========================================================
+     LIBRARY EXCEL
+========================================================= -->
 
 <script
     src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
 ></script>
 
 
-<!-- LIBRARY PDF -->
+<!-- =========================================================
+     LIBRARY PDF
+========================================================= -->
 
 <script
     src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"
 ></script>
 
 
-<!-- PLUGIN TABEL PDF -->
+<!-- =========================================================
+     PLUGIN TABEL PDF
+========================================================= -->
 
 <script
     src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"
 ></script>
 
 
-<!-- SUPABASE -->
+<!-- =========================================================
+     SUPABASE
+========================================================= -->
 
 <script
     src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
 ></script>
+
 
 <script
     src="supabase-client.js"
 ></script>
 
 
-<!-- JAVASCRIPT LAPORAN -->
+<!-- =========================================================
+     JAVASCRIPT LAPORAN
+========================================================= -->
 
 <script
     src="laporan-pemuda.js"
