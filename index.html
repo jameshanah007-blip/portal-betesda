@@ -2,52 +2,72 @@
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>GPIL Jemaat Betesda Purwosari</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <title>
+        GPIL Jemaat Betesda Purwosari
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
     <style>
+
         /* =====================================================
            LAPORAN KEUANGAN
-           ===================================================== */
+        ===================================================== */
 
         .laporan-halaman {
             width: 100%;
+
             max-width: 760px;
+
             margin: 0 auto;
+
             padding-bottom: 20px;
         }
 
 
         /* =====================================================
            DAFTAR LAPORAN
-           ===================================================== */
+        ===================================================== */
 
         .laporan-list {
             display: flex;
+
             flex-direction: column;
+
             gap: 14px;
         }
 
 
         /* =====================================================
            KARTU LAPORAN
-           ===================================================== */
+        ===================================================== */
 
         .laporan-card {
             width: 100%;
 
             display: flex;
+
             align-items: center;
 
             gap: 15px;
 
             padding: 18px;
 
-            border: 1px solid #e1e7ed;
+            border:
+                1px solid
+                #e1e7ed;
+
             border-radius: 18px;
 
             background: #ffffff;
@@ -57,7 +77,13 @@
             cursor: pointer;
 
             box-shadow:
-                0 3px 12px rgba(0, 0, 0, 0.04);
+                0 3px 12px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.04
+                );
 
             transition:
                 transform 0.2s ease,
@@ -68,25 +94,35 @@
 
 
         .laporan-card:hover {
-            transform: translateY(-2px);
+            transform:
+                translateY(-2px);
 
-            border-color: #bfd0df;
+            border-color:
+                #bfd0df;
 
-            background: #fcfdff;
+            background:
+                #fcfdff;
 
             box-shadow:
-                0 9px 24px rgba(0, 0, 0, 0.08);
+                0 9px 24px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                );
         }
 
 
         .laporan-card:active {
-            transform: scale(0.985);
+            transform:
+                scale(0.985);
         }
 
 
         /* =====================================================
-           ICON KARTU
-           ===================================================== */
+           ICON KARTU LAPORAN
+        ===================================================== */
 
         .laporan-card-icon {
             width: 52px;
@@ -95,6 +131,7 @@
             flex-shrink: 0;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
@@ -107,8 +144,8 @@
 
 
         /* =====================================================
-           ISI KARTU
-           ===================================================== */
+           ISI KARTU LAPORAN
+        ===================================================== */
 
         .laporan-card-content {
             min-width: 0;
@@ -116,6 +153,7 @@
             flex: 1;
 
             display: flex;
+
             flex-direction: column;
         }
 
@@ -124,6 +162,7 @@
             margin-bottom: 4px;
 
             font-size: 10px;
+
             font-weight: 700;
 
             letter-spacing: 0.9px;
@@ -138,6 +177,7 @@
             margin-bottom: 3px;
 
             font-size: 18px;
+
             font-weight: 700;
 
             color: #1f2937;
@@ -156,8 +196,8 @@
 
 
         /* =====================================================
-           TANDA PANAH
-           ===================================================== */
+           PANAH LAPORAN
+        ===================================================== */
 
         .laporan-arrow {
             width: 36px;
@@ -166,6 +206,7 @@
             flex-shrink: 0;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
@@ -176,6 +217,7 @@
             color: #1f4e79;
 
             font-size: 26px;
+
             font-weight: 400;
 
             transition:
@@ -187,18 +229,211 @@
         .laporan-card:hover .laporan-arrow {
             background: #e7f0f7;
 
-            transform: translateX(2px);
+            transform:
+                translateX(2px);
+        }
+
+
+        /* =====================================================
+           ALKITAB & KIDUNG
+        ===================================================== */
+
+        .rohani-card {
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 14px;
+
+            padding: 18px;
+
+            border:
+                1px solid
+                #e1e7ed;
+
+            border-radius: 18px;
+
+            background: #ffffff;
+
+            text-align: left;
+
+            text-decoration: none;
+
+            color: #222;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 3px 12px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.04
+                );
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .rohani-card:hover {
+            transform:
+                translateY(-2px);
+
+            border-color:
+                #bfd0df;
+
+            background:
+                #fcfdff;
+
+            box-shadow:
+                0 9px 24px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                );
+        }
+
+
+        .rohani-card:active {
+            transform:
+                scale(0.985);
+        }
+
+
+        /* =====================================================
+           ICON ALKITAB & KIDUNG
+        ===================================================== */
+
+        .rohani-icon {
+            width: 52px;
+            height: 52px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background: #eef5fb;
+
+            font-size: 24px;
+        }
+
+
+        /* =====================================================
+           ISI ALKITAB & KIDUNG
+        ===================================================== */
+
+        .rohani-content {
+            min-width: 0;
+
+            flex: 1;
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .rohani-label {
+            margin-bottom: 4px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.9px;
+
+            color: #718096;
+        }
+
+
+        .rohani-content strong {
+            display: block;
+
+            margin-bottom: 3px;
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            color: #1f2937;
+        }
+
+
+        .rohani-content small {
+            display: block;
+
+            font-size: 13px;
+
+            line-height: 1.4;
+
+            color: #718096;
+        }
+
+
+        /* =====================================================
+           PANAH ALKITAB & KIDUNG
+        ===================================================== */
+
+        .rohani-arrow {
+            width: 36px;
+            height: 36px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #f2f6f9;
+
+            color: #1f4e79;
+
+            font-size: 26px;
+
+            font-weight: 400;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .rohani-card:hover .rohani-arrow {
+            background: #e7f0f7;
+
+            transform:
+                translateX(2px);
         }
 
 
         /* =====================================================
            TAMPILAN HP
-           ===================================================== */
+        ===================================================== */
 
         @media (max-width: 600px) {
 
             .laporan-halaman {
                 max-width: 100%;
+
                 padding-bottom: 15px;
             }
 
@@ -246,7 +481,54 @@
                 font-size: 23px;
             }
 
+
+            /* ALKITAB & KIDUNG */
+
+            .rohani-card {
+                gap: 12px;
+
+                padding: 15px;
+
+                border-radius: 16px;
+            }
+
+
+            .rohani-icon {
+                width: 46px;
+                height: 46px;
+
+                border-radius: 12px;
+
+                font-size: 21px;
+            }
+
+
+            .rohani-label {
+                font-size: 9px;
+
+                letter-spacing: 0.7px;
+            }
+
+
+            .rohani-content strong {
+                font-size: 17px;
+            }
+
+
+            .rohani-content small {
+                font-size: 12px;
+            }
+
+
+            .rohani-arrow {
+                width: 32px;
+                height: 32px;
+
+                font-size: 23px;
+            }
+
         }
+
     </style>
 
 </head>
@@ -257,7 +539,7 @@
 
     <!-- =====================================================
          HEADER
-         ===================================================== -->
+    ===================================================== -->
 
     <header class="header">
 
@@ -279,7 +561,7 @@
 
     <!-- =====================================================
          MENU UTAMA
-         ===================================================== -->
+    ===================================================== -->
 
     <nav class="menu">
 
@@ -288,7 +570,8 @@
 
         <button
             type="button"
-            onclick="bukaHome()">
+            onclick="bukaHome()"
+        >
 
             <span class="icon">
                 🏠
@@ -306,7 +589,8 @@
 
         <button
             type="button"
-            onclick="window.location.href='jadwal-kumpulan.html'">
+            onclick="window.location.href='jadwal-kumpulan.html'"
+        >
 
             <span class="icon">
                 📅
@@ -324,7 +608,8 @@
 
         <button
             type="button"
-            onclick="bukaLaporan()">
+            onclick="bukaLaporan()"
+        >
 
             <span class="icon">
                 💰
@@ -342,7 +627,8 @@
 
         <button
             type="button"
-            onclick="window.location.href='galeri.html'">
+            onclick="window.location.href='galeri.html'"
+        >
 
             <span class="icon">
                 📸
@@ -360,7 +646,8 @@
 
         <button
             type="button"
-            onclick="window.location.href='pengumuman.html'">
+            onclick="window.location.href='pengumuman.html'"
+        >
 
             <span class="icon">
                 📢
@@ -378,7 +665,8 @@
 
         <button
             type="button"
-            onclick="window.location.href='kelola-admin.html'">
+            onclick="window.location.href='kelola-admin.html'"
+        >
 
             <span class="icon">
                 ⚙️
@@ -397,20 +685,22 @@
 
     <!-- =====================================================
          ISI PORTAL
-         ===================================================== -->
+    ===================================================== -->
 
     <main class="container">
 
 
-
         <!-- =================================================
              HOME
-             ================================================= -->
+        ================================================= -->
 
         <section
             id="home"
-            class="halaman">
+            class="halaman"
+        >
 
+
+            <!-- WELCOME -->
 
             <div class="welcome-box">
 
@@ -441,18 +731,60 @@
             </div>
 
 
+
+            <!-- =================================================
+                 ALKITAB & KIDUNG
+            ================================================= -->
+
+            <a
+                href="rohani.html"
+                class="rohani-card"
+            >
+
+                <div class="rohani-icon">
+                    📖
+                </div>
+
+
+                <div class="rohani-content">
+
+                    <span class="rohani-label">
+                        BAHAN ROHANI
+                    </span>
+
+
+                    <strong>
+                        Alkitab & Kidung
+                    </strong>
+
+
+                    <small>
+                        Alkitab, KJ, PKJ, dan NKB
+                    </small>
+
+                </div>
+
+
+                <div class="rohani-arrow">
+                    ›
+                </div>
+
+            </a>
+
+
         </section>
 
 
 
         <!-- =================================================
              JADWAL KUMPULAN
-             ================================================= -->
+        ================================================= -->
 
         <section
             id="jadwal"
             class="halaman"
-            style="display: none;">
+            style="display: none;"
+        >
 
 
             <h2>
@@ -472,8 +804,8 @@
 
                 <button
                     type="button"
-                    class="card-button">
-
+                    class="card-button"
+                >
 
                     <span class="card-icon">
                         🏠
@@ -492,7 +824,6 @@
 
                     </span>
 
-
                 </button>
 
 
@@ -501,8 +832,8 @@
 
                 <button
                     type="button"
-                    class="card-button">
-
+                    class="card-button"
+                >
 
                     <span class="card-icon">
                         👩
@@ -521,7 +852,6 @@
 
                     </span>
 
-
                 </button>
 
 
@@ -530,8 +860,8 @@
 
                 <button
                     type="button"
-                    class="card-button">
-
+                    class="card-button"
+                >
 
                     <span class="card-icon">
                         👨
@@ -550,7 +880,6 @@
 
                     </span>
 
-
                 </button>
 
 
@@ -563,26 +892,25 @@
 
         <!-- =================================================
              LAPORAN KEUANGAN
-             ================================================= -->
+        ================================================= -->
 
         <section
             id="laporan"
             class="halaman laporan-halaman"
-            style="display: none;">
+            style="display: none;"
+        >
 
 
             <div class="laporan-list">
 
 
-                <!-- =================================================
-                     LAPORAN PEMUDA
-                     ================================================= -->
+                <!-- LAPORAN PEMUDA -->
 
                 <button
                     type="button"
                     class="laporan-card"
-                    onclick="bukaLaporanPemuda()">
-
+                    onclick="bukaLaporanPemuda()"
+                >
 
                     <div class="laporan-card-icon">
                         📊
@@ -614,7 +942,6 @@
                         ›
                     </div>
 
-
                 </button>
 
 
@@ -630,10 +957,9 @@
 
     <!-- =====================================================
          FOOTER
-         ===================================================== -->
+    ===================================================== -->
 
     <footer class="footer">
-
 
         <p>
             GPIL Jemaat Betesda Purwosari
@@ -644,14 +970,13 @@
             Portal Informasi Jemaat
         </small>
 
-
     </footer>
 
 
 
     <!-- =====================================================
          JAVASCRIPT
-         ===================================================== -->
+    ===================================================== -->
 
     <script src="script.js"></script>
 
