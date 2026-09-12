@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#1f4e79"
+    >
+
+    <title>Alkitab & Kidung - GPIL Jemaat Betesda Purwosari</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           DASAR
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #eef3f8 0%,
+                    #f6f8fb 45%,
+                    #f4f6f9 100%
+                );
+
+            color: #1f2937;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            -webkit-font-smoothing: antialiased;
+        }
+
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
+
+        .rohani-page {
+            width: 100%;
+
+            max-width: 760px;
+
+            margin: 0 auto;
+
+            padding:
+                15px
+                15px
+                25px;
+        }
+
+
+        /* =====================================================
+           TOMBOL KEMBALI
+        ===================================================== */
+
+        .btn-kembali {
+            display: flex;
+
+            width: 100%;
+
+            min-height: 48px;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            margin-bottom: 15px;
+
+            padding: 12px 15px;
+
+            background: #ffffff;
+
+            color: #1f4e79;
+
+            border:
+                1px solid
+                #d5e0eb;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 3px 12px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    0.06
+                );
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .btn-kembali:hover {
+            background: #1f4e79;
+
+            color: #ffffff;
+
+            border-color: #1f4e79;
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .btn-kembali:active {
+            transform:
+                translateY(0);
+        }
+
+
+        /* =====================================================
+           HEADER HALAMAN
+        ===================================================== */
+
+        .rohani-header {
+            padding:
+                24px
+                18px;
+
+            margin-bottom: 14px;
+
+            background: #ffffff;
+
+            border:
+                1px solid
+                #e1e7ed;
+
+            border-radius: 17px;
+
+            text-align: center;
+
+            box-shadow:
+                0 6px 22px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    0.06
+                );
+        }
+
+
+        .rohani-header-icon {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin:
+                0 auto
+                12px;
+
+            background: #eef5fb;
+
+            border-radius: 15px;
+
+            font-size: 28px;
+        }
+
+
+        .rohani-header h1 {
+            margin:
+                0
+                0
+                6px;
+
+            color: #1f2937;
+
+            font-size: 22px;
+
+            line-height: 1.3;
+        }
+
+
+        .rohani-header p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           DAFTAR KARTU
+        ===================================================== */
+
+        .rohani-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+        }
+
+
+        /* =====================================================
+           KARTU
+        ===================================================== */
+
+        .rohani-card {
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            width: 100%;
+
+            min-height: 92px;
+
+            padding: 17px;
+
+            background: #ffffff;
+
+            border:
+                1px solid
+                #e1e7ed;
+
+            border-radius: 16px;
+
+            color: #1f2937;
+
+            text-decoration: none;
+
+            box-shadow:
+                0 3px 12px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    0.04
+                );
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .rohani-card:hover {
+            transform:
+                translateY(-2px);
+
+            border-color:
+                #bfd0df;
+
+            background:
+                #fcfdff;
+
+            box-shadow:
+                0 9px 24px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    0.08
+                );
+        }
+
+
+        .rohani-card:active {
+            transform:
+                scale(0.985);
+        }
+
+
+        /* =====================================================
+           ICON KARTU
+        ===================================================== */
+
+        .rohani-card-icon {
+            width: 52px;
+            height: 52px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #eef5fb;
+
+            border-radius: 14px;
+
+            font-size: 25px;
+        }
+
+
+        /* =====================================================
+           ISI KARTU
+        ===================================================== */
+
+        .rohani-card-content {
+            min-width: 0;
+
+            flex: 1;
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .rohani-card-label {
+            margin-bottom: 3px;
+
+            color: #718096;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.9px;
+        }
+
+
+        .rohani-card-content strong {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #1f2937;
+
+            font-size: 17px;
+
+            line-height: 1.3;
+        }
+
+
+        .rohani-card-content small {
+            display: block;
+
+            color: #718096;
+
+            font-size: 12px;
+
+            line-height: 1.4;
+        }
+
+
+        /* =====================================================
+           PANAH
+        ===================================================== */
+
+        .rohani-arrow {
+            width: 34px;
+            height: 34px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #f2f6f9;
+
+            border-radius: 50%;
+
+            color: #1f4e79;
+
+            font-size: 24px;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .rohani-card:hover .rohani-arrow {
+            background: #e7f0f7;
+
+            transform:
+                translateX(2px);
+        }
+
+
+        /* =====================================================
+           INFORMASI
+        ===================================================== */
+
+        .rohani-info {
+            margin-top: 14px;
+
+            padding: 14px 15px;
+
+            background: #ffffff;
+
+            border:
+                1px solid
+                #e1e7ed;
+
+            border-radius: 13px;
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+
+        .rohani-info strong {
+            color: #475569;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .rohani-footer {
+            padding:
+                18px
+                5px
+                5px;
+
+            text-align: center;
+        }
+
+
+        .rohani-footer p {
+            margin:
+                0
+                0
+                4px;
+
+            color: #475569;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .rohani-footer small {
+            color: #94a3b8;
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .rohani-page {
+                padding:
+                    10px
+                    9px
+                    20px;
+            }
+
+
+            .btn-kembali {
+                min-height: 47px;
+
+                border-radius: 11px;
+
+                font-size: 14px;
+            }
+
+
+            .rohani-header {
+                padding:
+                    20px
+                    15px;
+
+                border-radius: 15px;
+            }
+
+
+            .rohani-header-icon {
+                width: 50px;
+                height: 50px;
+
+                margin-bottom: 9px;
+
+                border-radius: 13px;
+
+                font-size: 24px;
+            }
+
+
+            .rohani-header h1 {
+                font-size: 19px;
+            }
+
+
+            .rohani-header p {
+                font-size: 11px;
+            }
+
+
+            .rohani-card {
+                min-height: 82px;
+
+                gap: 12px;
+
+                padding: 14px;
+
+                border-radius: 15px;
+            }
+
+
+            .rohani-card-icon {
+                width: 46px;
+                height: 46px;
+
+                border-radius: 12px;
+
+                font-size: 22px;
+            }
+
+
+            .rohani-card-label {
+                font-size: 8px;
+            }
+
+
+            .rohani-card-content strong {
+                font-size: 16px;
+            }
+
+
+            .rohani-card-content small {
+                font-size: 11px;
+            }
+
+
+            .rohani-arrow {
+                width: 31px;
+                height: 31px;
+
+                font-size: 22px;
+            }
+
+
+            .rohani-info {
+                font-size: 10px;
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE KECIL
+        ===================================================== */
+
+        @media (max-width: 380px) {
+
+            .rohani-page {
+                padding-left: 7px;
+
+                padding-right: 7px;
+            }
+
+
+            .rohani-header {
+                padding:
+                    18px
+                    12px;
+            }
+
+
+            .rohani-card {
+                padding: 13px;
+            }
+
+
+            .rohani-card-icon {
+                width: 43px;
+                height: 43px;
+            }
+
+        }
+
+
+        /* =====================================================
+           FOCUS
+        ===================================================== */
+
+        a {
+            -webkit-tap-highlight-color:
+                transparent;
+        }
+
+
+        a:focus-visible {
+            outline:
+                3px solid
+                rgba(
+                    31,
+                    78,
+                    121,
+                    0.22
+                );
+
+            outline-offset: 2px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="rohani-page">
+
+
+    <!-- =====================================================
+         KEMBALI
+    ===================================================== -->
+
+    <a
+        href="index.html"
+        class="btn-kembali"
+    >
+
+        <span>
+            ←
+        </span>
+
+        <span>
+            Kembali ke Portal
+        </span>
+
+    </a>
+
+
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+    <header class="rohani-header">
+
+        <div class="rohani-header-icon">
+            📖
+        </div>
+
+        <h1>
+            Alkitab & Kidung
+        </h1>
+
+        <p>
+            Sumber bacaan Alkitab dan kidung
+            untuk jemaat GPIL Betesda Purwosari.
+        </p>
+
+    </header>
+
+
+    <!-- =====================================================
+         DAFTAR
+    ===================================================== -->
+
+    <main class="rohani-list">
+
+
+        <!-- =================================================
+             ALKITAB
+        ================================================= -->
+
+        <a
+            href="https://alkitab.sabda.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rohani-card"
+        >
+
+            <div class="rohani-card-icon">
+                📖
+            </div>
+
+
+            <div class="rohani-card-content">
+
+                <span class="rohani-card-label">
+                    ALKITAB ONLINE
+                </span>
+
+                <strong>
+                    Alkitab
+                </strong>
+
+                <small>
+                    Baca dan cari ayat Alkitab secara online
+                </small>
+
+            </div>
+
+
+            <div class="rohani-arrow">
+                ›
+            </div>
+
+        </a>
+
+
+
+        <!-- =================================================
+             KIDUNG JEMAAT
+        ================================================= -->
+
+        <a
+            href="https://kidungonline.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rohani-card"
+        >
+
+            <div class="rohani-card-icon">
+                🎵
+            </div>
+
+
+            <div class="rohani-card-content">
+
+                <span class="rohani-card-label">
+                    KIDUNG JEMAAT
+                </span>
+
+                <strong>
+                    KJ, PKJ & NKB
+                </strong>
+
+                <small>
+                    Cari lagu Kidung Jemaat, PKJ, dan NKB
+                </small>
+
+            </div>
+
+
+            <div class="rohani-arrow">
+                ›
+            </div>
+
+        </a>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         INFORMASI
+    ===================================================== -->
+
+    <div class="rohani-info">
+
+        <strong>
+            Informasi:
+        </strong>
+
+        Halaman ini menyediakan akses cepat
+        ke sumber Alkitab dan kidung online.
+        Saat tombol dipilih, sumber akan
+        terbuka di halaman baru.
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer class="rohani-footer">
+
+        <p>
+            GPIL Jemaat Betesda Purwosari
+        </p>
+
+        <small>
+            Portal Informasi Jemaat
+        </small>
+
+    </footer>
+
+
+</div>
+
+
+</body>
+
+</html>
