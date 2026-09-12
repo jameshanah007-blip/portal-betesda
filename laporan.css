@@ -1,21 +1,42 @@
 /* =========================================================
    LAPORAN KEUANGAN PEMUDA
-   Modern • Profesional • Mobile Friendly
+   MODERN • PROFESIONAL • MOBILE FRIENDLY
+========================================================= */
+
+
+/* =========================================================
+   RESET
 ========================================================= */
 
 * {
     box-sizing: border-box;
 }
 
+
 html {
     scroll-behavior: smooth;
 }
 
+
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f5f7fb;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        linear-gradient(
+            180deg,
+            #eef3f8 0%,
+            #f6f8fb 45%,
+            #f4f6f9 100%
+        );
+
     color: #1f2937;
+
+    -webkit-font-smoothing: antialiased;
 }
 
 
@@ -24,10 +45,14 @@ body {
 ========================================================= */
 
 .laporan-page {
+
     width: 100%;
-    max-width: 1180px;
+
+    max-width: 1050px;
+
     margin: 0 auto;
-    padding: 24px;
+
+    padding: 24px 20px 10px;
 }
 
 
@@ -36,91 +61,223 @@ body {
 ========================================================= */
 
 .laporan-header {
-    margin-bottom: 20px;
+
+    margin-bottom: 16px;
 }
+
 
 .btn-kembali {
+
     display: inline-flex;
+
     align-items: center;
+
     justify-content: center;
-    min-height: 44px;
+
+    gap: 8px;
+
+    min-height: 46px;
+
     padding: 0 18px;
 
-    background: #1f4e79;
-    color: #ffffff;
+    background: #ffffff;
 
-    border: none;
-    border-radius: 10px;
+    color: #1f4e79;
 
-    font-size: 14px;
-    font-weight: 600;
+    border: 1px solid #d5e0eb;
+
+    border-radius: 11px;
+
     text-decoration: none;
 
-    cursor: pointer;
+    font-size: 14px;
 
-    box-shadow: 0 4px 12px rgba(31, 78, 121, 0.18);
+    font-weight: 700;
+
+    box-shadow:
+        0 3px 12px rgba(
+            15,
+            23,
+            42,
+            0.06
+        );
 
     transition:
-        background 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        0.2s ease;
 }
+
 
 .btn-kembali:hover {
-    background: #163a5c;
+
+    background: #1f4e79;
+
+    color: #ffffff;
+
+    border-color: #1f4e79;
+
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(31, 78, 121, 0.22);
 }
 
+
 .btn-kembali:active {
+
     transform: translateY(0);
 }
 
 
+.icon-kembali {
+
+    font-size: 20px;
+
+    line-height: 1;
+}
+
+
 /* =========================================================
-   FILTER PERIODE
+   FILTER CONTAINER
 ========================================================= */
 
 .filter-container {
+
     background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 17px;
 
     padding: 20px;
 
-    border: 1px solid #e5eaf0;
-    border-radius: 16px;
+    margin-bottom: 14px;
+
+    box-shadow:
+        0 7px 24px rgba(
+            15,
+            23,
+            42,
+            0.06
+        );
+}
+
+
+/* =========================================================
+   JUDUL FILTER
+========================================================= */
+
+.filter-title {
 
     display: flex;
-    align-items: flex-end;
-    gap: 16px;
-    flex-wrap: wrap;
 
-    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+    align-items: center;
+
+    gap: 12px;
 
     margin-bottom: 18px;
 }
 
-.filter-item {
+
+.filter-icon {
+
+    width: 43px;
+
+    height: 43px;
+
+    flex-shrink: 0;
+
     display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #eaf2f8;
+
+    border-radius: 11px;
+
+    font-size: 20px;
+}
+
+
+.filter-title h3 {
+
+    margin: 0 0 3px;
+
+    color: #1f2937;
+
+    font-size: 17px;
+
+    font-weight: 800;
+}
+
+
+.filter-title p {
+
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   FORM FILTER
+========================================================= */
+
+.filter-form {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        35px
+        1fr
+        auto;
+
+    align-items: end;
+
+    gap: 12px;
+}
+
+
+.filter-item {
+
+    display: flex;
+
     flex-direction: column;
+
     gap: 7px;
 }
 
+
 .filter-item label {
-    font-size: 13px;
-    font-weight: 700;
+
     color: #475569;
+
+    font-size: 13px;
+
+    font-weight: 700;
 }
 
+
 .filter-item input {
-    height: 44px;
+
+    width: 100%;
+
+    height: 46px;
 
     padding: 0 12px;
 
-    border: 1px solid #d5dce5;
+    background: #ffffff;
+
+    color: #1f2937;
+
+    border: 1px solid #d4dce5;
+
     border-radius: 9px;
 
-    background: #ffffff;
-    color: #1f2937;
+    font-family: inherit;
 
     font-size: 14px;
 
@@ -131,9 +288,36 @@ body {
         box-shadow 0.2s ease;
 }
 
+
 .filter-item input:focus {
+
     border-color: #1f4e79;
-    box-shadow: 0 0 0 3px rgba(31, 78, 121, 0.10);
+
+    box-shadow:
+        0 0 0 3px rgba(
+            31,
+            78,
+            121,
+            0.10
+        );
+}
+
+
+.filter-arrow {
+
+    height: 46px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #94a3b8;
+
+    font-size: 18px;
+
+    font-weight: bold;
 }
 
 
@@ -142,35 +326,65 @@ body {
 ========================================================= */
 
 .btn-tampilkan {
-    min-height: 44px;
 
-    padding: 0 20px;
+    min-height: 46px;
+
+    padding: 0 19px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
 
     background: #1f4e79;
+
     color: #ffffff;
 
     border: none;
+
     border-radius: 9px;
 
     cursor: pointer;
 
+    font-family: inherit;
+
     font-size: 14px;
+
     font-weight: 700;
 
-    box-shadow: 0 4px 10px rgba(31, 78, 121, 0.16);
+    box-shadow:
+        0 4px 11px rgba(
+            31,
+            78,
+            121,
+            0.18
+        );
 
     transition:
-        background 0.2s ease,
-        transform 0.2s ease;
+        0.2s ease;
 }
 
+
 .btn-tampilkan:hover {
+
     background: #163a5c;
+
     transform: translateY(-1px);
 }
 
+
 .btn-tampilkan:active {
+
     transform: translateY(0);
+}
+
+
+.button-icon {
+
+    font-size: 15px;
 }
 
 
@@ -179,58 +393,103 @@ body {
 ========================================================= */
 
 .export-container {
-    display: flex;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
     gap: 10px;
 
-    margin: 0 0 18px;
-
-    flex-wrap: wrap;
+    margin-bottom: 14px;
 }
 
-.btn-excel,
-.btn-pdf {
-    min-height: 44px;
 
-    padding: 0 18px;
+.btn-export {
+
+    min-height: 47px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
 
     border: none;
-    border-radius: 9px;
 
-    cursor: pointer;
+    border-radius: 10px;
 
     color: #ffffff;
 
+    cursor: pointer;
+
+    font-family: inherit;
+
     font-size: 14px;
+
     font-weight: 700;
 
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        0.2s ease;
 }
+
+
+.btn-export:hover {
+
+    transform: translateY(-1px);
+}
+
+
+.btn-export:active {
+
+    transform: translateY(0);
+}
+
 
 .btn-excel {
+
     background: #217346;
-    box-shadow: 0 4px 10px rgba(33, 115, 70, 0.16);
+
+    box-shadow:
+        0 4px 12px rgba(
+            33,
+            115,
+            70,
+            0.16
+        );
 }
+
 
 .btn-excel:hover {
+
     background: #185c37;
-    transform: translateY(-1px);
 }
+
 
 .btn-pdf {
+
     background: #b42318;
-    box-shadow: 0 4px 10px rgba(180, 35, 24, 0.16);
+
+    box-shadow:
+        0 4px 12px rgba(
+            180,
+            35,
+            24,
+            0.15
+        );
 }
+
 
 .btn-pdf:hover {
+
     background: #8f1c13;
-    transform: translateY(-1px);
 }
 
-.btn-excel:active,
-.btn-pdf:active {
-    transform: translateY(0);
+
+.export-icon {
+
+    font-size: 16px;
 }
 
 
@@ -239,61 +498,124 @@ body {
 ========================================================= */
 
 .laporan-paper {
+
     background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 18px;
 
     padding: 28px;
 
-    border: 1px solid #e5eaf0;
-    border-radius: 18px;
-
-    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
-
     overflow: hidden;
+
+    box-shadow:
+        0 9px 30px rgba(
+            15,
+            23,
+            42,
+            0.07
+        );
 }
 
 
 /* =========================================================
-   JUDUL LAPORAN
+   HEADER LAPORAN
 ========================================================= */
 
 .paper-header {
-    text-align: center;
 
-    margin-bottom: 24px;
+    text-align: center;
 
     padding-bottom: 20px;
 
-    border-bottom: 1px solid #e8edf3;
+    margin-bottom: 20px;
+
+    border-bottom: 1px solid #e7edf3;
 }
 
-.paper-header h2 {
-    margin: 0;
+
+.paper-logo {
+
+    width: 54px;
+
+    height: 54px;
+
+    margin: 0 auto 11px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #eaf2f8;
+
+    border-radius: 15px;
+
+    font-size: 25px;
+}
+
+
+.label-laporan {
 
     color: #1f4e79;
 
-    font-size: 24px;
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.3px;
+}
+
+
+.paper-title h1 {
+
+    margin: 5px 0 3px;
+
+    color: #1f2937;
+
+    font-size: 23px;
+
     line-height: 1.3;
 
     font-weight: 800;
 }
 
-.paper-header h2 span {
-    display: block;
 
-    margin-top: 6px;
+.paper-title p {
 
-    color: #334155;
-
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.paper-header p {
-    margin: 8px 0 0;
+    margin: 0;
 
     color: #64748b;
 
     font-size: 14px;
+
+    font-weight: 500;
+}
+
+
+.periode-laporan {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-top: 12px;
+
+    padding: 7px 13px;
+
+    background: #f1f5f9;
+
+    color: #475569;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: 700;
 }
 
 
@@ -302,38 +624,137 @@ body {
 ========================================================= */
 
 .saldo-awal {
+
     display: flex;
 
-    justify-content: space-between;
     align-items: center;
+
+    justify-content: space-between;
 
     gap: 15px;
 
-    background: #f0f6fb;
-
-    border: 1px solid #d7e5f1;
-
     padding: 16px 18px;
 
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 
-    border-radius: 12px;
+    background:
+        linear-gradient(
+            135deg,
+            #eef5fa,
+            #f7fafc
+        );
+
+    border: 1px solid #d9e6f0;
+
+    border-radius: 13px;
 }
 
-.saldo-awal span {
-    color: #475569;
+
+.saldo-info {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+.saldo-icon {
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    font-size: 19px;
+
+    box-shadow:
+        0 2px 7px rgba(
+            15,
+            23,
+            42,
+            0.06
+        );
+}
+
+
+.saldo-info > div:last-child {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.saldo-label {
+
+    color: #334155;
 
     font-size: 14px;
-    font-weight: 700;
+
+    font-weight: 800;
 }
 
+
+.saldo-info small {
+
+    color: #64748b;
+
+    font-size: 11px;
+}
+
+
 .saldo-awal strong {
+
     color: #1f4e79;
 
     font-size: 20px;
+
     font-weight: 800;
 
     white-space: nowrap;
+}
+
+
+/* =========================================================
+   INFO SCROLL
+========================================================= */
+
+.scroll-info {
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-bottom: 8px;
+
+    color: #64748b;
+
+    font-size: 11px;
+}
+
+
+.scroll-info span {
+
+    font-size: 14px;
 }
 
 
@@ -342,26 +763,37 @@ body {
 ========================================================= */
 
 .table-wrapper {
+
     width: 100%;
 
     overflow-x: auto;
 
-    border: 1px solid #e1e7ee;
+    border: 1px solid #dfe6ed;
+
     border-radius: 12px;
 
     -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: thin;
 }
 
+
 .table-wrapper::-webkit-scrollbar {
+
     height: 7px;
 }
 
+
 .table-wrapper::-webkit-scrollbar-track {
-    background: #f1f3f6;
+
+    background: #f1f5f9;
 }
 
+
 .table-wrapper::-webkit-scrollbar-thumb {
-    background: #b8c2ce;
+
+    background: #b8c4d0;
+
     border-radius: 20px;
 }
 
@@ -370,79 +802,152 @@ body {
    TABEL
 ========================================================= */
 
-table {
+#laporanTable {
+
     width: 100%;
 
     min-width: 800px;
 
     border-collapse: separate;
+
     border-spacing: 0;
 
     background: #ffffff;
 }
 
-table th,
-table td {
-    padding: 12px 14px;
 
-    border-right: 1px solid #e5eaf0;
-    border-bottom: 1px solid #e5eaf0;
+#laporanTable th,
+#laporanTable td {
+
+    padding: 12px 13px;
+
+    border-right: 1px solid #e3e8ee;
+
+    border-bottom: 1px solid #e3e8ee;
 
     font-size: 13px;
-
-    white-space: nowrap;
 }
 
-table th:last-child,
-table td:last-child {
+
+#laporanTable th:last-child,
+#laporanTable td:last-child {
+
     border-right: none;
 }
 
-table th {
+
+#laporanTable th {
+
     background: #1f4e79;
 
     color: #ffffff;
 
-    font-size: 13px;
-    font-weight: 700;
-
     text-align: center;
 
-    position: sticky;
-    top: 0;
-    z-index: 2;
+    font-size: 12px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
 }
 
-table tbody tr {
-    transition: background 0.15s ease;
+
+#laporanTable tbody tr {
+
+    transition:
+        background 0.15s ease;
 }
 
-table tbody tr:hover {
+
+#laporanTable tbody tr:hover {
+
     background: #f8fafc;
 }
 
-table tbody tr:last-child td {
-    border-bottom: 1px solid #e5eaf0;
+
+#laporanTable tbody td {
+
+    color: #334155;
+
+    background: #ffffff;
+
+    vertical-align: middle;
 }
 
 
-/* Kolom keterangan */
+/* Nomor */
 
-table td:nth-child(3) {
+#laporanTable td:nth-child(1) {
+
+    text-align: center;
+
+    width: 50px;
+}
+
+
+/* Tanggal */
+
+#laporanTable td:nth-child(2) {
+
+    text-align: center;
+
+    white-space: nowrap;
+}
+
+
+/* Keterangan */
+
+#laporanTable td:nth-child(3) {
+
+    min-width: 220px;
+
     text-align: left;
 
     white-space: normal;
 
-    min-width: 220px;
+    line-height: 1.4;
 }
 
 
-/* Angka */
+/* Pemasukan */
 
-table td:nth-child(4),
-table td:nth-child(5),
-table td:nth-child(6) {
+#laporanTable td:nth-child(4) {
+
     text-align: right;
+
+    white-space: nowrap;
+
+    color: #217346;
+
+    font-weight: 600;
+}
+
+
+/* Pengeluaran */
+
+#laporanTable td:nth-child(5) {
+
+    text-align: right;
+
+    white-space: nowrap;
+
+    color: #b42318;
+
+    font-weight: 600;
+}
+
+
+/* Saldo */
+
+#laporanTable td:nth-child(6) {
+
+    text-align: right;
+
+    white-space: nowrap;
+
+    color: #1f4e79;
+
+    font-weight: 700;
 }
 
 
@@ -450,90 +955,293 @@ table td:nth-child(6) {
    FOOTER TABEL
 ========================================================= */
 
-table tfoot td {
-    font-weight: 700;
+#laporanFooter td {
 
     background: #f1f5f9;
 
     color: #1f2937;
 
-    text-align: center !important;
+    font-weight: 800;
+
+    font-size: 13px;
 }
 
+
+#laporanFooter td:nth-child(4) {
+
+    color: #217346;
+}
+
+
+#laporanFooter td:nth-child(5) {
+
+    color: #b42318;
+}
+
+
+#laporanFooter td:nth-child(6) {
+
+    color: #1f4e79;
+}
+
+
 .total-label {
+
     text-align: center !important;
 }
 
 
 /* =========================================================
-   TABEL KOSONG
+   DATA KOSONG
 ========================================================= */
 
 .kosong {
+
+    padding: 40px 20px !important;
+
     text-align: center !important;
 
-    padding: 35px 20px !important;
+    color: #64748b !important;
 
-    color: #64748b;
+    background: #ffffff !important;
 
-    font-size: 14px;
+    font-size: 13px;
 }
 
 
 /* =========================================================
-   RESPONSIVE TABLET
+   CATATAN
 ========================================================= */
 
-@media (max-width: 900px) {
+.laporan-note {
+
+    display: flex;
+
+    gap: 5px;
+
+    margin-top: 14px;
+
+    padding: 12px 13px;
+
+    background: #f8fafc;
+
+    border-radius: 9px;
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+.laporan-note strong {
+
+    color: #475569;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.laporan-footer {
+
+    padding: 18px 5px 8px;
+
+    text-align: center;
+}
+
+
+.laporan-footer p {
+
+    margin: 0 0 4px;
+
+    color: #475569;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.laporan-footer span {
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 850px) {
 
     .laporan-page {
-        padding: 18px;
+
+        padding: 18px 15px 8px;
     }
 
-    .filter-container {
-        align-items: stretch;
+
+    .filter-form {
+
+        grid-template-columns:
+            1fr
+            35px
+            1fr;
     }
 
-    .filter-item {
-        flex: 1;
-        min-width: 180px;
-    }
 
     .btn-tampilkan {
-        align-self: stretch;
+
+        grid-column: 1 / 4;
+
+        width: 100%;
     }
 
+
     .laporan-paper {
+
         padding: 22px;
     }
 }
 
 
 /* =========================================================
-   TAMPILAN HP
+   HP
 ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 600px) {
 
     body {
-        background: #f5f7fb;
+
+        background: #f4f6f9;
     }
+
 
     .laporan-page {
-        padding: 10px;
+
+        padding: 10px 9px 5px;
     }
 
 
-    /* HEADER */
+    /* ---------------------------------------------
+       KEMBALI
+    --------------------------------------------- */
 
     .laporan-header {
-        margin-bottom: 12px;
+
+        margin-bottom: 10px;
     }
 
+
     .btn-kembali {
+
         width: 100%;
 
-        min-height: 46px;
+        min-height: 47px;
+
+        border-radius: 11px;
+
+        font-size: 14px;
+    }
+
+
+    /* ---------------------------------------------
+       FILTER
+    --------------------------------------------- */
+
+    .filter-container {
+
+        padding: 15px;
+
+        border-radius: 14px;
+
+        margin-bottom: 10px;
+    }
+
+
+    .filter-title {
+
+        margin-bottom: 15px;
+    }
+
+
+    .filter-icon {
+
+        width: 39px;
+
+        height: 39px;
+
+        border-radius: 10px;
+
+        font-size: 18px;
+    }
+
+
+    .filter-title h3 {
+
+        font-size: 15px;
+    }
+
+
+    .filter-title p {
+
+        font-size: 11px;
+    }
+
+
+    .filter-form {
+
+        display: grid;
+
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+
+    .filter-item {
+
+        width: 100%;
+    }
+
+
+    .filter-item label {
+
+        font-size: 12px;
+    }
+
+
+    .filter-item input {
+
+        width: 100%;
+
+        height: 47px;
+
+        font-size: 15px;
+
+        border-radius: 9px;
+    }
+
+
+    .filter-arrow {
+
+        display: none;
+    }
+
+
+    .btn-tampilkan {
+
+        grid-column: auto;
+
+        width: 100%;
+
+        min-height: 49px;
+
+        margin-top: 2px;
 
         border-radius: 10px;
 
@@ -541,216 +1249,427 @@ table tfoot td {
     }
 
 
-    /* FILTER */
-
-    .filter-container {
-        display: block;
-
-        padding: 15px;
-
-        border-radius: 14px;
-
-        margin-bottom: 12px;
-    }
-
-    .filter-item {
-        width: 100%;
-
-        margin-bottom: 12px;
-    }
-
-    .filter-item label {
-        font-size: 13px;
-    }
-
-    .filter-item input {
-        width: 100%;
-
-        height: 46px;
-
-        font-size: 15px;
-    }
-
-    .btn-tampilkan {
-        width: 100%;
-
-        min-height: 48px;
-
-        font-size: 15px;
-
-        border-radius: 10px;
-    }
-
-
-    /* EXPORT */
+    /* ---------------------------------------------
+       EXPORT
+    --------------------------------------------- */
 
     .export-container {
-        display: grid;
 
         grid-template-columns: 1fr 1fr;
 
         gap: 8px;
 
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
 
-    .btn-excel,
-    .btn-pdf {
-        width: 100%;
 
-        min-height: 46px;
+    .btn-export {
 
-        padding: 0 8px;
+        min-height: 47px;
 
-        font-size: 13px;
+        padding: 0 7px;
 
         border-radius: 10px;
+
+        font-size: 12px;
     }
 
 
-    /* KERTAS */
+    .export-icon {
+
+        font-size: 15px;
+    }
+
+
+    /* ---------------------------------------------
+       LAPORAN PAPER
+    --------------------------------------------- */
 
     .laporan-paper {
-        padding: 15px;
+
+        padding: 14px;
 
         border-radius: 14px;
-
-        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
     }
 
 
-    /* JUDUL */
+    /* ---------------------------------------------
+       HEADER LAPORAN
+    --------------------------------------------- */
 
     .paper-header {
-        margin-bottom: 18px;
 
         padding-bottom: 15px;
+
+        margin-bottom: 15px;
     }
 
-    .paper-header h2 {
-        font-size: 20px;
+
+    .paper-logo {
+
+        width: 46px;
+
+        height: 46px;
+
+        margin-bottom: 8px;
+
+        border-radius: 12px;
+
+        font-size: 21px;
     }
 
-    .paper-header h2 span {
-        font-size: 14px;
+
+    .label-laporan {
+
+        font-size: 10px;
+
+        letter-spacing: 1px;
+    }
+
+
+    .paper-title h1 {
+
+        margin-top: 4px;
+
+        font-size: 18px;
+
+        line-height: 1.3;
+    }
+
+
+    .paper-title p {
+
+        font-size: 12px;
 
         line-height: 1.4;
     }
 
-    .paper-header p {
-        font-size: 12px;
 
-        line-height: 1.5;
+    .periode-laporan {
+
+        margin-top: 9px;
+
+        padding: 6px 11px;
+
+        font-size: 10px;
+
+        border-radius: 18px;
     }
 
 
-    /* SALDO */
+    /* ---------------------------------------------
+       SALDO
+    --------------------------------------------- */
 
     .saldo-awal {
-        padding: 14px;
 
-        margin-bottom: 15px;
+        padding: 13px;
 
-        border-radius: 10px;
+        margin-bottom: 12px;
+
+        border-radius: 11px;
     }
 
-    .saldo-awal span {
-        font-size: 13px;
-    }
 
-    .saldo-awal strong {
+    .saldo-icon {
+
+        width: 36px;
+
+        height: 36px;
+
+        border-radius: 9px;
+
         font-size: 17px;
     }
 
 
-    /* TABLE */
+    .saldo-label {
 
-    .table-wrapper {
-        border-radius: 10px;
+        font-size: 12px;
     }
 
-    table {
+
+    .saldo-info small {
+
+        font-size: 10px;
+    }
+
+
+    .saldo-awal strong {
+
+        font-size: 17px;
+    }
+
+
+    /* ---------------------------------------------
+       INFO SCROLL
+    --------------------------------------------- */
+
+    .scroll-info {
+
+        display: flex;
+    }
+
+
+    /* ---------------------------------------------
+       TABLE
+    --------------------------------------------- */
+
+    .table-wrapper {
+
+        border-radius: 9px;
+    }
+
+
+    #laporanTable {
+
         min-width: 760px;
     }
 
-    table th,
-    table td {
-        padding: 11px 12px;
 
-        font-size: 12px;
+    #laporanTable th,
+    #laporanTable td {
+
+        padding: 10px 11px;
+
+        font-size: 11px;
     }
 
-    table th {
-        font-size: 12px;
+
+    #laporanTable th {
+
+        font-size: 11px;
     }
 
-    table td:nth-child(3) {
+
+    #laporanTable td:nth-child(3) {
+
         min-width: 200px;
+
+        max-width: 240px;
+    }
+
+
+    /* ---------------------------------------------
+       CATATAN
+    --------------------------------------------- */
+
+    .laporan-note {
+
+        margin-top: 10px;
+
+        padding: 10px;
+
+        font-size: 10px;
+    }
+
+
+    /* ---------------------------------------------
+       FOOTER
+    --------------------------------------------- */
+
+    .laporan-footer {
+
+        padding-top: 14px;
+    }
+
+
+    .laporan-footer p {
+
+        font-size: 11px;
+    }
+
+
+    .laporan-footer span {
+
+        font-size: 10px;
     }
 }
 
 
 /* =========================================================
-   HP KECIL
+   HP SANGAT KECIL
 ========================================================= */
 
-@media (max-width: 400px) {
+@media (max-width: 380px) {
 
     .laporan-page {
-        padding: 8px;
+
+        padding-left: 7px;
+
+        padding-right: 7px;
     }
+
 
     .filter-container {
+
         padding: 12px;
     }
+
 
     .laporan-paper {
-        padding: 12px;
+
+        padding: 11px;
     }
 
-    .paper-header h2 {
-        font-size: 18px;
+
+    .paper-title h1 {
+
+        font-size: 17px;
     }
 
-    .paper-header h2 span {
-        font-size: 13px;
+
+    .paper-title p {
+
+        font-size: 11px;
     }
+
 
     .saldo-awal {
+
         flex-direction: column;
+
         align-items: flex-start;
 
-        gap: 5px;
+        gap: 8px;
     }
+
 
     .saldo-awal strong {
+
         font-size: 18px;
+
+        padding-left: 47px;
     }
 
+
     .export-container {
+
         grid-template-columns: 1fr;
     }
 
-    .btn-excel,
-    .btn-pdf {
+
+    .btn-export {
+
         min-height: 48px;
+
+        font-size: 13px;
     }
 }
 
 
 /* =========================================================
-   AKSESIBILITAS / TOUCH
+   TOUCH / AKSESIBILITAS
 ========================================================= */
 
 button,
 a,
 input {
+
     -webkit-tap-highlight-color: transparent;
 }
+
 
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
-    outline: 3px solid rgba(31, 78, 121, 0.25);
+
+    outline: 3px solid rgba(
+        31,
+        78,
+        121,
+        0.22
+    );
+
     outline-offset: 2px;
+}
+
+
+/* =========================================================
+   PRINT / PDF
+========================================================= */
+
+@media print {
+
+    body {
+
+        background: #ffffff;
+
+        padding: 0;
+    }
+
+
+    .laporan-page {
+
+        max-width: 100%;
+
+        padding: 0;
+    }
+
+
+    .laporan-header,
+    .filter-container,
+    .export-container,
+    .scroll-info,
+    .laporan-note,
+    .laporan-footer {
+
+        display: none !important;
+    }
+
+
+    .laporan-paper {
+
+        width: 100%;
+
+        padding: 10px;
+
+        margin: 0;
+
+        border: none;
+
+        border-radius: 0;
+
+        box-shadow: none;
+    }
+
+
+    .paper-header {
+
+        margin-bottom: 15px;
+    }
+
+
+    .paper-logo {
+
+        display: none;
+    }
+
+
+    .table-wrapper {
+
+        overflow: visible;
+
+        border: none;
+
+        border-radius: 0;
+    }
+
+
+    #laporanTable {
+
+        width: 100%;
+
+        min-width: 0;
+    }
+
+
+    #laporanTable th,
+    #laporanTable td {
+
+        font-size: 10px;
+
+        padding: 6px;
+    }
+
 }
