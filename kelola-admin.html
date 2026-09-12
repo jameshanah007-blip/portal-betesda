@@ -1,138 +1,224 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Kelola Admin</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
     <style>
-        /* ================================
+
+        /* =================================
            HALAMAN KELOLA ADMIN
         ================================= */
 
         .admin-menu {
             display: flex;
+
             flex-direction: column;
+
             gap: 15px;
+
             margin-top: 20px;
         }
 
+
+        /* =================================
+           KARTU MENU ADMIN
+        ================================= */
+
         .admin-card {
+
             display: flex;
+
             align-items: center;
+
             gap: 15px;
 
             padding: 18px;
 
             background: #ffffff;
+
             border-radius: 14px;
 
             text-decoration: none;
+
             color: inherit;
 
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            box-shadow:
+                0 3px 10px
+                rgba(0, 0, 0, 0.08);
 
-            transition: transform 0.2s ease,
-                        box-shadow 0.2s ease;
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
         }
+
 
         .admin-card:hover {
+
             transform: translateY(-2px);
-            box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12);
+
+            box-shadow:
+                0 5px 14px
+                rgba(0, 0, 0, 0.12);
         }
 
+
+        /* =================================
+           ICON
+        ================================= */
+
         .admin-icon {
+
             width: 52px;
+
             height: 52px;
+
             min-width: 52px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             background: #f1f5f9;
+
             border-radius: 12px;
 
             font-size: 27px;
         }
 
+
+        /* =================================
+           JUDUL
+        ================================= */
+
         .admin-card h3 {
+
             margin: 0 0 5px 0;
 
             font-size: 17px;
+
             font-weight: 600;
 
             color: #1e293b;
         }
 
+
+        /* =================================
+           DESKRIPSI
+        ================================= */
+
         .admin-card p {
+
             margin: 0;
 
             font-size: 14px;
+
             line-height: 1.5;
 
             color: #64748b;
         }
 
-        /* ================================
+
+        /* =================================
            MOBILE
         ================================= */
 
         @media (max-width: 600px) {
 
             .admin-menu {
+
                 margin-top: 15px;
+
                 gap: 12px;
             }
 
+
             .admin-card {
+
                 padding: 15px;
+
                 border-radius: 12px;
             }
 
+
             .admin-icon {
+
                 width: 46px;
+
                 height: 46px;
+
                 min-width: 46px;
 
                 font-size: 24px;
             }
 
+
             .admin-card h3 {
+
                 font-size: 16px;
             }
 
+
             .admin-card p {
+
                 font-size: 13px;
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <!-- ================================
+
+    <!-- =================================
          KONTEN UTAMA
     ================================= -->
 
     <main class="container">
 
-        <!-- Tombol Kembali -->
-        <a href="index.html" class="btn-kembali">
+
+        <!-- =================================
+             TOMBOL KEMBALI
+        ================================= -->
+
+        <a
+            href="index.html"
+            class="btn-kembali"
+        >
             ← Kembali
         </a>
 
 
-        <!-- ============================
+        <!-- =================================
              MENU ADMIN
-        ============================= -->
+        ================================= -->
 
         <section class="admin-menu">
 
-            <!-- Kelola Jadwal -->
+
+            <!-- =================================
+                 KELOLA JADWAL
+            ================================= -->
+
             <a
                 href="kelola-jadwal.html"
                 class="admin-card"
@@ -149,7 +235,8 @@
                     </h3>
 
                     <p>
-                        Tambah, ubah, dan hapus jadwal kumpulan.
+                        Tambah, ubah, dan hapus
+                        jadwal kumpulan.
                     </p>
 
                 </div>
@@ -157,7 +244,10 @@
             </a>
 
 
-            <!-- Kelola Galeri -->
+            <!-- =================================
+                 KELOLA GALERI
+            ================================= -->
+
             <a
                 href="kelola-galeri.html"
                 class="admin-card"
@@ -174,7 +264,8 @@
                     </h3>
 
                     <p>
-                        Kelola foto dan dokumentasi kegiatan jemaat.
+                        Kelola foto dan dokumentasi
+                        kegiatan jemaat.
                     </p>
 
                 </div>
@@ -182,7 +273,10 @@
             </a>
 
 
-            <!-- Kelola Pengumuman -->
+            <!-- =================================
+                 KELOLA PENGUMUMAN
+            ================================= -->
+
             <a
                 href="kelola-pengumuman.html"
                 class="admin-card"
@@ -199,19 +293,49 @@
                     </h3>
 
                     <p>
-                        Tambah dan kelola pengumuman jemaat.
+                        Tambah dan kelola
+                        pengumuman jemaat.
                     </p>
 
                 </div>
 
             </a>
 
+
+            <!-- =================================
+                 KELOLA LAPORAN KEUANGAN
+            ================================= -->
+
+            <a
+                href="kelola-laporan-keuangan.html"
+                class="admin-card"
+            >
+
+                <div class="admin-icon">
+                    💰
+                </div>
+
+                <div>
+
+                    <h3>
+                        Kelola Laporan Keuangan
+                    </h3>
+
+                    <p>
+                        Kelola Buku Kas Pemuda.
+                    </p>
+
+                </div>
+
+            </a>
+
+
         </section>
 
     </main>
 
 
-    <!-- ================================
+    <!-- =================================
          FOOTER
     ================================= -->
 
@@ -227,5 +351,7 @@
 
     </footer>
 
+
 </body>
+
 </html>
