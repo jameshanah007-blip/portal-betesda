@@ -109,53 +109,6 @@
 
 
         /* ================================
-           DASHBOARD
-        ================================= */
-
-        .dashboard {
-            display: grid;
-
-            grid-template-columns: 1fr;
-
-            gap: 10px;
-
-            margin-bottom: 15px;
-        }
-
-
-        .card {
-            background: white;
-
-            padding: 15px;
-
-            border-radius: 10px;
-
-            box-shadow:
-                0 2px 6px rgba(0, 0, 0, 0.08);
-        }
-
-
-        .card-title {
-            font-size: 14px;
-
-            color: #666;
-
-            margin-bottom: 8px;
-
-            text-align: center;
-        }
-
-
-        .card-value {
-            font-size: 22px;
-
-            font-weight: bold;
-
-            text-align: center;
-        }
-
-
-        /* ================================
            FORM
         ================================= */
 
@@ -422,26 +375,6 @@
         }
 
 
-        /* ================================
-           DESKTOP
-        ================================= */
-
-        @media (min-width: 500px) {
-
-            .dashboard {
-
-                grid-template-columns:
-                    repeat(3, 1fr);
-            }
-
-
-            .card-value {
-
-                font-size: 18px;
-            }
-
-        }
-
     </style>
 
 </head>
@@ -475,64 +408,6 @@
         <p>
             Persekutuan Pemuda GPIL Jemaat Betesda Purwosari
         </p>
-
-    </div>
-
-
-    <!-- =================================
-         DASHBOARD
-    ================================= -->
-
-    <div class="dashboard">
-
-
-        <div class="card">
-
-            <div class="card-title">
-                Total Pemasukan
-            </div>
-
-            <div
-                class="card-value"
-                id="totalIncome"
-            >
-                Rp 0
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-title">
-                Total Pengeluaran
-            </div>
-
-            <div
-                class="card-value"
-                id="totalExpense"
-            >
-                Rp 0
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-title">
-                Saldo
-            </div>
-
-            <div
-                class="card-value"
-                id="balance"
-            >
-                Rp 0
-            </div>
-
-        </div>
-
 
     </div>
 
