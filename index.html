@@ -8,14 +8,19 @@
         content="width=device-width, initial-scale=1.0">
 
     <title>
-        Portal GPIL Jemaat Betesda Purwosari
+        GPIL Jemaat Betesda Purwosari
     </title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -24,409 +29,298 @@
                 Helvetica,
                 sans-serif;
 
-            background: #f4f7fb;
-            color: #1f2937;
-            min-height: 100vh;
+            color: #263238;
+            background: #ffffff;
+            line-height: 1.6;
         }
+
 
         /* =========================
            HEADER
         ========================= */
 
-        .top-header {
+        .site-header {
             background: #ffffff;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 18px 20px;
+
+            border-bottom:
+                1px solid #e8edf2;
 
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
         }
 
-        .header-inner {
-            max-width: 1100px;
+        .header-container {
+            max-width: 1150px;
+
             margin: 0 auto;
 
+            padding:
+                12px 20px;
+
             display: flex;
+
             align-items: center;
-            gap: 16px;
+
+            justify-content: space-between;
+
+            gap: 25px;
         }
 
-        .header-logo {
-            width: 58px;
-            height: 58px;
+
+        /* =========================
+           LOGO
+        ========================= */
+
+        .brand {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            text-decoration: none;
+
+            color: #173f67;
+
+            min-width: 0;
+        }
+
+        .brand-logo {
+            width: 52px;
+            height: 52px;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
             flex-shrink: 0;
         }
 
-        .header-logo img {
+        .brand-logo img {
             width: 100%;
             height: 100%;
+
             object-fit: contain;
         }
 
-        .header-text {
+        .brand-text {
             min-width: 0;
         }
 
-        .header-text h1 {
-            font-size: 21px;
+        .brand-name {
+            display: block;
+
+            font-size: 17px;
+
             font-weight: 700;
-            color: #173f67;
+
             line-height: 1.3;
-        }
 
-        .header-text p {
-            margin-top: 4px;
-            font-size: 13px;
-            color: #6b7280;
-        }
-
-        /* =========================
-           CONTAINER
-        ========================= */
-
-        .container {
-            width: 100%;
-            max-width: 1100px;
-
-            margin: 0 auto;
-
-            padding:
-                32px 20px 50px;
-        }
-
-        /* =========================
-           WELCOME
-        ========================= */
-
-        .welcome-box {
-            background:
-                linear-gradient(
-                    135deg,
-                    #173f67,
-                    #245d8f
-                );
-
-            border-radius: 18px;
-
-            padding:
-                35px 25px;
-
-            text-align: center;
-            color: #ffffff;
-
-            margin-bottom: 28px;
-
-            box-shadow:
-                0 10px 30px
-                rgba(23, 63, 103, 0.12);
-        }
-
-        .welcome-icon {
-            width: 82px;
-            height: 82px;
-
-            margin:
-                0 auto 16px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: #ffffff;
-
-            border-radius: 50%;
-
-            padding: 8px;
-        }
-
-        .welcome-icon img {
-            width: 100%;
-            height: 100%;
-
-            object-fit: contain;
-        }
-
-        .welcome-box h2 {
-            font-size: 25px;
-            font-weight: 700;
-
-            margin-bottom: 8px;
-        }
-
-        .welcome-church {
-            font-size: 16px;
-
-            color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.9
-                );
-
-            line-height: 1.5;
-        }
-
-        /* =========================
-           SECTION TITLE
-        ========================= */
-
-        .section-title {
-            margin-bottom: 15px;
-        }
-
-        .section-title h2 {
-            font-size: 19px;
             color: #173f67;
-            font-weight: 700;
         }
 
-        .section-title p {
-            margin-top: 5px;
+        .brand-subtitle {
+            display: block;
+
+            font-size: 11px;
+
+            color: #7a8794;
+
+            margin-top: 2px;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        .main-nav {
+            display: flex;
+
+            align-items: center;
+
+            gap: 4px;
+        }
+
+        .main-nav button,
+        .main-nav a {
+            border: none;
+
+            background: transparent;
+
+            text-decoration: none;
+
+            color: #4b5563;
+
+            font-family: inherit;
 
             font-size: 13px;
-            color: #6b7280;
-        }
 
-        /* =========================
-           MENU GRID
-        ========================= */
+            font-weight: 600;
 
-        .menu-grid {
-            display: grid;
+            padding:
+                9px 12px;
 
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 16px;
-        }
-
-        /* =========================
-           MENU CARD
-        ========================= */
-
-        .menu-card {
-            width: 100%;
-
-            border:
-                1px solid #e2e8f0;
-
-            background: #ffffff;
-
-            border-radius: 15px;
-
-            padding: 22px;
-
-            text-align: left;
+            border-radius: 6px;
 
             cursor: pointer;
-
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease,
-                border-color 0.2s ease;
-
-            color: #1f2937;
-        }
-
-        .menu-card:hover {
-            transform:
-                translateY(-3px);
-
-            border-color:
-                #b8cbe0;
-
-            box-shadow:
-                0 10px 25px
-                rgba(0, 0, 0, 0.07);
-        }
-
-        .menu-card:active {
-            transform:
-                translateY(-1px);
-        }
-
-        /* =========================
-           SVG ICON
-        ========================= */
-
-        .menu-card-icon {
-            width: 48px;
-            height: 48px;
-
-            border-radius: 12px;
-
-            background: #edf4fa;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            margin-bottom: 15px;
-
-            color: #245d8f;
 
             transition:
                 background 0.2s ease,
                 color 0.2s ease;
         }
 
-        .menu-card:hover .menu-card-icon {
-            background: #245d8f;
+        .main-nav button:hover,
+        .main-nav a:hover {
+            background: #f0f5f9;
+
+            color: #173f67;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            background:
+                linear-gradient(
+                    120deg,
+                    #173f67 0%,
+                    #245d8f 100%
+                );
+
             color: #ffffff;
         }
 
-        .menu-card-icon svg {
-            width: 23px;
-            height: 23px;
+        .hero-container {
+            max-width: 1150px;
 
-            stroke: currentColor;
+            margin: 0 auto;
 
-            fill: none;
+            padding:
+                85px 20px 90px;
 
-            stroke-width: 1.8;
+            display: grid;
 
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            grid-template-columns:
+                1.4fr 0.6fr;
+
+            align-items: center;
+
+            gap: 50px;
         }
 
-        .menu-card h3 {
+        .hero-content {
+            max-width: 680px;
+        }
+
+        .hero-label {
+            display: inline-block;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 15px;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.75
+                );
+        }
+
+        .hero h1 {
+            font-size: 42px;
+
+            line-height: 1.2;
+
+            margin-bottom: 18px;
+
+            font-weight: 700;
+        }
+
+        .hero p {
             font-size: 16px;
 
-            color: #173f67;
+            line-height: 1.8;
 
-            margin-bottom: 6px;
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.88
+                );
+
+            max-width: 620px;
+
+            margin-bottom: 28px;
         }
 
-        .menu-card p {
-            font-size: 13px;
-
-            line-height: 1.5;
-
-            color: #6b7280;
-        }
-
-        /* =========================
-           ROHANI
-        ========================= */
-
-        .rohani-card {
-            display: block;
-
-            text-decoration: none;
+        .hero-button {
+            display: inline-block;
 
             background: #ffffff;
 
-            border:
-                1px solid #e2e8f0;
+            color: #173f67;
 
-            border-radius: 15px;
+            text-decoration: none;
 
-            padding: 20px;
+            padding:
+                11px 22px;
 
-            margin-top: 28px;
+            border-radius: 6px;
+
+            font-size: 13px;
+
+            font-weight: 700;
 
             transition:
                 transform 0.2s ease,
                 box-shadow 0.2s ease;
         }
 
-        .rohani-card:hover {
+        .hero-button:hover {
             transform:
                 translateY(-2px);
 
             box-shadow:
-                0 10px 25px
-                rgba(0, 0, 0, 0.06);
+                0 8px 20px
+                rgba(0, 0, 0, 0.15);
         }
 
-        .rohani-card h3 {
-            color: #173f67;
-
-            font-size: 16px;
-
-            margin-bottom: 6px;
-        }
-
-        .rohani-card p {
-            color: #6b7280;
-
-            font-size: 13px;
-
-            line-height: 1.5;
-        }
 
         /* =========================
-           HALAMAN
+           HERO LOGO
         ========================= */
 
-        .halaman {
-            width: 100%;
+        .hero-logo {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
         }
 
-        .laporan-halaman {
-            display: none;
-        }
-
-        /* =========================
-           LAPORAN
-        ========================= */
-
-        .laporan-list {
-            display: grid;
-
-            grid-template-columns: 1fr;
-
-            gap: 15px;
-        }
-
-        .laporan-card {
-            width: 100%;
-
-            border:
-                1px solid #e2e8f0;
+        .hero-logo-frame {
+            width: 220px;
+            height: 220px;
 
             background: #ffffff;
 
-            border-radius: 15px;
+            border-radius: 50%;
 
-            padding: 20px;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 16px;
-
-            text-align: left;
-
-            cursor: pointer;
-
-            transition: 0.2s ease;
-        }
-
-        .laporan-card:hover {
-            transform:
-                translateY(-2px);
-
-            box-shadow:
-                0 10px 25px
-                rgba(0, 0, 0, 0.06);
-        }
-
-        .laporan-card-icon {
-            width: 48px;
-            height: 48px;
-
-            border-radius: 12px;
-
-            background: #edf4fa;
+            padding: 18px;
 
             display: flex;
 
@@ -434,42 +328,467 @@
 
             justify-content: center;
 
+            box-shadow:
+                0 20px 50px
+                rgba(0, 0, 0, 0.12);
+        }
+
+        .hero-logo-frame img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+        }
+
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section {
+            padding:
+                65px 20px;
+        }
+
+        .section-container {
+            max-width: 1150px;
+
+            margin: 0 auto;
+        }
+
+        .section-heading {
+            text-align: center;
+
+            max-width: 650px;
+
+            margin:
+                0 auto 38px;
+        }
+
+        .section-heading span {
+            display: block;
+
             color: #245d8f;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.4px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 8px;
+        }
+
+        .section-heading h2 {
+            font-size: 28px;
+
+            color: #173f67;
+
+            margin-bottom: 10px;
+        }
+
+        .section-heading p {
+            font-size: 14px;
+
+            color: #6b7280;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           MENU WEBSITE
+        ========================= */
+
+        .service-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+        .service-card {
+            display: block;
+
+            background: #ffffff;
+
+            border:
+                1px solid #e4e9ee;
+
+            border-radius: 8px;
+
+            padding: 25px;
+
+            text-decoration: none;
+
+            color: inherit;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .service-card:hover {
+            transform:
+                translateY(-4px);
+
+            border-color:
+                #c5d5e2;
+
+            box-shadow:
+                0 12px 30px
+                rgba(23, 63, 103, 0.08);
+        }
+
+        .service-icon {
+            width: 46px;
+            height: 46px;
+
+            border-radius: 7px;
+
+            background: #edf4fa;
+
+            color: #245d8f;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin-bottom: 18px;
+        }
+
+        .service-icon svg {
+            width: 22px;
+            height: 22px;
+
+            fill: none;
+
+            stroke: currentColor;
+
+            stroke-width: 1.7;
+
+            stroke-linecap: round;
+
+            stroke-linejoin: round;
+        }
+
+        .service-card h3 {
+            font-size: 16px;
+
+            color: #173f67;
+
+            margin-bottom: 7px;
+        }
+
+        .service-card p {
+            font-size: 13px;
+
+            color: #6b7280;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           ABOUT
+        ========================= */
+
+        .about-section {
+            background: #f6f8fa;
+        }
+
+        .about-content {
+            max-width: 850px;
+
+            margin: 0 auto;
+
+            text-align: center;
+        }
+
+        .about-content p {
+            font-size: 15px;
+
+            color: #59636d;
+
+            line-height: 1.9;
+        }
+
+
+        /* =========================
+           INFORMASI CEPAT
+        ========================= */
+
+        .quick-section {
+            background: #ffffff;
+        }
+
+        .quick-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+
+            max-width: 850px;
+
+            margin: 0 auto;
+        }
+
+        .quick-card {
+            border:
+                1px solid #e4e9ee;
+
+            border-radius: 8px;
+
+            padding: 23px;
+
+            background: #ffffff;
+        }
+
+        .quick-card h3 {
+            font-size: 16px;
+
+            color: #173f67;
+
+            margin-bottom: 7px;
+        }
+
+        .quick-card p {
+            font-size: 13px;
+
+            color: #6b7280;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .site-footer {
+            background: #173f67;
+
+            color: #ffffff;
+
+            padding:
+                45px 20px 25px;
+        }
+
+        .footer-container {
+            max-width: 1150px;
+
+            margin: 0 auto;
+        }
+
+        .footer-main {
+            display: grid;
+
+            grid-template-columns:
+                1.5fr 1fr 1fr;
+
+            gap: 40px;
+
+            padding-bottom: 30px;
+        }
+
+        .footer-brand {
+            max-width: 400px;
+        }
+
+        .footer-brand h3 {
+            font-size: 17px;
+
+            margin-bottom: 9px;
+        }
+
+        .footer-brand p {
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.72
+                );
+        }
+
+        .footer-column h4 {
+            font-size: 13px;
+
+            margin-bottom: 12px;
+        }
+
+        .footer-column p,
+        .footer-column a {
+            display: block;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.72
+                );
+
+            font-size: 12px;
+
+            line-height: 1.8;
+
+            text-decoration: none;
+        }
+
+        .footer-column a:hover {
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            border-top:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.12
+                );
+
+            padding-top: 18px;
+
+            text-align: center;
+
+            font-size: 11px;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.55
+                );
+        }
+
+
+        /* =========================
+           HALAMAN LAPORAN
+        ========================= */
+
+        .halaman {
+            display: none;
+        }
+
+        .halaman.aktif {
+            display: block;
+        }
+
+        .laporan-halaman {
+            padding:
+                60px 20px;
+        }
+
+        .laporan-container {
+            max-width: 850px;
+
+            margin: 0 auto;
+        }
+
+        .laporan-card {
+            width: 100%;
+
+            background: #ffffff;
+
+            border:
+                1px solid #e4e9ee;
+
+            border-radius: 8px;
+
+            padding: 24px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition:
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .laporan-card:hover {
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(23, 63, 103, 0.08);
+        }
+
+        .laporan-icon {
+            width: 50px;
+            height: 50px;
+
+            background: #edf4fa;
+
+            color: #245d8f;
+
+            border-radius: 7px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
 
             flex-shrink: 0;
         }
 
-        .laporan-card-icon svg {
+        .laporan-icon svg {
             width: 23px;
             height: 23px;
 
-            stroke: currentColor;
-
             fill: none;
 
-            stroke-width: 1.8;
+            stroke: currentColor;
+
+            stroke-width: 1.7;
 
             stroke-linecap: round;
+
             stroke-linejoin: round;
         }
 
-        .laporan-card-content {
+        .laporan-content {
             flex: 1;
         }
 
-        .laporan-card-label {
+        .laporan-content span {
             display: block;
 
-            font-size: 11px;
+            font-size: 10px;
 
-            letter-spacing: 0.8px;
+            font-weight: 700;
 
-            color: #7b8794;
+            letter-spacing: 1px;
+
+            color: #8a96a3;
 
             margin-bottom: 4px;
         }
 
-        .laporan-card-content strong {
+        .laporan-content strong {
             display: block;
 
             font-size: 17px;
@@ -479,184 +798,153 @@
             margin-bottom: 4px;
         }
 
-        .laporan-card-content small {
+        .laporan-content small {
             font-size: 13px;
 
             color: #6b7280;
         }
 
         .laporan-arrow {
+            color: #8a96a3;
+
             font-size: 24px;
-
-            color: #94a3b8;
         }
 
-        /* =========================
-           FOOTER
-        ========================= */
-
-        .footer {
-            margin-top: 40px;
-
-            padding-top: 20px;
-
-            border-top:
-                1px solid #e5e7eb;
-
-            text-align: center;
-
-            font-size: 12px;
-
-            color: #94a3b8;
-        }
-
-        /* =========================
-           TABLET
-        ========================= */
-
-        @media (max-width: 800px) {
-
-            .menu-grid {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-        }
 
         /* =========================
            MOBILE
         ========================= */
 
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
 
-            .top-header {
-                padding:
-                    14px 15px;
-            }
-
-            .header-inner {
-                gap: 12px;
-            }
-
-            .header-logo {
-                width: 48px;
-                height: 48px;
-            }
-
-            .header-text h1 {
-                font-size: 16px;
-            }
-
-            .header-text p {
-                font-size: 11px;
-            }
-
-            .container {
-                padding:
-                    22px 15px 35px;
-            }
-
-            .welcome-box {
-                padding:
-                    28px 18px;
-
-                border-radius: 16px;
-            }
-
-            .welcome-icon {
-                width: 70px;
-                height: 70px;
-            }
-
-            .welcome-box h2 {
-                font-size: 21px;
-            }
-
-            .welcome-church {
-                font-size: 14px;
-            }
-
-            .menu-grid {
+            .hero-container {
                 grid-template-columns: 1fr;
 
-                gap: 12px;
+                text-align: center;
+
+                padding:
+                    65px 20px 70px;
             }
 
-            .menu-card {
-                padding: 18px;
+            .hero-content {
+                margin: 0 auto;
             }
 
-            .menu-card-icon {
-                width: 43px;
-                height: 43px;
-
-                margin-bottom: 12px;
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
             }
 
-            .laporan-card {
-                padding: 16px;
-                gap: 12px;
+            .hero-logo {
+                order: -1;
             }
 
-            .laporan-card-icon {
-                width: 43px;
-                height: 43px;
+            .hero-logo-frame {
+                width: 160px;
+                height: 160px;
+            }
+
+            .service-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .footer-main {
+                grid-template-columns:
+                    1fr 1fr;
             }
 
         }
+
+
+        @media (max-width: 700px) {
+
+            .header-container {
+                padding:
+                    10px 15px;
+            }
+
+            .main-nav {
+                display: none;
+            }
+
+            .brand-logo {
+                width: 45px;
+                height: 45px;
+            }
+
+            .brand-name {
+                font-size: 15px;
+            }
+
+            .brand-subtitle {
+                font-size: 10px;
+            }
+
+            .hero-container {
+                padding:
+                    50px 18px 60px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .section {
+                padding:
+                    50px 15px;
+            }
+
+            .section-heading h2 {
+                font-size: 24px;
+            }
+
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+
+                gap: 25px;
+            }
+
+            .laporan-halaman {
+                padding:
+                    45px 15px;
+            }
+
+        }
+
     </style>
 </head>
 
+
 <body>
+
 
     <!-- =========================
          HEADER
     ========================== -->
 
-    <header class="top-header">
+    <header class="site-header">
 
-        <div class="header-inner">
+        <div class="header-container">
 
-            <div class="header-logo">
+            <a
+                href="#"
+                class="brand"
+                onclick="bukaHome(); return false;">
 
-                <img
-                    src="logo-gpil.jpg"
-                    alt="Logo GPIL Jemaat Betesda Purwosari">
-
-            </div>
-
-            <div class="header-text">
-
-                <h1>
-                    GPIL Jemaat Betesda Purwosari
-                </h1>
-
-                <p>
-                    Portal Informasi Jemaat
-                </p>
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-    <!-- =========================
-         CONTENT
-    ========================== -->
-
-    <main class="container">
-
-        <!-- HOME -->
-
-        <section
-            id="home"
-            class="halaman">
-
-            <div class="welcome-box">
-
-                <div class="welcome-icon">
+                <div class="brand-logo">
 
                     <img
                         src="logo-gpil.jpg"
@@ -664,341 +952,535 @@
 
                 </div>
 
-                <h2>
-                    Selamat Datang
-                </h2>
+                <div class="brand-text">
 
-                <p class="welcome-church">
-                    GPIL Jemaat Betesda Purwosari
-                </p>
+                    <span class="brand-name">
+                        GPIL Jemaat Betesda Purwosari
+                    </span>
 
-            </div>
+                    <span class="brand-subtitle">
+                        Portal Informasi Jemaat
+                    </span>
 
-
-            <div class="section-title">
-
-                <h2>
-                    Portal Jemaat
-                </h2>
-
-                <p>
-                    Akses informasi dan layanan jemaat
-                    melalui menu berikut.
-                </p>
-
-            </div>
-
-
-            <div class="menu-grid">
-
-                <!-- HOME -->
-
-                <button
-                    type="button"
-                    class="menu-card"
-                    onclick="bukaHome()">
-
-                    <div class="menu-card-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true">
-
-                            <path
-                                d="M3 10.5L12 3l9 7.5">
-                            </path>
-
-                            <path
-                                d="M5 9.5V21h14V9.5">
-                            </path>
-
-                            <path
-                                d="M9 21v-7h6v7">
-                            </path>
-
-                        </svg>
-
-                    </div>
-
-                    <h3>
-                        Home
-                    </h3>
-
-                    <p>
-                        Halaman utama portal jemaat.
-                    </p>
-
-                </button>
-
-
-                <!-- JADWAL -->
-
-                <button
-                    type="button"
-                    class="menu-card"
-                    onclick="window.location.href='jadwal-kumpulan.html'">
-
-                    <div class="menu-card-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true">
-
-                            <rect
-                                x="3"
-                                y="4"
-                                width="18"
-                                height="17"
-                                rx="2">
-                            </rect>
-
-                            <path
-                                d="M16 2v4">
-                            </path>
-
-                            <path
-                                d="M8 2v4">
-                            </path>
-
-                            <path
-                                d="M3 10h18">
-                            </path>
-
-                            <path
-                                d="M8 14h3">
-                            </path>
-
-                            <path
-                                d="M8 18h5">
-                            </path>
-
-                        </svg>
-
-                    </div>
-
-                    <h3>
-                        Jadwal Kumpulan
-                    </h3>
-
-                    <p>
-                        Lihat jadwal kegiatan dan
-                        persekutuan jemaat.
-                    </p>
-
-                </button>
-
-
-                <!-- LAPORAN -->
-
-                <button
-                    type="button"
-                    class="menu-card"
-                    onclick="bukaLaporan()">
-
-                    <div class="menu-card-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true">
-
-                            <path
-                                d="M4 20V10">
-                            </path>
-
-                            <path
-                                d="M10 20V4">
-                            </path>
-
-                            <path
-                                d="M16 20v-7">
-                            </path>
-
-                            <path
-                                d="M22 20H2">
-                            </path>
-
-                        </svg>
-
-                    </div>
-
-                    <h3>
-                        Laporan Keuangan
-                    </h3>
-
-                    <p>
-                        Informasi laporan keuangan
-                        Persekutuan Pemuda.
-                    </p>
-
-                </button>
-
-
-                <!-- GALERI -->
-
-                <button
-                    type="button"
-                    class="menu-card"
-                    onclick="window.location.href='galeri.html'">
-
-                    <div class="menu-card-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true">
-
-                            <rect
-                                x="3"
-                                y="4"
-                                width="18"
-                                height="16"
-                                rx="2">
-                            </rect>
-
-                            <circle
-                                cx="8.5"
-                                cy="9"
-                                r="1.5">
-                            </circle>
-
-                            <path
-                                d="M21 16l-5-5-6 6-2-2-5 5">
-                            </path>
-
-                        </svg>
-
-                    </div>
-
-                    <h3>
-                        Galeri Jemaat
-                    </h3>
-
-                    <p>
-                        Dokumentasi kegiatan dan
-                        kebersamaan jemaat.
-                    </p>
-
-                </button>
-
-
-                <!-- INFORMASI -->
-
-                <button
-                    type="button"
-                    class="menu-card"
-                    onclick="window.location.href='pengumuman.html'">
-
-                    <div class="menu-card-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true">
-
-                            <path
-                                d="M4 11h4l8-5v12l-8-5H4z">
-                            </path>
-
-                            <path
-                                d="M8 16l1.5 4">
-                            </path>
-
-                            <path
-                                d="M20 9a4 4 0 010 6">
-                            </path>
-
-                        </svg>
-
-                    </div>
-
-                    <h3>
-                        Informasi Jemaat
-                    </h3>
-
-                    <p>
-                        Pengumuman dan informasi
-                        terbaru untuk jemaat.
-                    </p>
-
-                </button>
-
-
-                <!-- ADMIN -->
-
-                <button
-                    type="button"
-                    class="menu-card"
-                    onclick="window.location.href='kelola-admin.html'">
-
-                    <div class="menu-card-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true">
-
-                            <circle
-                                cx="12"
-                                cy="8"
-                                r="3">
-                            </circle>
-
-                            <path
-                                d="M5 21a7 7 0 0114 0">
-                            </path>
-
-                            <path
-                                d="M19 8v4">
-                            </path>
-
-                            <path
-                                d="M17 10h4">
-                            </path>
-
-                        </svg>
-
-                    </div>
-
-                    <h3>
-                        Kelola Admin
-                    </h3>
-
-                    <p>
-                        Pengelolaan data dan administrasi
-                        portal jemaat.
-                    </p>
-
-                </button>
-
-            </div>
-
-
-            <!-- ROHANI -->
-
-            <a
-                href="rohani.html"
-                class="rohani-card">
-
-                <h3>
-                    Alkitab dan Kidung
-                </h3>
-
-                <p>
-                    Akses bahan rohani dan sumber
-                    pelayanan jemaat.
-                </p>
+                </div>
 
             </a>
+
+
+            <nav class="main-nav">
+
+                <button
+                    type="button"
+                    onclick="bukaHome()">
+                    Beranda
+                </button>
+
+                <a href="jadwal-kumpulan.html">
+                    Jadwal
+                </a>
+
+                <a href="pengumuman.html">
+                    Informasi
+                </a>
+
+                <a href="galeri.html">
+                    Galeri
+                </a>
+
+                <button
+                    type="button"
+                    onclick="bukaLaporan()">
+                    Keuangan
+                </button>
+
+                <a href="kelola-admin.html">
+                    Admin
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         HOME
+    ========================== -->
+
+    <main id="home" class="halaman aktif">
+
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <div class="hero-container">
+
+                <div class="hero-content">
+
+                    <span class="hero-label">
+                        Selamat Datang
+                    </span>
+
+                    <h1>
+                        GPIL Jemaat
+                        Betesda Purwosari
+                    </h1>
+
+                    <p>
+                        Selamat datang di portal informasi
+                        Jemaat Betesda Purwosari. Temukan
+                        jadwal kegiatan, informasi jemaat,
+                        dokumentasi pelayanan, serta
+                        berbagai informasi lainnya.
+                    </p>
+
+                    <a
+                        href="jadwal-kumpulan.html"
+                        class="hero-button">
+
+                        Lihat Jadwal Kegiatan
+
+                    </a>
+
+                </div>
+
+
+                <div class="hero-logo">
+
+                    <div class="hero-logo-frame">
+
+                        <img
+                            src="logo-gpil.jpg"
+                            alt="Logo GPIL Jemaat Betesda Purwosari">
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </section>
 
 
-        <!-- =========================
-             LAPORAN KEUANGAN
-        ========================== -->
+        <!-- LAYANAN -->
 
-        <section
-            id="laporan"
-            class="halaman laporan-halaman">
+        <section class="section">
 
-            <div class="section-title">
+            <div class="section-container">
+
+                <div class="section-heading">
+
+                    <span>
+                        Portal Jemaat
+                    </span>
+
+                    <h2>
+                        Informasi dan Layanan
+                    </h2>
+
+                    <p>
+                        Akses berbagai informasi dan
+                        layanan yang tersedia bagi
+                        Jemaat Betesda Purwosari.
+                    </p>
+
+                </div>
+
+
+                <div class="service-grid">
+
+
+                    <!-- JADWAL -->
+
+                    <a
+                        href="jadwal-kumpulan.html"
+                        class="service-card">
+
+                        <div class="service-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <rect
+                                    x="3"
+                                    y="4"
+                                    width="18"
+                                    height="17"
+                                    rx="2">
+                                </rect>
+
+                                <path
+                                    d="M16 2v4">
+                                </path>
+
+                                <path
+                                    d="M8 2v4">
+                                </path>
+
+                                <path
+                                    d="M3 10h18">
+                                </path>
+
+                                <path
+                                    d="M8 14h3">
+                                </path>
+
+                                <path
+                                    d="M8 18h5">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <h3>
+                            Jadwal Kumpulan
+                        </h3>
+
+                        <p>
+                            Informasi jadwal ibadah,
+                            persekutuan, dan kegiatan
+                            jemaat.
+                        </p>
+
+                    </a>
+
+
+                    <!-- INFORMASI -->
+
+                    <a
+                        href="pengumuman.html"
+                        class="service-card">
+
+                        <div class="service-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M4 11h4l8-5v12l-8-5H4z">
+                                </path>
+
+                                <path
+                                    d="M8 16l1.5 4">
+                                </path>
+
+                                <path
+                                    d="M20 9a4 4 0 010 6">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <h3>
+                            Informasi Jemaat
+                        </h3>
+
+                        <p>
+                            Pengumuman dan informasi
+                            terbaru untuk seluruh jemaat.
+                        </p>
+
+                    </a>
+
+
+                    <!-- GALERI -->
+
+                    <a
+                        href="galeri.html"
+                        class="service-card">
+
+                        <div class="service-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <rect
+                                    x="3"
+                                    y="4"
+                                    width="18"
+                                    height="16"
+                                    rx="2">
+                                </rect>
+
+                                <circle
+                                    cx="8.5"
+                                    cy="9"
+                                    r="1.5">
+                                </circle>
+
+                                <path
+                                    d="M21 16l-5-5-6 6-2-2-5 5">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <h3>
+                            Galeri Jemaat
+                        </h3>
+
+                        <p>
+                            Dokumentasi kegiatan,
+                            pelayanan, dan kebersamaan
+                            jemaat.
+                        </p>
+
+                    </a>
+
+
+                    <!-- KEUANGAN -->
+
+                    <button
+                        type="button"
+                        class="service-card"
+                        onclick="bukaLaporan()">
+
+                        <div class="service-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M4 20V10">
+                                </path>
+
+                                <path
+                                    d="M10 20V4">
+                                </path>
+
+                                <path
+                                    d="M16 20v-7">
+                                </path>
+
+                                <path
+                                    d="M22 20H2">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <h3>
+                            Laporan Keuangan
+                        </h3>
+
+                        <p>
+                            Informasi laporan keuangan
+                            Persekutuan Pemuda.
+                        </p>
+
+                    </button>
+
+
+                    <!-- ROHANI -->
+
+                    <a
+                        href="rohani.html"
+                        class="service-card">
+
+                        <div class="service-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M4 5.5A2.5 2.5 0 016.5 3H20v16H6.5A2.5 2.5 0 014 16.5z">
+                                </path>
+
+                                <path
+                                    d="M4 5.5v11">
+                                </path>
+
+                                <path
+                                    d="M8 7h8">
+                                </path>
+
+                                <path
+                                    d="M8 11h6">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <h3>
+                            Alkitab dan Kidung
+                        </h3>
+
+                        <p>
+                            Akses bahan rohani dan
+                            sumber pelayanan jemaat.
+                        </p>
+
+                    </a>
+
+
+                    <!-- ADMIN -->
+
+                    <a
+                        href="kelola-admin.html"
+                        class="service-card">
+
+                        <div class="service-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="3">
+                                </circle>
+
+                                <path
+                                    d="M5 21a7 7 0 0114 0">
+                                </path>
+
+                                <path
+                                    d="M19 8v4">
+                                </path>
+
+                                <path
+                                    d="M17 10h4">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <h3>
+                            Kelola Admin
+                        </h3>
+
+                        <p>
+                            Pengelolaan data dan
+                            administrasi portal jemaat.
+                        </p>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TENTANG -->
+
+        <section class="section about-section">
+
+            <div class="section-container">
+
+                <div class="section-heading">
+
+                    <span>
+                        Tentang Jemaat
+                    </span>
+
+                    <h2>
+                        GPIL Jemaat Betesda Purwosari
+                    </h2>
+
+                </div>
+
+
+                <div class="about-content">
+
+                    <p>
+                        Portal ini menjadi sarana informasi
+                        digital bagi GPIL Jemaat Betesda
+                        Purwosari untuk membantu jemaat
+                        mendapatkan informasi mengenai
+                        kegiatan, pelayanan, jadwal,
+                        dokumentasi, dan informasi jemaat
+                        secara lebih mudah.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- INFORMASI CEPAT -->
+
+        <section class="section quick-section">
+
+            <div class="section-container">
+
+                <div class="section-heading">
+
+                    <span>
+                        Informasi
+                    </span>
+
+                    <h2>
+                        Terhubung dengan Jemaat
+                    </h2>
+
+                    <p>
+                        Gunakan portal ini sebagai pusat
+                        informasi kegiatan dan pelayanan
+                        jemaat.
+                    </p>
+
+                </div>
+
+
+                <div class="quick-grid">
+
+                    <div class="quick-card">
+
+                        <h3>
+                            Kegiatan Jemaat
+                        </h3>
+
+                        <p>
+                            Lihat jadwal kegiatan dan
+                            persekutuan yang tersedia.
+                        </p>
+
+                    </div>
+
+
+                    <div class="quick-card">
+
+                        <h3>
+                            Informasi Terbaru
+                        </h3>
+
+                        <p>
+                            Dapatkan pengumuman dan
+                            informasi terbaru dari jemaat.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         LAPORAN
+    ========================== -->
+
+    <section
+        id="laporan"
+        class="halaman laporan-halaman">
+
+        <div class="laporan-container">
+
+            <div class="section-heading">
+
+                <span>
+                    Transparansi
+                </span>
 
                 <h2>
                     Laporan Keuangan
@@ -1006,81 +1488,145 @@
 
                 <p>
                     Informasi laporan keuangan
-                    organisasi pelayanan jemaat.
+                    pelayanan jemaat.
                 </p>
 
             </div>
 
 
-            <div class="laporan-list">
+            <button
+                type="button"
+                class="laporan-card"
+                onclick="bukaLaporanPemuda()">
 
-                <button
-                    type="button"
-                    class="laporan-card"
-                    onclick="bukaLaporanPemuda()">
+                <div class="laporan-icon">
 
-                    <div class="laporan-card-icon">
+                    <svg viewBox="0 0 24 24">
 
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true">
+                        <path
+                            d="M4 20V10">
+                        </path>
 
-                            <path
-                                d="M4 20V10">
-                            </path>
+                        <path
+                            d="M10 20V4">
+                        </path>
 
-                            <path
-                                d="M10 20V4">
-                            </path>
+                        <path
+                            d="M16 20v-7">
+                        </path>
 
-                            <path
-                                d="M16 20v-7">
-                            </path>
+                        <path
+                            d="M22 20H2">
+                        </path>
 
-                            <path
-                                d="M22 20H2">
-                            </path>
+                    </svg>
 
-                        </svg>
+                </div>
 
-                    </div>
+                <div class="laporan-content">
 
-                    <div class="laporan-card-content">
+                    <span>
+                        LAPORAN KEUANGAN
+                    </span>
 
-                        <span class="laporan-card-label">
-                            LAPORAN KEUANGAN
-                        </span>
+                    <strong>
+                        Pemuda
+                    </strong>
 
-                        <strong>
-                            Pemuda
-                        </strong>
+                    <small>
+                        Keuangan Persekutuan Pemuda
+                    </small>
 
-                        <small>
-                            Keuangan Persekutuan Pemuda
-                        </small>
+                </div>
 
-                    </div>
+                <div class="laporan-arrow">
+                    →
+                </div>
 
-                    <div class="laporan-arrow">
-                        ›
-                    </div>
+            </button>
 
-                </button>
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="site-footer">
+
+        <div class="footer-container">
+
+            <div class="footer-main">
+
+
+                <div class="footer-brand">
+
+                    <h3>
+                        GPIL Jemaat Betesda Purwosari
+                    </h3>
+
+                    <p>
+                        Portal informasi dan layanan
+                        digital Jemaat Betesda Purwosari.
+                    </p>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>
+                        Menu
+                    </h4>
+
+                    <a href="jadwal-kumpulan.html">
+                        Jadwal Kumpulan
+                    </a>
+
+                    <a href="pengumuman.html">
+                        Informasi Jemaat
+                    </a>
+
+                    <a href="galeri.html">
+                        Galeri Jemaat
+                    </a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>
+                        Layanan
+                    </h4>
+
+                    <a
+                        href="rohani.html">
+                        Alkitab dan Kidung
+                    </a>
+
+                    <a
+                        href="kelola-admin.html">
+                        Kelola Admin
+                    </a>
+
+                </div>
 
             </div>
 
-        </section>
 
+            <div class="footer-bottom">
 
-        <!-- FOOTER -->
+                © 2026 GPIL Jemaat Betesda Purwosari.
+                Seluruh hak cipta dilindungi.
 
-        <footer class="footer">
+            </div>
 
-            GPIL Jemaat Betesda Purwosari
+        </div>
 
-        </footer>
-
-    </main>
+    </footer>
 
 
     <!-- =========================
@@ -1089,45 +1635,48 @@
 
     <script>
 
-        function bukaHome() {
+        function sembunyikanHalaman() {
 
             document
                 .querySelectorAll(".halaman")
                 .forEach(function(halaman) {
 
-                    halaman.style.display = "none";
+                    halaman.classList.remove("aktif");
 
                 });
 
+        }
+
+
+        function bukaHome() {
+
+            sembunyikanHalaman();
+
             document
                 .getElementById("home")
-                .style.display = "block";
+                .classList.add("aktif");
 
             window.scrollTo({
                 top: 0,
                 behavior: "smooth"
             });
+
         }
 
 
         function bukaLaporan() {
 
-            document
-                .querySelectorAll(".halaman")
-                .forEach(function(halaman) {
-
-                    halaman.style.display = "none";
-
-                });
+            sembunyikanHalaman();
 
             document
                 .getElementById("laporan")
-                .style.display = "block";
+                .classList.add("aktif");
 
             window.scrollTo({
                 top: 0,
                 behavior: "smooth"
             });
+
         }
 
 
