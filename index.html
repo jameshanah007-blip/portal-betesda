@@ -806,10 +806,11 @@
     display: inline-flex;
 
     align-items: center;
+    justify-content: center;
 
-    gap: 9px;
+    gap: 10px;
 
-    border: 1px solid #d9e3ec;
+    border: 1px solid #d8e2eb;
 
     background: #ffffff;
 
@@ -817,13 +818,13 @@
 
     font-family: inherit;
 
-    font-size: 14px;
+    font-size: 13px;
 
-    font-weight: 600;
+    font-weight: 700;
 
-    padding: 11px 17px;
+    padding: 10px 16px 10px 10px;
 
-    border-radius: 10px;
+    border-radius: 8px;
 
     cursor: pointer;
 
@@ -839,53 +840,75 @@
         box-shadow 0.2s ease;
 }
 
+
+/* IKON PANAH */
+
 .tombol-kembali-icon {
     display: inline-flex;
 
     align-items: center;
-
     justify-content: center;
 
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
 
-    border-radius: 50%;
+    border-radius: 7px;
 
-    background: #eef5fa;
+    background: #edf4fa;
 
     color: #245d8f;
 
-    font-size: 17px;
+    font-size: 18px;
+
+    font-weight: 400;
 
     line-height: 1;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
-.tombol-kembali:hover {
-    background: #f7fafc;
 
-    border-color: #245d8f;
+/* HOVER */
+
+.tombol-kembali:hover {
+    background: #f8fbfd;
+
+    border-color: #b9cede;
 
     color: #173f67;
 
     transform:
-        translateY(-1px);
+        translateY(-2px);
 
     box-shadow:
-        0 5px 14px
+        0 7px 18px
         rgba(23, 63, 103, 0.10);
 }
+
 
 .tombol-kembali:hover .tombol-kembali-icon {
     background: #245d8f;
 
     color: #ffffff;
+
+    transform:
+        translateX(-2px);
 }
+
+
+/* SAAT DITEKAN */
 
 .tombol-kembali:active {
     transform:
         translateY(0);
-}
 
+    box-shadow:
+        0 3px 8px
+        rgba(23, 63, 103, 0.07);
+}
 
 
         /* =========================
