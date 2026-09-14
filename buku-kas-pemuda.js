@@ -224,7 +224,6 @@ async function muatData() {
 
     tampilkanTransaksi();
 
-    tampilkanSaldo();
 }
 
 
@@ -726,107 +725,6 @@ function tampilkanTransaksi() {
             );
         }
     );
-}
-
-
-// ==================================================
-// TAMPILKAN SALDO
-// ==================================================
-
-function tampilkanSaldo() {
-
-    let pemasukan = 0;
-
-    let pengeluaran = 0;
-
-
-    daftarTransaksi.forEach(
-        function (item) {
-
-            const jumlah =
-                Number(
-                    item.jumlah
-                ) || 0;
-
-
-            const jenis =
-                String(
-                    item.jenis
-                )
-                    .toLowerCase()
-                    .trim();
-
-
-            if (
-                jenis ===
-                "pemasukan"
-            ) {
-
-                pemasukan +=
-                    jumlah;
-            }
-
-
-            if (
-                jenis ===
-                "pengeluaran"
-            ) {
-
-                pengeluaran +=
-                    jumlah;
-            }
-        }
-    );
-
-
-    const saldo =
-        pemasukan -
-        pengeluaran;
-
-
-    const totalIncome =
-        document.getElementById(
-            "totalIncome"
-        );
-
-
-    const totalExpense =
-        document.getElementById(
-            "totalExpense"
-        );
-
-
-    const balance =
-        document.getElementById(
-            "balance"
-        );
-
-
-    if (totalIncome) {
-
-        totalIncome.textContent =
-            formatRupiah(
-                pemasukan
-            );
-    }
-
-
-    if (totalExpense) {
-
-        totalExpense.textContent =
-            formatRupiah(
-                pengeluaran
-            );
-    }
-
-
-    if (balance) {
-
-        balance.textContent =
-            formatRupiah(
-                saldo
-            );
-    }
 }
 
 
