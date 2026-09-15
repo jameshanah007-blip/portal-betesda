@@ -892,18 +892,16 @@ function rapikanKeterangan(teks) {
     }
 
     return String(teks)
-
-        /* Samakan format enter */
         .replace(/\r\n/g, "\n")
         .replace(/\r/g, "\n")
 
-        /* Hilangkan spasi kosong di awal teks */
+        // Hilangkan spasi kosong di awal seluruh teks
         .replace(
             /^[\s\u00A0\u200B\u200C\u200D\uFEFF]+/,
             ""
         )
 
-        /* Rapikan setiap baris */
+        // Bersihkan spasi di awal dan akhir setiap baris
         .split("\n")
         .map(function(baris) {
 
@@ -918,10 +916,8 @@ function rapikanKeterangan(teks) {
                 );
 
         })
-
         .join("\n")
 
-        /* Hilangkan spasi di akhir teks */
         .trim();
 }
 
