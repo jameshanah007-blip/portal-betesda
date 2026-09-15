@@ -797,22 +797,17 @@ async function prosesEdit() {
         );
 
         return;
-
     }
 
 
     const judul =
-        judulInput?.value.trim() ||
-        "";
+        judulInput?.value.trim() || "";
 
     const keterangan =
-        keteranganInput?.value ||
-        "";
+        keteranganInput?.value || "";
 
     const keteranganRapi =
-        rapikanKeterangan(
-            keterangan
-        );
+        rapikanKeterangan(keterangan);
 
 
     if (!judul) {
@@ -825,7 +820,6 @@ async function prosesEdit() {
         judulInput?.focus();
 
         return;
-
     }
 
 
@@ -839,7 +833,6 @@ async function prosesEdit() {
         keteranganInput?.focus();
 
         return;
-
     }
 
 
@@ -852,20 +845,18 @@ async function prosesEdit() {
 
     if (file) {
 
-        const hasil =
+        const hasilValidasi =
             validasiFile(file);
 
-        if (!hasil.valid) {
+        if (!hasilValidasi.valid) {
 
             tampilkanStatus(
-                hasil.pesan,
+                hasilValidasi.pesan,
                 "error"
             );
 
             return;
-
         }
-
     }
 
 
@@ -876,141 +867,18 @@ async function prosesEdit() {
         kunciForm(true);
 
 
-        let pathFileBaru = null;
-
-
         /*
-         * Jika admin memilih file baru,
-         * upload terlebih dahulu.
+         * =====================================================
+         * JIKA TIDAK ADA FILE BARU
+         * Hanya update judul dan keterangan.
+         * File lama tetap dipertahankan.
+         * =====================================================
          */
 
-        if (file) {
+        if (!file) {
 
             tampilkanStatus(
-                "Mengunggah file baru...",
-                "info"
-            );
-
-
-            const hasilUpload =
-                await uploadFile(
-                    file
-                );
-
-
-            pathFileBaru =
-                hasilUpload.path;
-
-
-            const dataUpdate = {
-
-                judul:
-                    judul,
-
-                keterangan:
-                    keteranganRapi,
-
-                nama_file:
-                    hasilUpload.namaFile,
-
-                nama_asli:
-                    hasilUpload.namaAsli,
-
-                url_file:
-                    hasilUpload.url,
-
-                tipe_file:
-                    hasilUpload.tipeFile,
-
-                ukuran_file:
-                    hasilUpload.ukuranFile
-
-            };
-
-
-            tampilkanStatus(
-                "Memperbarui pengumuman...",
-                "info"
-            );
-
-
-            const hasil =
-                await supabaseClient
-                    .from("pengumuman")
-                    .update(
-                        dataUpdate
-                    )
-                    .eq(
-                        "id",
-                        dataEdit.id
-                    );
-
-
-            if (hasil.error) {
-
-                console.error(
-                    "Error update pengumuman:",
-                    hasil.error
-                );
-
-
-                /*
-                 * Jika update gagal,
-                 * hapus file baru.
-                 */
-
-                if (pathFileBaru) {
-
-                    await hapusFileStorage(
-                        pathFileBaru
-                    );
-
-                }
-
-
-                throw new Error(
-                    jelaskanErrorDatabase(
-                        hasil.error
-                    )
-                );
-
-            }
-
-
-            /*
-             * Setelah database berhasil,
-             * hapus file lama jika ada.
-             */
-
-            const pathFileLama =
-                ambilPathStorage(
-                    dataEdit
-                );
-
-
-            if (
-                pathFileLama &&
-                pathFileLama !==
-                    pathFileBaru
-            ) {
-
-                await hapusFileStorage(
-                    pathFileLama
-                );
-
-            }
-
-        }
-
-        else {
-
-            /*
-             * Tidak ada file baru.
-             * File lama tetap dipertahankan.
-             */
-
-            tampilkanStatus(
-                "Memperbarui pengumuman...",
+                "Menyimpan perubahan...",
                 "info"
             );
 
@@ -1019,11 +887,8 @@ async function prosesEdit() {
                 await supabaseClient
                     .from("pengumuman")
                     .update({
-                        judul:
-                            judul,
-
-                        keterangan:
-                            keteranganRapi
+                        judul: judul,
+                        keterangan: keteranganRapi
                     })
                     .eq(
                         "id",
@@ -1031,10 +896,16 @@ async function prosesEdit() {
                     );
 
 
+            console.log(
+                "Hasil UPDATE:",
+                hasil
+            );
+
+
             if (hasil.error) {
 
                 console.error(
-                    "Error update pengumuman:",
+                    "Error UPDATE:",
                     hasil.error
                 );
 
@@ -1043,19 +914,196 @@ async function prosesEdit() {
                         hasil.error
                     )
                 );
+            }
+
+
+            tampilkanStatus(
+                "Perubahan berhasil disimpan.",
+                "success"
+            );
+
+
+            modeEdit = false;
+            dataEdit = null;
+
+
+            resetForm();
+
+
+            if (button) {
+
+                button.textContent =
+                    "Publikasikan Pengumuman";
 
             }
+
+
+            if (buttonBatalEdit) {
+
+                buttonBatalEdit.style.display =
+                    "none";
+
+            }
+
+
+            await ambilDaftarPengumuman();
+
+            return;
+        }
+
+
+        /*
+         * =====================================================
+         * JIKA ADMIN MEMILIH FILE BARU
+         * Upload file baru terlebih dahulu.
+         * =====================================================
+         */
+
+        tampilkanStatus(
+            "Mengunggah file baru...",
+            "info"
+        );
+
+
+        const hasilUpload =
+            await uploadFile(file);
+
+
+        const pathFileBaru =
+            hasilUpload.path;
+
+
+        /*
+         * =====================================================
+         * UPDATE DATABASE
+         * =====================================================
+         */
+
+        tampilkanStatus(
+            "Menyimpan perubahan...",
+            "info"
+        );
+
+
+        const hasilUpdate =
+            await supabaseClient
+                .from("pengumuman")
+                .update({
+
+                    judul:
+                        judul,
+
+                    keterangan:
+                        keteranganRapi,
+
+                    nama_file:
+                        hasilUpload.namaFile,
+
+                    nama_asli:
+                        hasilUpload.namaAsli,
+
+                    url_file:
+                        hasilUpload.url,
+
+                    tipe_file:
+                        hasilUpload.tipeFile,
+
+                    ukuran_file:
+                        hasilUpload.ukuranFile
+
+                })
+                .eq(
+                    "id",
+                    dataEdit.id
+                );
+
+
+        console.log(
+            "Hasil UPDATE dengan file:",
+            hasilUpdate
+        );
+
+
+        /*
+         * Jika database gagal,
+         * hapus file baru agar tidak menjadi
+         * file yatim di Storage.
+         */
+
+        if (hasilUpdate.error) {
+
+            console.error(
+                "Error UPDATE dengan file:",
+                hasilUpdate.error
+            );
+
+
+            await hapusFileStorage(
+                pathFileBaru
+            );
+
+
+            throw new Error(
+                jelaskanErrorDatabase(
+                    hasilUpdate.error
+                )
+            );
+        }
+
+
+        /*
+         * =====================================================
+         * UPDATE BERHASIL
+         * HAPUS FILE LAMA
+         * =====================================================
+         */
+
+        const pathFileLama =
+            ambilPathStorage(
+                dataEdit
+            );
+
+
+        if (
+            pathFileLama &&
+            pathFileLama !== pathFileBaru
+        ) {
+
+            await hapusFileStorage(
+                pathFileLama
+            );
 
         }
 
 
         tampilkanStatus(
-            "Pengumuman berhasil diperbarui.",
+            "Perubahan berhasil disimpan.",
             "success"
         );
 
 
-        batalEdit();
+        modeEdit = false;
+        dataEdit = null;
+
+
+        resetForm();
+
+
+        if (button) {
+
+            button.textContent =
+                "Publikasikan Pengumuman";
+
+        }
+
+
+        if (buttonBatalEdit) {
+
+            buttonBatalEdit.style.display =
+                "none";
+
+        }
+
 
         await ambilDaftarPengumuman();
 
@@ -1064,12 +1112,13 @@ async function prosesEdit() {
     catch (error) {
 
         console.error(
-            "Gagal memperbarui pengumuman:",
+            "Gagal menyimpan perubahan:",
             error
         );
 
+
         tampilkanStatus(
-            "Gagal memperbarui pengumuman: " +
+            "Gagal menyimpan perubahan: " +
             (
                 error?.message ||
                 "Terjadi kesalahan."
@@ -1086,7 +1135,6 @@ async function prosesEdit() {
     }
 
 }
-
 
 /* =========================================================
    MULAI EDIT
