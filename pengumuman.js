@@ -1,9 +1,14 @@
-/* =========================================
-   REFERENSI ELEMENT
-========================================= */
-
 const daftarPengumuman =
     document.getElementById("daftarPengumuman");
+
+const inputPencarian =
+    document.getElementById("inputPencarian");
+
+const btnHapusPencarian =
+    document.getElementById("btnHapusPencarian");
+
+const infoHasil =
+    document.getElementById("infoHasil");
 
 const modal =
     document.getElementById("modal");
@@ -23,32 +28,20 @@ const btnDownload =
 const btnTutup =
     document.getElementById("btnTutup");
 
-const inputPencarian =
-    document.getElementById("inputPencarian");
-
-const btnHapusPencarian =
-    document.getElementById("btnHapusPencarian");
-
-const infoHasil =
-    document.getElementById("infoHasil");
-
-
-/* =========================================
-   DATA PENGUMUMAN
-========================================= */
 
 let semuaPengumuman = [];
 
 
-/* =========================================
+
+/* =========================================================
    AMBIL DATA DARI SUPABASE
-========================================= */
+========================================================= */
 
 async function ambilPengumuman() {
 
     daftarPengumuman.innerHTML = `
-        <div class="loading">
-            Memuat informasi...
+        <div class="kosong">
+            <p>Memuat informasi...</p>
         </div>
     `;
 
@@ -81,9 +74,7 @@ async function ambilPengumuman() {
             semuaPengumuman
         );
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Gagal mengambil pengumuman:",
@@ -92,18 +83,7 @@ async function ambilPengumuman() {
 
         daftarPengumuman.innerHTML = `
             <div class="kosong">
-
-                <strong>
-                    Gagal memuat informasi
-                </strong>
-
-                <p>
-                    ${escapeHTML(
-                        error.message ||
-                        "Terjadi kesalahan."
-                    )}
-                </p>
-
+                <p>Gagal memuat informasi.</p>
             </div>
         `;
 
@@ -114,34 +94,23 @@ async function ambilPengumuman() {
 }
 
 
-/* =========================================
-   TAMPILKAN PENGUMUMAN
-========================================= */
 
-function tampilkanPengumuman(
-    data
-) {
+/* =========================================================
+   TAMPILKAN PENGUMUMAN
+========================================================= */
+
+function tampilkanPengumuman(data) {
 
     daftarPengumuman.innerHTML = "";
 
 
-    if (
-        !data ||
-        data.length === 0
-    ) {
+    if (!data || data.length === 0) {
 
         daftarPengumuman.innerHTML = `
             <div class="kosong">
-
-                <strong>
-                    Tidak ditemukan
-                </strong>
-
                 <p>
-                    Tidak ada pengumuman
-                    yang sesuai dengan pencarian.
+                    Tidak ada informasi yang ditemukan.
                 </p>
-
             </div>
         `;
 
@@ -153,55 +122,49 @@ function tampilkanPengumuman(
 
 
     infoHasil.textContent =
-        "Menampilkan " +
         data.length +
-        " pengumuman";
+        " informasi tersedia";
 
 
-    data.forEach(
-        function(item) {
+    data.forEach(function(item) {
 
-            daftarPengumuman.appendChild(
-                buatCardDokumen(item)
-            );
+        const card =
+            buatCardDokumen(item);
 
-        }
-    );
+        daftarPengumuman.appendChild(card);
+
+    });
 
 }
 
 
-/* =========================================
-   BUAT KARTU
-========================================= */
 
-function buatCardDokumen(
-    item
-) {
+/* =========================================================
+   BUAT CARD
+========================================================= */
+
+function buatCardDokumen(item) {
 
     const card =
         document.createElement("div");
 
-
     card.className =
         "dokumen-card";
+
+    card.setAttribute(
+        "role",
+        "button"
+    );
+
+    card.setAttribute(
+        "tabindex",
+        "0"
+    );
 
 
     const judul =
         item.judul ||
         "Pengumuman Jemaat";
-
-
-    const keterangan =
-        rapikanKeterangan(
-            item.keterangan
-        );
-
-
-    const tanggal =
-        formatTanggal(
-            item.created_at
-        );
 
 
     const namaFile =
@@ -228,27 +191,6 @@ function buatCardDokumen(
     }
 
 
-    let deskripsi =
-        keterangan;
-
-
-    if (!deskripsi) {
-
-        if (namaFile) {
-
-            deskripsi =
-                "Dokumen tersedia untuk dibuka.";
-
-        } else {
-
-            deskripsi =
-                "Klik untuk membaca informasi.";
-
-        }
-
-    }
-
-
     card.innerHTML = `
 
         <div class="file-icon">
@@ -259,33 +201,29 @@ function buatCardDokumen(
                 stroke="currentColor"
                 stroke-width="1.8"
                 stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-            >
+                stroke-linejoin="round">
 
                 <path
-                    d="M14 2H6a2 2 0 0 0-2 2v16
-                    a2 2 0 0 0 2 2h12
-                    a2 2 0 0 0 2-2V8z"
-                ></path>
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                </path>
 
                 <polyline
-                    points="14 2 14 8 20 8"
-                ></polyline>
+                    points="14 2 14 8 20 8">
+                </polyline>
 
                 <line
                     x1="8"
                     y1="13"
                     x2="16"
-                    y2="13"
-                ></line>
+                    y2="13">
+                </line>
 
                 <line
                     x1="8"
                     y1="17"
                     x2="14"
-                    y2="17"
-                ></line>
+                    y2="17">
+                </line>
 
             </svg>
 
@@ -294,24 +232,20 @@ function buatCardDokumen(
 
         <div class="dokumen-info">
 
-            <div class="dokumen-title">
+            <h3 class="dokumen-title">
                 ${escapeHTML(judul)}
-            </div>
-
+            </h3>
 
             <div class="dokumen-meta">
-
-                ${escapeHTML(tanggal)}
 
                 <span class="format-badge">
                     ${escapeHTML(format)}
                 </span>
 
-            </div>
+                <span>
+                    ${formatTanggal(item.created_at)}
+                </span>
 
-
-            <div class="dokumen-deskripsi">
-                ${escapeHTML(deskripsi)}
             </div>
 
         </div>
@@ -331,12 +265,6 @@ function buatCardDokumen(
             bukaDokumen(item);
 
         }
-    );
-
-
-    card.setAttribute(
-        "tabindex",
-        "0"
     );
 
 
@@ -364,161 +292,38 @@ function buatCardDokumen(
 }
 
 
-/* =========================================
-   PENCARIAN
-========================================= */
 
-function lakukanPencarian() {
-
-    const kata =
-        String(
-            inputPencarian.value || ""
-        )
-            .trim()
-            .toLowerCase();
-
-
-    btnHapusPencarian.style.display =
-        kata
-            ? "flex"
-            : "none";
-
-
-    if (!kata) {
-
-        tampilkanPengumuman(
-            semuaPengumuman
-        );
-
-        return;
-
-    }
-
-
-    const hasil =
-        semuaPengumuman.filter(
-            function(item) {
-
-                const judul =
-                    String(
-                        item.judul || ""
-                    )
-                        .toLowerCase();
-
-
-                const keterangan =
-                    String(
-                        item.keterangan || ""
-                    )
-                        .toLowerCase();
-
-
-                const namaFile =
-                    String(
-                        item.nama_asli ||
-                        item.nama_file ||
-                        ""
-                    )
-                        .toLowerCase();
-
-
-                return (
-                    judul.includes(kata) ||
-                    keterangan.includes(kata) ||
-                    namaFile.includes(kata)
-                );
-
-            }
-        );
-
-
-    if (hasil.length === 0) {
-
-        daftarPengumuman.innerHTML = `
-
-            <div class="kosong">
-
-                <strong>
-                    Tidak ditemukan
-                </strong>
-
-                <p>
-                    Tidak ada pengumuman
-                    yang sesuai dengan
-                    "<b>${escapeHTML(
-                        inputPencarian.value
-                    )}</b>".
-                </p>
-
-            </div>
-
-        `;
-
-        infoHasil.textContent =
-            "Tidak ada hasil pencarian.";
-
-        return;
-
-    }
-
-
-    tampilkanPengumuman(
-        hasil
-    );
-
-}
-
-
-/* =========================================
-   HAPUS PENCARIAN
-========================================= */
-
-function hapusPencarian() {
-
-    inputPencarian.value = "";
-
-    lakukanPencarian();
-
-    inputPencarian.focus();
-
-}
-
-
-/* =========================================
+/* =========================================================
    BUKA DOKUMEN
-========================================= */
+========================================================= */
 
-function bukaDokumen(
-    item
-) {
+function bukaDokumen(item) {
 
     const url =
         item.url_file || "";
 
 
-    const namaFile =
-        item.nama_asli ||
-        item.nama_file ||
-        "";
+    const keterangan =
+        item.keterangan || "";
 
 
     const ekstensi =
         ambilEkstensi(
-            namaFile
+            item.nama_asli ||
+            item.nama_file ||
+            ""
         );
 
 
-    const keterangan =
-        rapikanKeterangan(
-            item.keterangan
-        );
-
+    /*
+        Tidak ada file.
+        Berarti ini pengumuman teks.
+    */
 
     if (!url) {
 
         bukaModalPengumuman(
-            item.judul,
-            keterangan
+            item
         );
 
         return;
@@ -526,21 +331,25 @@ function bukaDokumen(
     }
 
 
-    if (
-        ekstensi === "pdf"
-    ) {
+    /*
+        PDF
+    */
+
+    if (ekstensi === "pdf") {
 
         bukaModalDenganKeterangan(
-            item.judul,
-            namaFile,
-            url,
-            keterangan
+            item,
+            url
         );
 
         return;
 
     }
 
+
+    /*
+        Gambar
+    */
 
     if (
         [
@@ -553,10 +362,8 @@ function bukaDokumen(
     ) {
 
         bukaModalGambar(
-            item.judul,
-            namaFile,
-            url,
-            keterangan
+            item,
+            url
         );
 
         return;
@@ -564,30 +371,32 @@ function bukaDokumen(
     }
 
 
+    /*
+        File lainnya
+    */
+
     bukaModalFile(
-        item.judul,
-        namaFile,
-        url,
-        keterangan
+        item,
+        url
     );
 
 }
 
 
-/* =========================================
+
+/* =========================================================
    MODAL PENGUMUMAN TEKS
-========================================= */
+========================================================= */
 
-function bukaModalPengumuman(
-    judul,
-    keterangan
-) {
+function bukaModalPengumuman(item) {
 
-    modalJudul.textContent =
-        judul || "Informasi Jemaat";
+    const judul =
+        item.judul ||
+        "Pengumuman";
 
 
-    modalNamaFile.textContent =
+    const keterangan =
+        item.keterangan ||
         "";
 
 
@@ -597,76 +406,88 @@ function bukaModalPengumuman(
         );
 
 
-    modalContent.innerHTML =
-        `
-        <div class="modal-keterangan">
-            ${escapeHTML(
-                keteranganRapi
-            )}
-        </div>
-        `;
+    modalJudul.textContent =
+        judul;
+
+
+    modalNamaFile.textContent =
+        "";
 
 
     btnDownload.style.display =
         "none";
 
 
+    /*
+        Bersihkan isi modal.
+    */
+
+    modalContent.innerHTML =
+        "";
+
+
+    /*
+        Gunakan textContent,
+        bukan template literal.
+
+        Dengan cara ini tidak ada
+        spasi/baris dari indentasi
+        JavaScript yang ikut tampil.
+    */
+
+    const isi =
+        document.createElement(
+            "div"
+        );
+
+
+    isi.className =
+        "modal-keterangan";
+
+
+    isi.textContent =
+        keteranganRapi;
+
+
+    modalContent.appendChild(
+        isi
+    );
+
+
     bukaModal();
 
 }
 
 
-/* =========================================
+
+/* =========================================================
    MODAL PDF
-========================================= */
+========================================================= */
 
 function bukaModalDenganKeterangan(
-    judul,
-    namaFile,
-    url,
-    keterangan
+    item,
+    url
 ) {
 
-    modalJudul.textContent =
-        judul || "Dokumen";
+    const judul =
+        item.judul ||
+        "Dokumen";
 
 
-    modalNamaFile.textContent =
-        namaFile || "";
-
-
-    const keteranganRapi =
+    const keterangan =
         rapikanKeterangan(
-            keterangan
+            item.keterangan || ""
         );
 
 
-    modalContent.innerHTML = `
+    modalJudul.textContent =
+        judul;
 
-        ${
-            keteranganRapi
-                ? `
-                <div class="modal-keterangan">
-                    ${escapeHTML(
-                        keteranganRapi
-                    )}
-                </div>
-                `
-                : ""
-        }
 
-        <iframe
-            src="${escapeAttribute(url)}"
-            style="
-                width:100%;
-                height:65vh;
-                border:none;
-                display:block;
-            "
-            title="Dokumen PDF"
-        ></iframe>
-
-    `;
+    modalNamaFile.textContent =
+        item.nama_asli ||
+        item.nama_file ||
+        "Dokumen PDF";
 
 
     btnDownload.href =
@@ -674,11 +495,40 @@ function bukaModalDenganKeterangan(
 
 
     btnDownload.textContent =
-        "Download PDF";
+        "Buka PDF";
 
 
     btnDownload.style.display =
         "inline-flex";
+
+
+    modalContent.innerHTML =
+        "";
+
+
+    /*
+        Jika ada keterangan,
+        tampilkan di bagian atas.
+    */
+
+    if (keterangan) {
+
+        const isi =
+            document.createElement(
+                "div"
+            );
+
+        isi.className =
+            "modal-keterangan";
+
+        isi.textContent =
+            keterangan;
+
+        modalContent.appendChild(
+            isi
+        );
+
+    }
 
 
     bukaModal();
@@ -686,54 +536,25 @@ function bukaModalDenganKeterangan(
 }
 
 
-/* =========================================
+
+/* =========================================================
    MODAL GAMBAR
-========================================= */
+========================================================= */
 
 function bukaModalGambar(
-    judul,
-    namaFile,
-    url,
-    keterangan
+    item,
+    url
 ) {
 
     modalJudul.textContent =
-        judul || "Foto";
+        item.judul ||
+        "Foto";
 
 
     modalNamaFile.textContent =
-        namaFile || "";
-
-
-    const keteranganRapi =
-        rapikanKeterangan(
-            keterangan
-        );
-
-
-    modalContent.innerHTML = `
-
-        ${
-            keteranganRapi
-                ? `
-                <div class="modal-keterangan">
-                    ${escapeHTML(
-                        keteranganRapi
-                    )}
-                </div>
-                `
-                : ""
-        }
-
-        <img
-            class="modal-image"
-            src="${escapeAttribute(url)}"
-            alt="${escapeAttribute(
-                judul || "Gambar"
-            )}"
-        >
-
-    `;
+        item.nama_asli ||
+        item.nama_file ||
+        "";
 
 
     btnDownload.href =
@@ -748,71 +569,192 @@ function bukaModalGambar(
         "inline-flex";
 
 
+    modalContent.innerHTML =
+        "";
+
+
+    /*
+        Jika ada keterangan,
+        tampilkan dahulu.
+    */
+
+    const keterangan =
+        rapikanKeterangan(
+            item.keterangan || ""
+        );
+
+
+    if (keterangan) {
+
+        const isi =
+            document.createElement(
+                "div"
+            );
+
+        isi.className =
+            "modal-keterangan";
+
+        isi.textContent =
+            keterangan;
+
+        modalContent.appendChild(
+            isi
+        );
+
+    }
+
+
+    const gambar =
+        document.createElement(
+            "img"
+        );
+
+
+    gambar.className =
+        "modal-gambar";
+
+
+    gambar.src =
+        url;
+
+
+    gambar.alt =
+        item.judul ||
+        "Foto informasi jemaat";
+
+
+    modalContent.appendChild(
+        gambar
+    );
+
+
     bukaModal();
 
 }
 
 
-/* =========================================
-   MODAL FILE
-========================================= */
+
+/* =========================================================
+   MODAL FILE LAIN
+========================================================= */
 
 function bukaModalFile(
-    judul,
-    namaFile,
-    url,
-    keterangan
+    item,
+    url
 ) {
 
     modalJudul.textContent =
-        judul || "Dokumen";
+        item.judul ||
+        "Dokumen";
 
 
     modalNamaFile.textContent =
-        namaFile || "";
+        item.nama_asli ||
+        item.nama_file ||
+        "";
 
 
-    const keteranganRapi =
+    btnDownload.href =
+        url;
+
+
+    btnDownload.textContent =
+        "Download";
+
+
+    btnDownload.style.display =
+        "inline-flex";
+
+
+    modalContent.innerHTML =
+        "";
+
+
+    const keterangan =
         rapikanKeterangan(
-            keterangan
+            item.keterangan || ""
         );
 
 
-    modalContent.innerHTML = `
+    if (keterangan) {
 
-        ${
-            keteranganRapi
-                ? `
-                <div class="modal-keterangan">
-                    ${escapeHTML(
-                        keteranganRapi
-                    )}
-                </div>
-                `
-                : ""
-        }
+        const isi =
+            document.createElement(
+                "div"
+            );
 
-        <div class="modal-file">
+        isi.className =
+            "modal-keterangan";
 
-            <p>
-                File tersedia untuk diunduh.
-            </p>
+        isi.textContent =
+            keterangan;
+
+        modalContent.appendChild(
+            isi
+        );
+
+    }
+
+
+    const fileBox =
+        document.createElement(
+            "div"
+        );
+
+
+    fileBox.className =
+        "modal-file";
+
+
+    fileBox.innerHTML = `
+
+        <div class="modal-file-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                </path>
+
+                <polyline
+                    points="14 2 14 8 20 8">
+                </polyline>
+
+                <line
+                    x1="8"
+                    y1="13"
+                    x2="16"
+                    y2="13">
+                </line>
+
+                <line
+                    x1="8"
+                    y1="17"
+                    x2="14"
+                    y2="17">
+                </line>
+
+            </svg>
 
         </div>
 
+        <p>
+            Dokumen tersedia untuk
+            diunduh.
+        </p>
+
     `;
 
 
-    btnDownload.href =
-        url;
-
-
-    btnDownload.textContent =
-        "Download";
-
-
-    btnDownload.style.display =
-        "inline-flex";
+    modalContent.appendChild(
+        fileBox
+    );
 
 
     bukaModal();
@@ -820,14 +762,16 @@ function bukaModalFile(
 }
 
 
-/* =========================================
+
+/* =========================================================
    BUKA MODAL
-========================================= */
+========================================================= */
 
 function bukaModal() {
 
     modal.style.display =
         "flex";
+
 
     modal.setAttribute(
         "aria-hidden",
@@ -841,14 +785,16 @@ function bukaModal() {
 }
 
 
-/* =========================================
+
+/* =========================================================
    TUTUP MODAL
-========================================= */
+========================================================= */
 
 function tutupModal() {
 
     modal.style.display =
         "none";
+
 
     modal.setAttribute(
         "aria-hidden",
@@ -860,27 +806,219 @@ function tutupModal() {
         "";
 
 
-    modalNamaFile.textContent =
-        "";
-
-
-    btnDownload.href =
-        "#";
-
-
-    btnDownload.style.display =
-        "none";
-
-
     document.body.style.overflow =
         "";
 
 }
 
 
-/* =========================================
-   RAPIKAN KETERANGAN
-========================================= */
+
+/* =========================================================
+   EVENT TOMBOL TUTUP
+========================================================= */
+
+if (btnTutup) {
+
+    btnTutup.addEventListener(
+        "click",
+        function(event) {
+
+            event.stopPropagation();
+
+            tutupModal();
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   KLIK AREA GELAP
+========================================================= */
+
+if (modal) {
+
+    modal.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === modal
+            ) {
+
+                tutupModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   ESCAPE
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape" &&
+            modal.style.display === "flex"
+        ) {
+
+            tutupModal();
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   PENCARIAN
+========================================================= */
+
+if (inputPencarian) {
+
+    inputPencarian.addEventListener(
+        "input",
+        function() {
+
+            const kata =
+                inputPencarian.value
+                    .trim()
+                    .toLowerCase();
+
+
+            if (kata) {
+
+                btnHapusPencarian.style.display =
+                    "flex";
+
+            } else {
+
+                btnHapusPencarian.style.display =
+                    "none";
+
+            }
+
+
+            if (!kata) {
+
+                tampilkanPengumuman(
+                    semuaPengumuman
+                );
+
+                return;
+
+            }
+
+
+            const hasil =
+                semuaPengumuman.filter(
+                    function(item) {
+
+                        const judul =
+                            String(
+                                item.judul || ""
+                            ).toLowerCase();
+
+
+                        const keterangan =
+                            String(
+                                item.keterangan || ""
+                            ).toLowerCase();
+
+
+                        const namaFile =
+                            String(
+                                item.nama_asli ||
+                                item.nama_file ||
+                                ""
+                            ).toLowerCase();
+
+
+                        return (
+                            judul.includes(kata) ||
+                            keterangan.includes(kata) ||
+                            namaFile.includes(kata)
+                        );
+
+                    }
+                );
+
+
+            if (hasil.length === 0) {
+
+                daftarPengumuman.innerHTML = `
+                    <div class="kosong">
+                        <p>
+                            Tidak ada informasi yang sesuai
+                            dengan pencarian.
+                        </p>
+                    </div>
+                `;
+
+                infoHasil.textContent =
+                    "Tidak ditemukan";
+
+                return;
+
+            }
+
+
+            tampilkanPengumuman(
+                hasil
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   HAPUS PENCARIAN
+========================================================= */
+
+if (btnHapusPencarian) {
+
+    btnHapusPencarian.addEventListener(
+        "click",
+        function() {
+
+            inputPencarian.value =
+                "";
+
+            btnHapusPencarian.style.display =
+                "none";
+
+
+            tampilkanPengumuman(
+                semuaPengumuman
+            );
+
+
+            inputPencarian.focus();
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   RAPIIKAN KETERANGAN
+========================================================= */
 
 function rapikanKeterangan(
     teks
@@ -898,7 +1036,10 @@ function rapikanKeterangan(
 
     return String(teks)
 
-        /* Samakan format enter */
+        /*
+            Samakan jenis line break.
+        */
+
         .replace(
             /\r\n/g,
             "\n"
@@ -909,17 +1050,33 @@ function rapikanKeterangan(
             "\n"
         )
 
-        /* Bersihkan spasi awal/akhir setiap baris */
+        /*
+            Hapus whitespace tersembunyi
+            di awal keseluruhan teks.
+        */
+
+        .replace(
+            /^[\s\u00A0\u200B\u200C\u200D\uFEFF]+/,
+            ""
+        )
+
+        /*
+            Bersihkan setiap baris.
+            Baris baru tetap dipertahankan.
+        */
+
         .split("\n")
 
         .map(
             function(baris) {
 
                 return baris
+
                     .replace(
                         /^[\s\u00A0\u200B\u200C\u200D\uFEFF]+/,
                         ""
                     )
+
                     .replace(
                         /[\s\u00A0\u200B\u200C\u200D\uFEFF]+$/,
                         ""
@@ -928,17 +1085,24 @@ function rapikanKeterangan(
             }
         )
 
-        /* Pertahankan Enter dari admin */
         .join("\n")
 
-        .trim();
+        /*
+            Bersihkan whitespace di akhir.
+        */
+
+        .replace(
+            /[\s\u00A0\u200B\u200C\u200D\uFEFF]+$/,
+            ""
+        );
 
 }
 
 
-/* =========================================
+
+/* =========================================================
    FORMAT TANGGAL
-========================================= */
+========================================================= */
 
 function formatTanggal(
     tanggal
@@ -978,9 +1142,10 @@ function formatTanggal(
 }
 
 
-/* =========================================
+
+/* =========================================================
    AMBIL EKSTENSI
-========================================= */
+========================================================= */
 
 function ambilEkstensi(
     namaFile
@@ -995,16 +1160,16 @@ function ambilEkstensi(
 
     const nama =
         String(namaFile)
-            .split("?")[0]
-            .split("#")[0];
+            .toLowerCase()
+            .trim();
 
 
-    const bagian =
-        nama.split(".");
+    const posisi =
+        nama.lastIndexOf(".");
 
 
     if (
-        bagian.length < 2
+        posisi === -1
     ) {
 
         return "";
@@ -1012,27 +1177,31 @@ function ambilEkstensi(
     }
 
 
-    return bagian
-        .pop()
-        .toLowerCase();
+    return nama
+        .substring(
+            posisi + 1
+        );
 
 }
 
 
-/* =========================================
+
+/* =========================================================
    ESCAPE HTML
-========================================= */
+========================================================= */
 
 function escapeHTML(
     text
 ) {
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     div.textContent =
-        text ?? "";
+        text || "";
 
 
     return div.innerHTML;
@@ -1040,103 +1209,10 @@ function escapeHTML(
 }
 
 
-/* =========================================
-   ESCAPE ATTRIBUTE
-========================================= */
 
-function escapeAttribute(
-    text
-) {
-
-    return String(
-        text ?? ""
-    )
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        );
-
-}
-
-
-/* =========================================
-   EVENT PENCARIAN
-========================================= */
-
-inputPencarian.addEventListener(
-    "input",
-    lakukanPencarian
-);
-
-
-btnHapusPencarian.addEventListener(
-    "click",
-    hapusPencarian
-);
-
-
-/* =========================================
-   EVENT MODAL
-========================================= */
-
-btnTutup.addEventListener(
-    "click",
-    tutupModal
-);
-
-
-modal.addEventListener(
-    "click",
-    function(event) {
-
-        if (
-            event.target === modal
-        ) {
-
-            tutupModal();
-
-        }
-
-    }
-);
-
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Escape" &&
-            modal.style.display === "flex"
-        ) {
-
-            tutupModal();
-
-        }
-
-    }
-);
-
-
-/* =========================================
-   LOAD
-========================================= */
+/* =========================================================
+   JALANKAN
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
