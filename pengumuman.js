@@ -295,9 +295,7 @@ function buatCardDokumen(
         <div class="dokumen-info">
 
             <div class="dokumen-title">
-
                 ${escapeHTML(judul)}
-
             </div>
 
 
@@ -313,9 +311,7 @@ function buatCardDokumen(
 
 
             <div class="dokumen-deskripsi">
-
                 ${escapeHTML(deskripsi)}
-
             </div>
 
         </div>
@@ -603,7 +599,7 @@ function bukaModalPengumuman(
 
     modalContent.innerHTML =
         `
-        <div class="modal-keterangan active">
+        <div class="modal-keterangan">
             ${escapeHTML(
                 keteranganRapi
             )}
@@ -650,7 +646,7 @@ function bukaModalDenganKeterangan(
         ${
             keteranganRapi
                 ? `
-                <div class="modal-keterangan active">
+                <div class="modal-keterangan">
                     ${escapeHTML(
                         keteranganRapi
                     )}
@@ -720,7 +716,7 @@ function bukaModalGambar(
         ${
             keteranganRapi
                 ? `
-                <div class="modal-keterangan active">
+                <div class="modal-keterangan">
                     ${escapeHTML(
                         keteranganRapi
                     )}
@@ -787,7 +783,7 @@ function bukaModalFile(
         ${
             keteranganRapi
                 ? `
-                <div class="modal-keterangan active">
+                <div class="modal-keterangan">
                     ${escapeHTML(
                         keteranganRapi
                     )}
@@ -872,6 +868,10 @@ function tutupModal() {
         "#";
 
 
+    btnDownload.style.display =
+        "none";
+
+
     document.body.style.overflow =
         "";
 
@@ -879,47 +879,62 @@ function tutupModal() {
 
 
 /* =========================================
-   RAPikan KETERANGAN
+   RAPIKAN KETERANGAN
 ========================================= */
 
-function rapikanKeterangan(teks) {
+function rapikanKeterangan(
+    teks
+) {
 
     if (
         teks === null ||
         teks === undefined
     ) {
+
         return "";
+
     }
+
 
     return String(teks)
 
         /* Samakan format enter */
-        .replace(/\r\n/g, "\n")
-        .replace(/\r/g, "\n")
+        .replace(
+            /\r\n/g,
+            "\n"
+        )
 
-        /* Bersihkan setiap baris */
+        .replace(
+            /\r/g,
+            "\n"
+        )
+
+        /* Bersihkan spasi awal/akhir setiap baris */
         .split("\n")
 
-        .map(function(baris) {
+        .map(
+            function(baris) {
 
-            return baris
-                .replace(
-                    /^[\s\u00A0\u200B\u200C\u200D\uFEFF]+/,
-                    ""
-                )
-                .replace(
-                    /[\s\u00A0\u200B\u200C\u200D\uFEFF]+$/,
-                    ""
-                );
+                return baris
+                    .replace(
+                        /^[\s\u00A0\u200B\u200C\u200D\uFEFF]+/,
+                        ""
+                    )
+                    .replace(
+                        /[\s\u00A0\u200B\u200C\u200D\uFEFF]+$/,
+                        ""
+                    );
 
-        })
+            }
+        )
 
-        /* Pertahankan Enter yang dibuat admin */
+        /* Pertahankan Enter dari admin */
         .join("\n")
 
-        /* Bersihkan kosong di awal/akhir keseluruhan */
         .trim();
+
 }
+
 
 /* =========================================
    FORMAT TANGGAL
@@ -1036,18 +1051,22 @@ function escapeAttribute(
     return String(
         text ?? ""
     )
+
         .replace(
             /&/g,
             "&amp;"
         )
+
         .replace(
             /"/g,
             "&quot;"
         )
+
         .replace(
             /</g,
             "&lt;"
         )
+
         .replace(
             />/g,
             "&gt;"
