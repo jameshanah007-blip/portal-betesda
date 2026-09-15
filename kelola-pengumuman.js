@@ -1221,61 +1221,56 @@ function jelaskanErrorDatabase(
     error
 ) {
 
+    console.error(
+        "Detail error database:",
+        error
+    );
+
+
     const message =
         error?.message ||
         "";
 
+    const details =
+        error?.details ||
+        "";
 
-    const lower =
-        message.toLowerCase();
+    const hint =
+        error?.hint ||
+        "";
 
-
-    if (
-
-        lower.includes(
-            "row-level security"
-        )
-
-    ) {
-
-        return (
-
-            "Pengumuman ditolak oleh keamanan " +
-            "database Supabase."
-
-        );
-
-    }
+    const code =
+        error?.code ||
+        "";
 
 
     if (
-
-        lower.includes(
-            "column"
-        )
-
+        code === "42501"
     ) {
 
         return (
-
-            "Struktur tabel pengumuman " +
-            "tidak sesuai dengan program."
-
+            "Pengumuman ditolak oleh " +
+            "keamanan database Supabase."
         );
 
     }
 
 
     return (
-
-        message ||
-
-        "Data pengumuman gagal disimpan."
-
+        "Database: " +
+        message +
+        (details
+            ? " | Detail: " + details
+            : "") +
+        (hint
+            ? " | Hint: " + hint
+            : "") +
+        (code
+            ? " | Kode: " + code
+            : "")
     );
 
 }
-
 
 /* =========================================================
    TAMPILKAN STATUS
