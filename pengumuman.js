@@ -882,66 +882,48 @@ function tutupModal() {
    RAPikan KETERANGAN
 ========================================= */
 
-function rapikanKeterangan(
-    teks
-) {
+function rapikanKeterangan(teks) {
 
     if (
         teks === null ||
         teks === undefined
     ) {
-
         return "";
-
     }
-
 
     return String(teks)
 
-        .replace(
-            /\r\n/g,
-            "\n"
-        )
+        /* Samakan format enter */
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n")
 
-        .replace(
-            /\r/g,
-            "\n"
-        )
-
+        /* Hilangkan spasi kosong di awal teks */
         .replace(
             /^[\s\u00A0\u200B\u200C\u200D\uFEFF]+/,
             ""
         )
 
+        /* Rapikan setiap baris */
         .split("\n")
+        .map(function(baris) {
 
-        .map(
-            function(baris) {
+            return baris
+                .replace(
+                    /^[\s\u00A0\u200B\u200C\u200D\uFEFF]+/,
+                    ""
+                )
+                .replace(
+                    /[\s\u00A0\u200B\u200C\u200D\uFEFF]+$/,
+                    ""
+                );
 
-                return baris
-
-                    .replace(
-                        /^[\s\u00A0\u200B\u200C\u200D\uFEFF]+/,
-                        ""
-                    )
-
-                    .replace(
-                        /[\s\u00A0\u200B\u200C\u200D\uFEFF]+$/,
-                        ""
-                    );
-
-            }
-        )
+        })
 
         .join("\n")
 
-        .replace(
-            /[\s\u00A0\u200B\u200C\u200D\uFEFF]+$/,
-            ""
-        );
-
+        /* Hilangkan spasi di akhir teks */
+        .trim();
 }
-
 
 /* =========================================
    FORMAT TANGGAL
