@@ -418,6 +418,201 @@
         }
 
 
+/* =====================================
+   NAVIGASI FOTO BESAR
+===================================== */
+
+.foto-navigasi {
+
+    position: absolute;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    width: 46px;
+
+    height: 46px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.18);
+
+    color: white;
+
+    font-size: 38px;
+
+    font-family: Arial, sans-serif;
+
+    font-weight: 300;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    z-index: 10001;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.foto-navigasi:hover {
+
+    background:
+        rgba(255, 255, 255, 0.30);
+
+}
+
+
+.foto-prev {
+
+    left: 18px;
+}
+
+
+.foto-next {
+
+    right: 18px;
+}
+
+
+/* =====================================
+   NOMOR FOTO
+===================================== */
+
+.nomor-foto {
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 18px;
+
+    transform:
+        translateX(-50%);
+
+    padding:
+        6px 12px;
+
+    background:
+        rgba(0, 0, 0, 0.55);
+
+    color: white;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    line-height: 1.3;
+
+    z-index: 10001;
+
+}
+
+
+/* =====================================
+   FOTO MODAL
+===================================== */
+
+.modal img {
+
+    max-width: 90%;
+
+    max-height: 88vh;
+
+    object-fit: contain;
+
+    border-radius: 6px;
+
+    box-shadow:
+        0 5px 25px
+        rgba(0, 0, 0, 0.3);
+
+    user-select: none;
+
+    -webkit-user-drag: none;
+
+    touch-action: pan-y;
+
+}
+
+
+/* =====================================
+   HP
+===================================== */
+
+@media (max-width: 600px) {
+
+    .foto-navigasi {
+
+        width: 38px;
+
+        height: 38px;
+
+        font-size: 31px;
+
+        background:
+            rgba(255, 255, 255, 0.14);
+
+    }
+
+
+    .foto-prev {
+
+        left: 8px;
+
+    }
+
+
+    .foto-next {
+
+        right: 8px;
+
+    }
+
+
+    .nomor-foto {
+
+        bottom: 12px;
+
+        font-size: 11px;
+
+        padding:
+            5px 10px;
+
+    }
+
+
+    .modal {
+
+        padding: 8px;
+
+    }
+
+
+    .modal img {
+
+        max-width: 94%;
+
+        max-height: 84vh;
+
+    }
+
+}
+
+        
         /* =====================================
            TABLET
         ===================================== */
@@ -655,25 +850,55 @@
     ===================================== -->
 
     <div
-        id="modal"
-        class="modal"
+    id="modal"
+    class="modal"
+>
+
+    <span
+        class="close"
         onclick="tutupFoto()"
     >
-
-        <span
-            class="close"
-        >
-            &times;
-        </span>
+        &times;
+    </span>
 
 
-        <img
-            id="fotoBesar"
-            src=""
-            alt="Foto kegiatan jemaat"
-        >
+    <button
+        type="button"
+        id="fotoPrev"
+        class="foto-navigasi foto-prev"
+        onclick="fotoSebelumnya()"
+        aria-label="Foto sebelumnya"
+    >
+        ‹
+    </button>
 
+
+    <img
+        id="fotoBesar"
+        src=""
+        alt="Foto kegiatan jemaat"
+    >
+
+
+    <button
+        type="button"
+        id="fotoNext"
+        class="foto-navigasi foto-next"
+        onclick="fotoBerikutnya()"
+        aria-label="Foto berikutnya"
+    >
+        ›
+    </button>
+
+
+    <div
+        id="nomorFoto"
+        class="nomor-foto"
+    >
+        1 / 1
     </div>
+
+</div>
 
 
     <!-- =====================================
