@@ -800,14 +800,22 @@ async function prosesEdit() {
     }
 
 
+    const idPengumuman =
+        dataEdit.id;
+
+
     const judul =
         judulInput?.value.trim() || "";
+
 
     const keterangan =
         keteranganInput?.value || "";
 
+
     const keteranganRapi =
-        rapikanKeterangan(keterangan);
+        rapikanKeterangan(
+            keterangan
+        );
 
 
     if (!judul) {
@@ -867,11 +875,25 @@ async function prosesEdit() {
         kunciForm(true);
 
 
+        console.log(
+            "ID yang akan diedit:",
+            idPengumuman
+        );
+
+        console.log(
+            "Judul baru:",
+            judul
+        );
+
+        console.log(
+            "Keterangan baru:",
+            keteranganRapi
+        );
+
+
         /*
          * =====================================================
-         * JIKA TIDAK ADA FILE BARU
-         * Hanya update judul dan keterangan.
-         * File lama tetap dipertahankan.
+         * EDIT TANPA FILE BARU
          * =====================================================
          */
 
@@ -887,17 +909,21 @@ async function prosesEdit() {
                 await supabaseClient
                     .from("pengumuman")
                     .update({
-                        judul: judul,
-                        keterangan: keteranganRapi
+                        judul:
+                            judul,
+
+                        keterangan:
+                            keteranganRapi
                     })
                     .eq(
                         "id",
-                        dataEdit.id
-                    );
+                        idPengumuman
+                    )
+                    .select();
 
 
             console.log(
-                "Hasil UPDATE:",
+                "HASIL UPDATE:",
                 hasil
             );
 
@@ -917,13 +943,44 @@ async function prosesEdit() {
             }
 
 
+            /*
+             * Sangat penting:
+             * Jika array kosong, berarti UPDATE
+             * tidak menemukan baris dengan ID tersebut.
+             */
+
+            if (
+                !hasil.data ||
+                hasil.data.length === 0
+            ) {
+
+                throw new Error(
+                    "Data tidak berubah. Supabase tidak menemukan data dengan ID: " +
+                    idPengumuman +
+                    ". Kemungkinan ada masalah pada ID atau RLS Policy."
+                );
+
+            }
+
+
+            console.log(
+                "Data berhasil diubah:",
+                hasil.data[0]
+            );
+
+
             tampilkanStatus(
                 "Perubahan berhasil disimpan.",
                 "success"
             );
 
 
+            /*
+             * Keluar dari mode edit
+             */
+
             modeEdit = false;
+
             dataEdit = null;
 
 
@@ -946,7 +1003,12 @@ async function prosesEdit() {
             }
 
 
+            /*
+             * Ambil ulang data dari database
+             */
+
             await ambilDaftarPengumuman();
+
 
             return;
         }
@@ -954,8 +1016,7 @@ async function prosesEdit() {
 
         /*
          * =====================================================
-         * JIKA ADMIN MEMILIH FILE BARU
-         * Upload file baru terlebih dahulu.
+         * EDIT SEKALIGUS GANTI FILE
          * =====================================================
          */
 
@@ -966,18 +1027,14 @@ async function prosesEdit() {
 
 
         const hasilUpload =
-            await uploadFile(file);
+            await uploadFile(
+                file
+            );
 
 
         const pathFileBaru =
             hasilUpload.path;
 
-
-        /*
-         * =====================================================
-         * UPDATE DATABASE
-         * =====================================================
-         */
 
         tampilkanStatus(
             "Menyimpan perubahan...",
@@ -1014,29 +1071,18 @@ async function prosesEdit() {
                 })
                 .eq(
                     "id",
-                    dataEdit.id
-                );
+                    idPengumuman
+                )
+                .select();
 
 
         console.log(
-            "Hasil UPDATE dengan file:",
+            "HASIL UPDATE DENGAN FILE:",
             hasilUpdate
         );
 
 
-        /*
-         * Jika database gagal,
-         * hapus file baru agar tidak menjadi
-         * file yatim di Storage.
-         */
-
         if (hasilUpdate.error) {
-
-            console.error(
-                "Error UPDATE dengan file:",
-                hasilUpdate.error
-            );
-
 
             await hapusFileStorage(
                 pathFileBaru
@@ -1048,14 +1094,37 @@ async function prosesEdit() {
                     hasilUpdate.error
                 )
             );
+
         }
 
 
         /*
-         * =====================================================
-         * UPDATE BERHASIL
-         * HAPUS FILE LAMA
-         * =====================================================
+         * Pastikan benar-benar ada baris
+         * yang diperbarui.
+         */
+
+        if (
+            !hasilUpdate.data ||
+            hasilUpdate.data.length === 0
+        ) {
+
+            await hapusFileStorage(
+                pathFileBaru
+            );
+
+
+            throw new Error(
+                "File berhasil diunggah, tetapi data pengumuman tidak berubah. Supabase tidak menemukan ID: " +
+                idPengumuman +
+                ". Periksa RLS Policy tabel pengumuman."
+            );
+
+        }
+
+
+        /*
+         * Hapus file lama setelah database
+         * berhasil diperbarui.
          */
 
         const pathFileLama =
@@ -1066,7 +1135,8 @@ async function prosesEdit() {
 
         if (
             pathFileLama &&
-            pathFileLama !== pathFileBaru
+            pathFileLama !==
+                pathFileBaru
         ) {
 
             await hapusFileStorage(
@@ -1083,6 +1153,7 @@ async function prosesEdit() {
 
 
         modeEdit = false;
+
         dataEdit = null;
 
 
@@ -1135,7 +1206,6 @@ async function prosesEdit() {
     }
 
 }
-
 /* =========================================================
    MULAI EDIT
    ========================================================= */
