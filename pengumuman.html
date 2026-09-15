@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
@@ -10,6 +11,7 @@
     <title>Informasi & Dokumen</title>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -20,6 +22,7 @@
 
         body {
             margin: 0;
+
             font-family:
                 -apple-system,
                 BlinkMacSystemFont,
@@ -36,8 +39,10 @@
                 );
 
             color: #172033;
+
             min-height: 100vh;
         }
+
 
         /* =========================
            TOP BAR
@@ -52,14 +57,20 @@
             align-items: center;
 
             min-height: 64px;
+
             padding: 10px 16px;
 
-            background: rgba(255, 255, 255, 0.92);
+            background:
+                rgba(255, 255, 255, 0.92);
+
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
 
-            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+            border-bottom:
+                1px solid
+                rgba(15, 23, 42, 0.08);
         }
+
 
         .btn-back {
             display: inline-flex;
@@ -84,13 +95,16 @@
                 background 0.2s ease;
         }
 
+
         .btn-back:hover {
             background: #e2e8f0;
         }
 
+
         .btn-back:active {
             transform: scale(0.94);
         }
+
 
         /* =========================
            MAIN
@@ -98,34 +112,44 @@
 
         main {
             width: 100%;
+
             max-width: 1100px;
 
             margin: 0 auto;
-            padding: 0 18px 40px;
+
+            padding:
+                0 18px 40px;
         }
+
 
         /* =========================
            HERO
         ========================= */
 
         .hero {
-            padding: 34px 4px 26px;
+            padding:
+                34px 4px 26px;
         }
 
-        .hero h1 {
-            margin: 0 0 10px;
 
-            font-size: clamp(
-                30px,
-                7vw,
-                46px
-            );
+        .hero h1 {
+            margin:
+                0 0 10px;
+
+            font-size:
+                clamp(
+                    30px,
+                    7vw,
+                    46px
+                );
 
             line-height: 1.12;
+
             letter-spacing: -1.2px;
 
             color: #111827;
         }
+
 
         .hero p {
             margin: 0;
@@ -133,10 +157,12 @@
             max-width: 650px;
 
             font-size: 15px;
+
             line-height: 1.7;
 
             color: #64748b;
         }
+
 
         /* =========================
            DOCUMENT LIST
@@ -157,6 +183,7 @@
             gap: 16px;
         }
 
+
         /* =========================
            CARD
         ========================= */
@@ -166,15 +193,18 @@
 
             display: flex;
             align-items: center;
+
             gap: 14px;
 
             padding: 17px;
 
             min-width: 0;
 
-            background: rgba(255, 255, 255, 0.94);
+            background:
+                rgba(255, 255, 255, 0.94);
 
-            border: 1px solid
+            border:
+                1px solid
                 rgba(15, 23, 42, 0.07);
 
             border-radius: 18px;
@@ -191,8 +221,10 @@
                 border-color 0.2s ease;
         }
 
+
         .dokumen-card:hover {
-            transform: translateY(-2px);
+            transform:
+                translateY(-2px);
 
             border-color:
                 rgba(37, 99, 235, 0.18);
@@ -202,9 +234,12 @@
                 rgba(15, 23, 42, 0.09);
         }
 
+
         .dokumen-card:active {
-            transform: scale(0.985);
+            transform:
+                scale(0.985);
         }
+
 
         /* =========================
            FILE ICON
@@ -227,33 +262,41 @@
             font-size: 27px;
         }
 
+
         .file-icon.pdf {
             background: #fff1f2;
         }
+
 
         .file-icon.image {
             background: #eff6ff;
         }
 
+
         .file-icon.word {
             background: #eff6ff;
         }
+
 
         .file-icon.excel {
             background: #f0fdf4;
         }
 
+
         .file-icon.powerpoint {
             background: #fff7ed;
         }
+
 
         .file-icon.zip {
             background: #faf5ff;
         }
 
+
         .file-icon.file {
             background: #f1f5f9;
         }
+
 
         /* =========================
            CARD CONTENT
@@ -261,13 +304,17 @@
 
         .dokumen-info {
             min-width: 0;
+
             flex: 1;
         }
 
+
         .dokumen-title {
-            margin: 0 0 6px;
+            margin:
+                0 0 6px;
 
             font-size: 15px;
+
             font-weight: 700;
 
             line-height: 1.4;
@@ -275,26 +322,32 @@
             color: #172033;
 
             word-break: break-word;
+
             overflow-wrap: anywhere;
         }
+
 
         .dokumen-meta {
             display: flex;
             align-items: center;
+
             flex-wrap: wrap;
 
             gap: 7px;
 
             font-size: 12px;
+
             color: #94a3b8;
         }
+
 
         .format-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
 
-            padding: 4px 8px;
+            padding:
+                4px 8px;
 
             border-radius: 7px;
 
@@ -303,40 +356,48 @@
             color: #64748b;
 
             font-size: 10px;
+
             font-weight: 800;
 
             letter-spacing: 0.4px;
         }
+
 
         .format-badge.pdf {
             background: #fee2e2;
             color: #b91c1c;
         }
 
+
         .format-badge.image {
             background: #dbeafe;
             color: #1d4ed8;
         }
+
 
         .format-badge.word {
             background: #dbeafe;
             color: #1d4ed8;
         }
 
+
         .format-badge.excel {
             background: #dcfce7;
             color: #15803d;
         }
+
 
         .format-badge.powerpoint {
             background: #ffedd5;
             color: #c2410c;
         }
 
+
         .format-badge.zip {
             background: #f3e8ff;
             color: #7e22ce;
         }
+
 
         /* =========================
            OPEN ARROW
@@ -365,11 +426,16 @@
                 transform 0.2s ease;
         }
 
+
         .dokumen-card:hover .open-arrow {
             background: #eff6ff;
+
             color: #2563eb;
-            transform: translateX(2px);
+
+            transform:
+                translateX(2px);
         }
+
 
         /* =========================
            EMPTY / LOADING
@@ -378,31 +444,40 @@
         .state-message {
             grid-column: 1 / -1;
 
-            padding: 50px 20px;
+            padding:
+                50px 20px;
 
             text-align: center;
 
             color: #64748b;
         }
 
+
         .state-icon {
             font-size: 38px;
+
             margin-bottom: 12px;
         }
 
+
         .state-message h3 {
-            margin: 0 0 7px;
+            margin:
+                0 0 7px;
 
             font-size: 17px;
+
             color: #334155;
         }
+
 
         .state-message p {
             margin: 0;
 
             font-size: 13px;
+
             line-height: 1.6;
         }
+
 
         /* =========================
            MODAL
@@ -410,11 +485,13 @@
 
         .modal {
             position: fixed;
+
             inset: 0;
 
             z-index: 100;
 
             display: none;
+
             align-items: center;
             justify-content: center;
 
@@ -427,17 +504,21 @@
             -webkit-backdrop-filter: blur(5px);
         }
 
+
         .modal.active {
             display: flex;
         }
 
+
         .modal-box {
             width: 100%;
+
             max-width: 850px;
 
             max-height: 94vh;
 
             display: flex;
+
             flex-direction: column;
 
             overflow: hidden;
@@ -451,37 +532,49 @@
                 rgba(0, 0, 0, 0.25);
         }
 
+
         /* =========================
            MODAL HEADER
         ========================= */
 
         .modal-header {
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             gap: 12px;
 
-            padding: 16px 18px;
+            padding:
+                16px 18px;
 
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom:
+                1px solid
+                #e2e8f0;
         }
+
 
         .modal-heading {
             min-width: 0;
         }
 
+
         .modal-heading h2 {
-            margin: 0 0 4px;
+            margin:
+                0 0 4px;
 
             font-size: 17px;
+
             line-height: 1.35;
 
             color: #172033;
 
             word-break: break-word;
+
             overflow-wrap: anywhere;
         }
+
 
         .modal-heading p {
             margin: 0;
@@ -491,8 +584,10 @@
             color: #94a3b8;
 
             word-break: break-word;
+
             overflow-wrap: anywhere;
         }
+
 
         .btn-close {
             flex: 0 0 auto;
@@ -501,14 +596,17 @@
             height: 38px;
 
             border: 0;
+
             border-radius: 11px;
 
             background: #f1f5f9;
+
             color: #475569;
 
             cursor: pointer;
 
             font-size: 20px;
+
             line-height: 1;
 
             transition:
@@ -516,13 +614,17 @@
                 transform 0.2s ease;
         }
 
+
         .btn-close:hover {
             background: #e2e8f0;
         }
 
+
         .btn-close:active {
-            transform: scale(0.94);
+            transform:
+                scale(0.94);
         }
+
 
         /* =========================
            MODAL CONTENT
@@ -538,12 +640,31 @@
             overflow: auto;
 
             background: #f8fafc;
+
+            margin: 0 !important;
+
+            padding: 0 !important;
+
+            text-align: left !important;
         }
+
+
+        /*
+           PAKSA SEMUA ISI MODAL
+           UNTUK RATA KIRI
+        */
+
+        .modal-content,
+        .modal-content * {
+            text-align: left !important;
+        }
+
 
         .modal-content iframe {
             display: block;
 
             width: 100%;
+
             height: 65vh;
 
             min-height: 350px;
@@ -553,10 +674,12 @@
             background: #ffffff;
         }
 
+
         .modal-content img {
             display: block;
 
             width: 100%;
+
             max-height: 65vh;
 
             object-fit: contain;
@@ -566,59 +689,82 @@
             background: #ffffff;
         }
 
+
+        /* =========================
+           FILE OPEN BOX
+        ========================= */
+
         .file-open-box {
             min-height: 280px;
 
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
+
             justify-content: center;
 
-            padding: 35px 20px;
+            padding:
+                35px 20px;
 
             text-align: center;
         }
 
+
         .file-open-icon {
             font-size: 58px;
+
             margin-bottom: 15px;
         }
 
+
         .file-open-box h3 {
-            margin: 0 0 8px;
+            margin:
+                0 0 8px;
 
             font-size: 18px;
+
             color: #334155;
         }
+
 
         .file-open-box p {
             max-width: 500px;
 
-            margin: 0 0 20px;
+            margin:
+                0 0 20px;
 
             font-size: 13px;
+
             line-height: 1.6;
 
             color: #64748b;
         }
 
+
         .btn-open-file {
             display: inline-flex;
+
             align-items: center;
+
             justify-content: center;
 
             min-height: 44px;
 
-            padding: 0 18px;
+            padding:
+                0 18px;
 
             border-radius: 12px;
 
             background: #2563eb;
+
             color: #ffffff;
 
             text-decoration: none;
 
             font-size: 14px;
+
             font-weight: 700;
 
             box-shadow:
@@ -630,78 +776,137 @@
                 background 0.2s ease;
         }
 
+
         .btn-open-file:hover {
             background: #1d4ed8;
         }
 
+
         .btn-open-file:active {
-            transform: scale(0.97);
+            transform:
+                scale(0.97);
         }
 
 
-/* =========================
-   ISI PENGUMUMAN
-========================= */
+        /* =========================
+           ISI PENGUMUMAN
+        ========================= */
 
-.modal-keterangan {
-    display: none;
+        .modal-keterangan {
+            display: none;
 
-    padding: 22px 20px;
+            width: 100%;
 
-    background: #ffffff;
+            box-sizing: border-box;
 
-    color: #334155;
+            margin: 0 !important;
 
-    font-size: 14px;
-    line-height: 1.8;
-text-align: left;
-    white-space: pre-wrap;
-    word-break: break-word;
-    overflow-wrap: anywhere;
+            padding:
+                22px 20px;
 
-    border-bottom: 1px solid #e2e8f0;
-}
+            background: #ffffff;
 
-.modal-keterangan.active {
-    display: block;
-}
-        
-        
+            color: #334155;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            font-weight: 400;
+
+            line-height: 1.8;
+
+            text-align: left !important;
+
+            text-indent: 0 !important;
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
+
+            overflow-wrap: anywhere;
+
+            border-bottom:
+                1px solid
+                #e2e8f0;
+        }
+
+
+        .modal-keterangan.active {
+            display: block;
+
+            text-align: left !important;
+
+            text-indent: 0 !important;
+        }
+
+
+        /*
+           PAKSA PARAGRAF / SPAN / DIV
+           DI DALAM ISI PENGUMUMAN
+           TETAP RATA KIRI
+        */
+
+        .modal-keterangan,
+        .modal-keterangan div,
+        .modal-keterangan p,
+        .modal-keterangan span {
+            margin-left: 0 !important;
+
+            padding-left: 0 !important;
+
+            text-align: left !important;
+
+            text-indent: 0 !important;
+        }
+
+
         /* =========================
            MODAL FOOTER
         ========================= */
 
         .modal-footer {
             display: flex;
+
             align-items: center;
+
             justify-content: flex-end;
 
             gap: 10px;
 
-            padding: 13px 16px;
+            padding:
+                13px 16px;
 
-            border-top: 1px solid #e2e8f0;
+            border-top:
+                1px solid
+                #e2e8f0;
 
             background: #ffffff;
         }
 
+
         .btn-download {
             display: inline-flex;
+
             align-items: center;
+
             justify-content: center;
 
             min-height: 42px;
 
-            padding: 0 16px;
+            padding:
+                0 16px;
 
             border-radius: 11px;
 
             background: #172033;
+
             color: #ffffff;
 
             text-decoration: none;
 
             font-size: 13px;
+
             font-weight: 700;
 
             transition:
@@ -709,13 +914,17 @@ text-align: left;
                 background 0.2s ease;
         }
 
+
         .btn-download:hover {
             background: #0f172a;
         }
 
+
         .btn-download:active {
-            transform: scale(0.97);
+            transform:
+                scale(0.97);
         }
+
 
         /* =========================
            MOBILE
@@ -728,10 +937,14 @@ text-align: left;
                     0 14px 30px;
             }
 
+
             .topbar {
                 min-height: 58px;
-                padding: 8px 12px;
+
+                padding:
+                    8px 12px;
             }
+
 
             .btn-back {
                 width: 40px;
@@ -740,25 +953,34 @@ text-align: left;
                 border-radius: 11px;
             }
 
+
             .hero {
                 padding:
                     28px 3px 22px;
             }
 
+
             .hero h1 {
                 font-size: 30px;
-                letter-spacing: -0.8px;
+
+                letter-spacing:
+                    -0.8px;
             }
+
 
             .hero p {
                 font-size: 14px;
+
                 line-height: 1.65;
             }
 
+
             #daftarPengumuman {
                 grid-template-columns: 1fr;
+
                 gap: 12px;
             }
+
 
             .dokumen-card {
                 padding: 14px;
@@ -767,6 +989,7 @@ text-align: left;
 
                 gap: 12px;
             }
+
 
             .file-icon {
                 width: 48px;
@@ -777,9 +1000,11 @@ text-align: left;
                 font-size: 24px;
             }
 
+
             .dokumen-title {
                 font-size: 14px;
             }
+
 
             .open-arrow {
                 width: 31px;
@@ -788,48 +1013,72 @@ text-align: left;
                 font-size: 16px;
             }
 
+
             .modal {
                 padding: 0;
             }
 
+
             .modal-box {
                 width: 100%;
+
                 height: 100%;
+
                 max-height: 100vh;
 
                 border-radius: 0;
             }
+
 
             .modal-header {
                 padding:
                     13px 14px;
             }
 
+
             .modal-heading h2 {
                 font-size: 15px;
             }
 
+
             .modal-content iframe {
-                height: calc(100vh - 150px);
+                height:
+                    calc(100vh - 150px);
+
                 min-height: 300px;
             }
+
 
             .modal-content img {
                 max-height:
                     calc(100vh - 150px);
             }
 
+
+            .modal-keterangan {
+                padding:
+                    18px 16px;
+
+                font-size: 14px;
+
+                line-height: 1.75;
+            }
+
+
             .modal-footer {
                 padding:
                     10px 12px;
 
-                justify-content: stretch;
+                justify-content:
+                    stretch;
             }
+
 
             .btn-download {
                 width: 100%;
             }
         }
+
 
         /* =========================
            SMALL PHONE
@@ -841,29 +1090,36 @@ text-align: left;
                 font-size: 27px;
             }
 
+
             .hero p {
                 font-size: 13px;
             }
+
 
             .file-icon {
                 width: 44px;
                 height: 50px;
             }
 
+
             .dokumen-card {
                 padding: 12px;
             }
         }
+
     </style>
 </head>
 
+
 <body>
+
 
     <!-- =========================
          TOP BAR
     ========================= -->
 
     <header class="topbar">
+
         <a
             href="index.html"
             class="btn-back"
@@ -871,6 +1127,7 @@ text-align: left;
         >
             ←
         </a>
+
     </header>
 
 
@@ -881,6 +1138,7 @@ text-align: left;
     <main>
 
         <section class="hero">
+
             <h1>
                 Informasi &amp; Dokumen
             </h1>
@@ -888,6 +1146,7 @@ text-align: left;
             <p>
                 Akses informasi dan dokumen kegiatan jemaat dengan mudah.
             </p>
+
         </section>
 
 
@@ -899,8 +1158,12 @@ text-align: left;
             id="daftarPengumuman"
             aria-live="polite"
         >
+
             <div class="state-message">
-                <div class="state-icon">📄</div>
+
+                <div class="state-icon">
+                    📄
+                </div>
 
                 <h3>
                     Memuat dokumen...
@@ -909,7 +1172,9 @@ text-align: left;
                 <p>
                     Mohon tunggu sebentar.
                 </p>
+
             </div>
+
         </section>
 
     </main>
@@ -946,6 +1211,7 @@ text-align: left;
 
                 </div>
 
+
                 <button
                     type="button"
                     id="btnTutup"
@@ -958,11 +1224,10 @@ text-align: left;
             </div>
 
 
-           <div
-    id="modalContent"
-    class="modal-content"
->
-</div>
+            <div
+                id="modalContent"
+                class="modal-content"
+            ></div>
 
 
             <div class="modal-footer">
