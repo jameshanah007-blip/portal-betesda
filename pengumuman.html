@@ -708,66 +708,35 @@
 
             overflow-y: auto;
 
-            margin: 0 !important;
-
-            padding: 0 !important;
-
-            text-align: left !important;
+            padding:
+                0;
         }
 
 
-        .modal-content,
-        .modal-content * {
+        .modal-keterangan {
 
-            text-align: left !important;
-        }
-
-
-       .modal-keterangan {
-    display: none;
-
-    width: 100%;
-    box-sizing: border-box;
-
-    margin: 0;
-
-    padding: 24px 36px 28px 36px;
-
-    background: #ffffff;
-
-    color: #334155;
-
-    font-size: 14px;
-    line-height: 1.8;
-
-    text-align: left !important;
-    text-indent: 0 !important;
-
-    white-space: pre-wrap;
-
-    word-break: break-word;
-    overflow-wrap: anywhere;
-
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.modal-keterangan.active {
-    display: block;
-}
-
-
-        .modal-keterangan,
-        .modal-keterangan div,
-        .modal-keterangan p,
-        .modal-keterangan span {
+            display: block;
 
             margin: 0;
 
-            padding: 0;
+            padding:
+                22px 32px 24px;
 
-            text-align: left !important;
+            background: #ffffff;
 
-            text-indent: 0 !important;
+            color: #334155;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+
+            text-align: left;
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
+
+            overflow-wrap: anywhere;
         }
 
 
@@ -986,11 +955,13 @@
             }
 
 
-           .modal-keterangan {
-    padding: 22px 26px 24px 26px;
-    font-size: 14px;
-    line-height: 1.8;
-}
+            .modal-keterangan {
+
+                padding:
+                    20px
+                    24px
+                    22px;
+            }
 
 
             .modal-footer {
@@ -1051,6 +1022,15 @@
             .dokumen-deskripsi {
 
                 font-size: 10px;
+            }
+
+
+            .modal-keterangan {
+
+                padding:
+                    20px
+                    22px
+                    22px;
             }
 
         }
@@ -1119,6 +1099,7 @@
                     stroke-linejoin="round"
                     aria-hidden="true"
                 >
+
                     <circle
                         cx="11"
                         cy="11"
@@ -1128,6 +1109,7 @@
                     <path
                         d="M20 20l-3.5-3.5"
                     ></path>
+
                 </svg>
 
 
@@ -1201,7 +1183,6 @@
             aria-labelledby="modalJudul"
         >
 
-
             <div class="modal-header">
 
                 <div class="modal-header-text">
@@ -1252,7 +1233,6 @@
 
             </div>
 
-
         </div>
 
     </div>
@@ -1270,7 +1250,7 @@
     <script src="supabase-client.js"></script>
 
 
-    <script src="pengumuman.js?v=7"></script>
+    <script src="pengumuman.js?v=8"></script>
 
 
 </body>
