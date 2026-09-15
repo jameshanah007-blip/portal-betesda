@@ -395,7 +395,7 @@ function bukaModalPengumuman(
         judul;
 
     modalNamaFile.textContent =
-        "INFORMASI JEMAAT";
+    "";
 
     modalContent.innerHTML = `
         <div class="modal-keterangan active">
