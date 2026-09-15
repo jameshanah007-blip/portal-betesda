@@ -892,17 +892,14 @@ function rapikanKeterangan(teks) {
     }
 
     return String(teks)
+
+        /* Samakan format enter */
         .replace(/\r\n/g, "\n")
         .replace(/\r/g, "\n")
 
-        // Hilangkan spasi kosong di awal seluruh teks
-        .replace(
-            /^[\s\u00A0\u200B\u200C\u200D\uFEFF]+/,
-            ""
-        )
-
-        // Bersihkan spasi di awal dan akhir setiap baris
+        /* Bersihkan setiap baris */
         .split("\n")
+
         .map(function(baris) {
 
             return baris
@@ -916,8 +913,11 @@ function rapikanKeterangan(teks) {
                 );
 
         })
+
+        /* Pertahankan Enter yang dibuat admin */
         .join("\n")
 
+        /* Bersihkan kosong di awal/akhir keseluruhan */
         .trim();
 }
 
