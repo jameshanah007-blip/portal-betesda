@@ -7,23 +7,18 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0">
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Informasi Jemaat</title>
 
-    <style>
 
-        /* =========================================
-           RESET
-        ========================================= */
+    <style>
 
         * {
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
 
         body {
             margin: 0;
@@ -33,84 +28,415 @@
                 Helvetica,
                 sans-serif;
 
-            background: #f4f7fa;
+            background: #f4f6f8;
 
-            color: #1e293b;
-
-            -webkit-font-smoothing: antialiased;
+            color: #334155;
         }
 
 
-        /* =========================================
-           HEADER
-        ========================================= */
+        /* =====================================
+           BAGIAN ATAS
+        ===================================== */
 
-        .site-header {
-            position: sticky;
+        .top-area {
 
-            top: 0;
+            width: 100%;
 
-            z-index: 100;
+            max-width: 1000px;
 
-            background: rgba(255, 255, 255, 0.97);
+            margin: auto;
 
-            border-bottom:
-                1px solid #e2e8f0;
+            padding:
+                12px
+                12px
+                5px;
+        }
+
+
+        /* =====================================
+           TOMBOL KEMBALI
+        ===================================== */
+
+        .btn-kembali {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                9px
+                15px;
+
+            background: #ffffff;
+
+            color: #1f4e79;
+
+            text-decoration: none;
+
+            border: 1px solid #dfe6ec;
+
+            border-radius: 10px;
+
+            font-size: 14px;
+
+            font-weight: 600;
 
             box-shadow:
-                0 2px 10px
-                rgba(15, 23, 42, 0.04);
+                0 2px 8px
+                rgba(0, 0, 0, 0.06);
+
+            transition:
+                all 0.2s ease;
         }
 
-        .header-container {
-            max-width: 1150px;
 
-            margin: 0 auto;
+        .btn-kembali:hover {
 
-            padding: 16px 20px;
+            background: #1f4e79;
+
+            color: #ffffff;
+
+            border-color: #1f4e79;
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =====================================
+           HEADER
+        ===================================== */
+
+        .page-header {
+
+            max-width: 1000px;
+
+            margin:
+                8px auto
+                20px;
+
+            padding:
+                8px 15px
+                0;
+
+            text-align: center;
+        }
+
+
+        .page-header h1 {
+
+            margin: 0;
+
+            color: #1f4e79;
+
+            font-size: 25px;
+
+            line-height: 1.35;
+
+            font-weight: 700;
+        }
+
+
+        .header-line {
+
+            width: 55px;
+
+            height: 3px;
+
+            margin:
+                10px auto
+                0;
+
+            background: #1f4e79;
+
+            border-radius: 10px;
+        }
+
+
+        /* =====================================
+           CONTAINER
+        ===================================== */
+
+        .container {
+
+            width: 100%;
+
+            max-width: 1000px;
+
+            margin: auto;
+
+            padding:
+                0 12px
+                35px;
+        }
+
+
+        /* =====================================
+           PENCARIAN
+        ===================================== */
+
+        .pencarian-box {
+
+            margin-bottom: 18px;
+
+            background: #ffffff;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 12px;
+
+            padding: 10px 12px;
+
+            box-shadow:
+                0 2px 8px
+                rgba(0, 0, 0, 0.05);
+        }
+
+
+        .pencarian-wrapper {
 
             display: flex;
 
             align-items: center;
 
-            justify-content: space-between;
-
-            gap: 25px;
+            gap: 10px;
         }
 
 
-        /* =========================================
-           BRAND
-        ========================================= */
+        .pencarian-icon {
 
-        .brand {
-            display: block;
+            flex:
+                0 0 auto;
+
+            width: 20px;
+
+            height: 20px;
+
+            color: #1f4e79;
+        }
+
+
+        .pencarian-input {
+
+            width: 100%;
+
+            border: none;
+
+            outline: none;
+
+            background: transparent;
+
+            color: #334155;
+
+            font-family: inherit;
+
+            font-size: 14px;
+        }
+
+
+        .pencarian-input::placeholder {
+
+            color: #94a3b8;
+        }
+
+
+        .btn-hapus-pencarian {
+
+            display: none;
+
+            flex:
+                0 0 auto;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 26px;
+
+            height: 26px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: #edf2f7;
+
+            color: #64748b;
+
+            font-size: 18px;
+
+            line-height: 1;
+
+            cursor: pointer;
+        }
+
+
+        .btn-hapus-pencarian:hover {
+
+            background: #e2e8f0;
+
+            color: #334155;
+        }
+
+
+        /* =====================================
+           HASIL PENCARIAN
+        ===================================== */
+
+        .info-hasil {
+
+            margin:
+                0 2px
+                14px;
+
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================
+           DAFTAR PENGUMUMAN
+        ===================================== */
+
+        .daftar-pengumuman {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr;
+
+            gap: 12px;
+        }
+
+
+        /* =====================================
+           KARTU PENGUMUMAN
+        ===================================== */
+
+        .dokumen-card {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            width: 100%;
+
+            padding:
+                15px;
+
+            background: #ffffff;
+
+            border:
+                1px solid
+                #e2e8f0;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 2px 9px
+                rgba(0, 0, 0, 0.06);
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .dokumen-card:hover {
+
+            transform:
+                translateY(-2px);
+
+            border-color: #c7d7e5;
+
+            box-shadow:
+                0 6px 16px
+                rgba(0, 0, 0, 0.09);
+        }
+
+
+        /* =====================================
+           ICON
+        ===================================== */
+
+        .file-icon {
+
+            flex:
+                0 0 auto;
+
+            width: 44px;
+
+            height: 44px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #edf4fa;
+
+            color: #1f4e79;
+        }
+
+
+        .file-icon svg {
+
+            width: 23px;
+
+            height: 23px;
+        }
+
+
+        /* =====================================
+           ISI KARTU
+        ===================================== */
+
+        .dokumen-info {
 
             min-width: 0;
 
-            color: #173f67;
-
-            text-decoration: none;
+            flex: 1;
         }
 
-        .brand-title {
-            display: block;
 
-            font-size: 17px;
+        .dokumen-title {
+
+            margin: 0;
+
+            padding:
+                0 4px;
+
+            color: #334155;
+
+            font-size: 14px;
+
+            line-height: 1.45;
 
             font-weight: 700;
 
-            line-height: 1.35;
-
-            letter-spacing: -0.2px;
+            word-break: break-word;
         }
 
-        .brand-subtitle {
-            display: block;
 
-            margin-top: 3px;
+        .dokumen-meta {
 
-            color: #64748b;
+            margin-top: 5px;
+
+            padding:
+                0 4px;
+
+            color: #94a3b8;
 
             font-size: 11px;
 
@@ -118,420 +444,154 @@
         }
 
 
-        /* =========================================
-           NAVIGASI
-        ========================================= */
+        .dokumen-deskripsi {
 
-        .main-nav {
-            display: flex;
-
-            align-items: center;
-
-            gap: 4px;
-        }
-
-        .main-nav a {
-            display: inline-flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            padding: 8px 11px;
-
-            border-radius: 7px;
-
-            color: #475569;
-
-            font-size: 13px;
-
-            font-weight: 600;
-
-            text-decoration: none;
-
-            transition:
-                color 0.2s ease,
-                background 0.2s ease;
-        }
-
-        .main-nav a:hover {
-            background: #eef5fa;
-
-            color: #245d8f;
-        }
-
-        .main-nav a[aria-current="page"] {
-            background: #eef5fa;
-
-            color: #245d8f;
-        }
-
-
-        /* =========================================
-           KONTEN
-        ========================================= */
-
-        .page-container {
-            width: 100%;
-
-            max-width: 1080px;
-
-            margin: 0 auto;
+            margin-top: 6px;
 
             padding:
-                42px 20px
-                70px;
-        }
-
-
-        /* =========================================
-           DAFTAR INFORMASI
-        ========================================= */
-
-        #daftarPengumuman {
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-
-            gap: 20px;
-        }
-
-
-        /* =========================================
-           KARTU INFORMASI
-        ========================================= */
-
-        .dokumen-card {
-            position: relative;
-
-            width: 100%;
-
-            min-height: 110px;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 17px;
-
-            padding:
-                20px 19px;
-
-            background: #ffffff;
-
-            border:
-                1px solid #e2e8f0;
-
-            border-radius: 12px;
-
-            box-shadow:
-                0 3px 12px
-                rgba(23, 63, 103, 0.045);
-
-            cursor: pointer;
-
-            text-align: left;
-
-            transition:
-                transform 0.2s ease,
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
-        }
-
-        .dokumen-card::before {
-            content: "";
-
-            position: absolute;
-
-            left: 0;
-
-            top: 18px;
-
-            bottom: 18px;
-
-            width: 3px;
-
-            border-radius:
-                0 4px 4px 0;
-
-            background: #245d8f;
-
-            opacity: 0;
-
-            transition:
-                opacity 0.2s ease;
-        }
-
-        .dokumen-card:hover {
-            transform:
-                translateY(-3px);
-
-            border-color:
-                #c6d6e3;
-
-            box-shadow:
-                0 9px 24px
-                rgba(23, 63, 103, 0.09);
-        }
-
-        .dokumen-card:hover::before {
-            opacity: 1;
-        }
-
-
-        /* =========================================
-           IKON CSS
-           Tidak menggunakan emoji
-        ========================================= */
-
-        .file-icon {
-            position: relative;
-
-            flex: 0 0 auto;
-
-            width: 45px;
-
-            height: 53px;
-
-            border:
-                1px solid #b8c9d7;
-
-            border-radius: 8px;
-
-            background: #f8fbfd;
-        }
-
-        .file-icon::before {
-            content: "";
-
-            position: absolute;
-
-            top: -1px;
-
-            right: -1px;
-
-            width: 15px;
-
-            height: 15px;
-
-            background: #ffffff;
-
-            border-left:
-                1px solid #b8c9d7;
-
-            border-bottom:
-                1px solid #b8c9d7;
-
-            border-bottom-left-radius: 5px;
-        }
-
-        .file-icon::after {
-            content: "";
-
-            position: absolute;
-
-            left: 9px;
-
-            right: 9px;
-
-            top: 27px;
-
-            height: 2px;
-
-            border-radius: 2px;
-
-            background: #9fb4c6;
-
-            box-shadow:
-                0 7px 0 #9fb4c6,
-                0 14px 0 #9fb4c6;
-        }
-
-
-        /* =========================================
-           ISI KARTU
-        ========================================= */
-
-        .dokumen-info {
-            flex: 1 1 auto;
-
-            min-width: 0;
-
-            padding:
-                0 3px;
-        }
-
-        .dokumen-title {
-            margin: 0;
-
-            color: #173f67;
-
-            font-size: 15px;
-
-            font-weight: 700;
-
-            line-height: 1.45;
-
-            word-break: break-word;
-        }
-
-        .dokumen-meta {
-            margin-top: 7px;
+                0 4px;
 
             color: #64748b;
 
-            font-size: 11px;
+            font-size: 12px;
 
-            line-height: 1.5;
+            line-height: 1.55;
+
+            display:
+                -webkit-box;
+
+            -webkit-line-clamp: 2;
+
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
         }
 
+
         .format-badge {
+
             display: inline-flex;
 
             align-items: center;
 
-            padding:
-                4px 8px;
+            margin-left: 5px;
 
-            border:
-                1px solid #d9e6ef;
+            padding:
+                2px 6px;
 
             border-radius: 5px;
 
-            background: #f2f7fa;
+            background: #f1f5f9;
 
-            color: #245d8f;
+            color: #64748b;
 
             font-size: 9px;
 
             font-weight: 700;
 
-            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
 
-        /* =========================================
+        /* =====================================
            PANAH
-        ========================================= */
+        ===================================== */
 
         .open-arrow {
-            flex: 0 0 auto;
 
-            width: 28px;
-
-            height: 28px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border:
-                1px solid #e2e8f0;
-
-            border-radius: 7px;
+            flex:
+                0 0 auto;
 
             color: #94a3b8;
 
-            font-size: 16px;
+            font-size: 22px;
 
             line-height: 1;
-
-            transition:
-                color 0.2s ease,
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-        .dokumen-card:hover .open-arrow {
-            background: #245d8f;
-
-            border-color: #245d8f;
-
-            color: #ffffff;
-
-            transform:
-                translateX(2px);
         }
 
 
-        /* =========================================
-           STATUS
-        ========================================= */
+        /* =====================================
+           KEADAAN KOSONG
+        ===================================== */
 
-        .status-message {
-            grid-column:
-                1 / -1;
+        .kosong {
 
-            padding:
-                55px 25px;
+            text-align: center;
 
             background: #ffffff;
 
             border:
-                1px solid #e2e8f0;
+                1px solid
+                #e2e8f0;
 
             border-radius: 12px;
 
+            padding:
+                45px 20px;
+
             color: #64748b;
 
-            font-size: 14px;
-
-            line-height: 1.6;
-
-            text-align: center;
+            box-shadow:
+                0 2px 8px
+                rgba(0, 0, 0, 0.05);
         }
 
 
-        /* =========================================
+        .kosong strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #475569;
+
+            font-size: 14px;
+        }
+
+
+        .kosong p {
+
+            margin: 0;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================
            MODAL
-        ========================================= */
+        ===================================== */
 
         .modal {
+
+            display: none;
+
             position: fixed;
+
+            z-index: 9999;
 
             inset: 0;
 
-            z-index: 1000;
+            padding:
+                20px;
 
-            display: none;
+            background:
+                rgba(15, 23, 42, 0.72);
 
             align-items: center;
 
             justify-content: center;
-
-            padding: 20px;
-
-            background:
-                rgba(15, 23, 42, 0.58);
-
-            backdrop-filter:
-                blur(2px);
         }
 
-        .modal.active {
-            display: flex;
-        }
-
-
-        /* =========================================
-           BOX MODAL
-        ========================================= */
 
         .modal-box {
+
             width: 100%;
 
             max-width: 700px;
 
-            max-height:
-                calc(100vh - 40px);
-
-            display: flex;
-
-            flex-direction: column;
+            max-height: 90vh;
 
             overflow: hidden;
 
@@ -540,102 +600,68 @@
             border-radius: 14px;
 
             box-shadow:
-                0 24px 70px
-                rgba(15, 23, 42, 0.22);
-
-            animation:
-                modalMasuk 0.18s ease-out;
-        }
-
-        @keyframes modalMasuk {
-
-            from {
-                opacity: 0;
-
-                transform:
-                    translateY(8px)
-                    scale(0.99);
-            }
-
-            to {
-                opacity: 1;
-
-                transform:
-                    translateY(0)
-                    scale(1);
-            }
-
+                0 20px 50px
+                rgba(0, 0, 0, 0.22);
         }
 
 
-        /* =========================================
+        /* =====================================
            HEADER MODAL
-        ========================================= */
+        ===================================== */
 
         .modal-header {
+
             display: flex;
 
             align-items: flex-start;
 
             justify-content: space-between;
 
-            gap: 18px;
+            gap: 20px;
 
             padding:
-                21px 32px;
-
-            background: #ffffff;
+                20px 32px;
 
             border-bottom:
-                1px solid #e5ebf0;
+                1px solid
+                #e2e8f0;
         }
 
-        .modal-header > div:first-child {
-            flex: 1 1 auto;
+
+        .modal-header-text {
 
             min-width: 0;
-
-            padding: 0;
         }
 
-        #modalJudul {
+
+        .modal-header h2 {
+
             margin: 0;
 
-            padding: 0;
-
-            color: #173f67;
+            color: #1f4e79;
 
             font-size: 18px;
 
-            font-weight: 700;
-
             line-height: 1.45;
 
-            text-align: left;
+            word-break: break-word;
         }
 
-        #modalNamaFile {
-            margin:
-                5px 0 0;
 
-            padding: 0;
+        .modal-nama-file {
 
-            color: #64748b;
+            margin-top: 5px;
+
+            color: #94a3b8;
 
             font-size: 11px;
-
-            line-height: 1.5;
-
-            text-align: left;
         }
 
 
-        /* =========================================
-           TOMBOL TUTUP
-        ========================================= */
+        .btn-tutup {
 
-        #btnTutup {
-            flex: 0 0 auto;
+            flex:
+                0 0 auto;
 
             width: 32px;
 
@@ -647,67 +673,58 @@
 
             justify-content: center;
 
-            padding: 0;
+            border: none;
 
-            border:
-                1px solid #e2e8f0;
+            border-radius: 8px;
 
-            border-radius: 7px;
-
-            background: #f8fafc;
+            background: #f1f5f9;
 
             color: #64748b;
 
-            font-size: 20px;
+            font-size: 22px;
 
             line-height: 1;
 
             cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                color 0.2s ease;
-        }
-
-        #btnTutup:hover {
-            background: #eef2f6;
-
-            border-color: #cbd5e1;
-
-            color: #173f67;
         }
 
 
-        /* =========================================
+        .btn-tutup:hover {
+
+            background: #e2e8f0;
+
+            color: #334155;
+        }
+
+
+        /* =====================================
            ISI MODAL
-        ========================================= */
+        ===================================== */
 
         .modal-content {
-            width: 100%;
+
+            max-height:
+                calc(90vh - 140px);
+
+            overflow-y: auto;
 
             margin: 0 !important;
 
             padding: 0 !important;
 
-            overflow-y: auto;
-
-            background: #ffffff;
-
             text-align: left !important;
         }
+
 
         .modal-content,
         .modal-content * {
+
             text-align: left !important;
         }
 
 
-        /* =========================================
-           TEKS PENGUMUMAN
-        ========================================= */
-
         .modal-keterangan {
+
             display: none;
 
             width: 100%;
@@ -715,8 +732,12 @@
             margin: 0;
 
             padding:
-                26px 32px
-                28px;
+                22px
+                32px
+                24px
+                32px;
+
+            box-sizing: border-box;
 
             background: #ffffff;
 
@@ -724,7 +745,7 @@
 
             font-size: 14px;
 
-            line-height: 1.85;
+            line-height: 1.8;
 
             text-align: left !important;
 
@@ -735,26 +756,23 @@
             word-break: break-word;
 
             overflow-wrap: anywhere;
-
-            border-bottom:
-                1px solid #e5ebf0;
         }
+
 
         .modal-keterangan.active {
+
             display: block;
         }
+
 
         .modal-keterangan,
         .modal-keterangan div,
         .modal-keterangan p,
         .modal-keterangan span {
-            margin-top: 0;
 
-            margin-left: 0;
+            margin: 0;
 
-            margin-right: 0;
-
-            padding-top: 0;
+            padding: 0;
 
             text-align: left !important;
 
@@ -762,285 +780,289 @@
         }
 
 
-        /* =========================================
-           GAMBAR DALAM MODAL
-        ========================================= */
+        .modal-image {
 
-        .modal-content img {
             display: block;
+
+            width: auto;
 
             max-width: 100%;
 
-            height: auto;
+            max-height: 65vh;
 
-            margin: 0 auto;
+            margin:
+                20px auto;
 
-            padding: 22px;
+            object-fit: contain;
         }
 
 
-        /* =========================================
+        .modal-file {
+
+            padding:
+                35px 32px;
+
+            text-align: center;
+        }
+
+
+        .modal-file p {
+
+            margin: 0 0 18px;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================
            FOOTER MODAL
-        ========================================= */
+        ===================================== */
 
         .modal-footer {
-            display: flex;
 
-            align-items: center;
+            display: flex;
 
             justify-content: flex-end;
 
             padding:
                 14px 32px;
 
-            background: #f8fafc;
-
             border-top:
-                1px solid #e5ebf0;
+                1px solid
+                #e2e8f0;
         }
 
+
         .btn-download {
+
             display: inline-flex;
 
             align-items: center;
 
             justify-content: center;
 
-            min-width: 88px;
+            min-width: 100px;
 
             padding:
-                9px 16px;
+                9px 15px;
 
-            border: none;
+            border-radius: 8px;
 
-            border-radius: 7px;
-
-            background: #245d8f;
+            background: #1f4e79;
 
             color: #ffffff;
 
-            font-size: 12px;
-
-            font-weight: 700;
-
             text-decoration: none;
 
-            cursor: pointer;
+            font-size: 13px;
 
-            transition:
-                background 0.2s ease,
-                transform 0.2s ease;
+            font-weight: 600;
         }
+
 
         .btn-download:hover {
-            background: #173f67;
 
-            transform:
-                translateY(-1px);
+            background: #173b5d;
         }
 
 
-        /* =========================================
-           TABLET
-        ========================================= */
-
-        @media (max-width: 850px) {
-
-            .header-container {
-                padding:
-                    15px 18px;
-            }
-
-            .page-container {
-                padding:
-                    32px 18px
-                    55px;
-            }
-
-            #daftarPengumuman {
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-
-        /* =========================================
+        /* =====================================
            MOBILE
-        ========================================= */
+        ===================================== */
 
         @media (max-width: 600px) {
 
-            .header-container {
-                flex-direction: column;
-
-                align-items: flex-start;
-
-                gap: 12px;
+            .top-area {
 
                 padding:
-                    15px 16px;
+                    10px
+                    10px
+                    4px;
             }
 
-            .brand-title {
-                font-size: 16px;
-            }
 
-            .main-nav {
-                width: 100%;
+            .page-header {
 
-                overflow-x: auto;
-
-                gap: 3px;
-
-                padding-bottom: 2px;
-            }
-
-            .main-nav a {
-                flex: 0 0 auto;
+                margin:
+                    7px auto
+                    18px;
 
                 padding:
-                    8px 10px;
-
-                font-size: 12px;
+                    5px 12px
+                    0;
             }
 
-            .page-container {
+
+            .page-header h1 {
+
+                font-size: 21px;
+            }
+
+
+            .container {
+
                 padding:
-                    22px 14px
-                    40px;
+                    0 10px
+                    25px;
             }
 
-            #daftarPengumuman {
-                gap: 14px;
+
+            .pencarian-box {
+
+                padding:
+                    9px 11px;
             }
+
 
             .dokumen-card {
-                min-height: 96px;
 
-                gap: 13px;
+                gap: 11px;
 
                 padding:
-                    16px 15px;
+                    13px;
             }
+
 
             .file-icon {
+
                 width: 40px;
 
-                height: 48px;
+                height: 40px;
             }
 
-            .file-icon::after {
-                left: 8px;
 
-                right: 8px;
+            .file-icon svg {
 
-                top: 25px;
+                width: 21px;
 
-                box-shadow:
-                    0 7px 0 #9fb4c6,
-                    0 14px 0 #9fb4c6;
+                height: 21px;
             }
 
-            .dokumen-info {
-                padding:
-                    0 2px;
-            }
 
             .dokumen-title {
-                font-size: 14px;
+
+                font-size: 13px;
             }
 
+
             .dokumen-meta {
+
                 font-size: 10px;
             }
 
-            .open-arrow {
-                width: 26px;
 
-                height: 26px;
+            .dokumen-deskripsi {
 
-                font-size: 15px;
+                font-size: 11px;
             }
 
-
-            /* MODAL MOBILE */
 
             .modal {
-                padding: 12px;
+
+                padding:
+                    10px;
             }
 
+
             .modal-box {
-                max-height:
-                    calc(100vh - 24px);
+
+                max-height: 92vh;
 
                 border-radius: 12px;
             }
 
+
             .modal-header {
+
                 padding:
-                    17px 24px;
+                    16px
+                    20px;
             }
 
-            #modalJudul {
+
+            .modal-header h2 {
+
                 font-size: 16px;
             }
 
+
+            .modal-content {
+
+                max-height:
+                    calc(92vh - 120px);
+            }
+
+
             .modal-keterangan {
+
                 padding:
-                    22px 24px
+                    20px
+                    24px
+                    22px
                     24px;
             }
 
+
             .modal-footer {
+
                 padding:
-                    12px 24px;
+                    12px
+                    20px;
             }
 
         }
 
 
-        /* =========================================
-           MOBILE KECIL
-        ========================================= */
+        /* =====================================
+           HP KECIL
+        ===================================== */
 
-        @media (max-width: 400px) {
+        @media (max-width: 380px) {
 
-            .brand-title {
-                font-size: 15px;
-            }
-
-            .main-nav a {
-                font-size: 11px;
+            .btn-kembali {
 
                 padding:
-                    7px 8px;
+                    8px
+                    12px;
+
+                font-size: 13px;
             }
+
+
+            .page-header h1 {
+
+                font-size: 19px;
+            }
+
 
             .dokumen-card {
+
                 padding:
-                    15px 13px;
+                    11px;
             }
+
 
             .file-icon {
-                width: 37px;
 
-                height: 45px;
+                width: 38px;
+
+                height: 38px;
+
+                border-radius: 9px;
             }
 
-            .modal-header {
-                padding:
-                    16px 20px;
+
+            .dokumen-title {
+
+                font-size: 12px;
             }
 
-            .modal-keterangan {
-                padding:
-                    20px 21px
-                    22px;
-            }
 
-            .modal-footer {
-                padding:
-                    11px 20px;
+            .dokumen-deskripsi {
+
+                font-size: 10px;
             }
 
         }
@@ -1053,113 +1075,156 @@
 <body>
 
 
-    <!-- =========================================
-         HEADER
-    ========================================= -->
+    <!-- =====================================
+         TOMBOL KEMBALI
+    ===================================== -->
 
-    <header class="site-header">
+    <div class="top-area">
 
-        <div class="header-container">
+        <a
+            href="index.html"
+            class="btn-kembali"
+        >
+            ← Kembali
+        </a>
 
-            <a
-                href="index.html"
-                class="brand">
-
-                <span class="brand-title">
-                    GPIL Jemaat Betesda Purwosari
-                </span>
-
-                <span class="brand-subtitle">
-                    Portal Informasi Jemaat
-                </span>
-
-            </a>
+    </div>
 
 
-            <nav class="main-nav">
+    <!-- =====================================
+         JUDUL
+    ===================================== -->
 
-                <a href="index.html">
-                    Beranda
-                </a>
+    <header class="page-header">
 
-                <a href="jadwal-kumpulan.html">
-                    Jadwal
-                </a>
+        <h1>
+            Informasi Jemaat
+        </h1>
 
-                <a
-                    href="pengumuman.html"
-                    aria-current="page">
-
-                    Informasi
-
-                </a>
-
-                <a href="galeri.html">
-                    Galeri
-                </a>
-
-                <a href="index.html#laporan">
-                    Keuangan
-                </a>
-
-                <a href="kelola-admin.html">
-                    Admin
-                </a>
-
-            </nav>
-
-        </div>
+        <div class="header-line"></div>
 
     </header>
 
 
+    <!-- =====================================
+         KONTEN
+    ===================================== -->
 
-    <!-- =========================================
-         DAFTAR INFORMASI
-         Langsung fokus ke daftar pengumuman.
-    ========================================= -->
+    <main class="container">
 
-    <main class="page-container">
 
-        <div id="daftarPengumuman">
+        <!-- =================================
+             PENCARIAN
+        ================================= -->
 
-            <div class="status-message">
+        <div class="pencarian-box">
+
+            <div class="pencarian-wrapper">
+
+                <svg
+                    class="pencarian-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <circle
+                        cx="11"
+                        cy="11"
+                        r="7"
+                    ></circle>
+
+                    <path
+                        d="M20 20l-3.5-3.5"
+                    ></path>
+                </svg>
+
+
+                <input
+                    type="search"
+                    id="inputPencarian"
+                    class="pencarian-input"
+                    placeholder="Cari pengumuman..."
+                    autocomplete="off"
+                >
+
+
+                <button
+                    type="button"
+                    id="btnHapusPencarian"
+                    class="btn-hapus-pencarian"
+                    aria-label="Hapus pencarian"
+                >
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             JUMLAH HASIL
+        ================================= -->
+
+        <div
+            id="infoHasil"
+            class="info-hasil"
+        >
+        </div>
+
+
+        <!-- =================================
+             DAFTAR
+        ================================= -->
+
+        <div
+            id="daftarPengumuman"
+            class="daftar-pengumuman"
+        >
+
+            <div class="loading">
                 Memuat informasi...
             </div>
 
         </div>
 
+
     </main>
 
 
-
-    <!-- =========================================
-         MODAL DETAIL INFORMASI
-    ========================================= -->
+    <!-- =====================================
+         MODAL
+    ===================================== -->
 
     <div
         id="modal"
         class="modal"
-        aria-hidden="true">
-
+        aria-hidden="true"
+    >
 
         <div
             class="modal-box"
             role="dialog"
             aria-modal="true"
-            aria-labelledby="modalJudul">
+            aria-labelledby="modalJudul"
+        >
 
-
-            <!-- HEADER MODAL -->
 
             <div class="modal-header">
 
-                <div>
+                <div class="modal-header-text">
 
                     <h2 id="modalJudul">
                     </h2>
 
-                    <div id="modalNamaFile">
+                    <div
+                        id="modalNamaFile"
+                        class="modal-nama-file"
+                    >
                     </div>
 
                 </div>
@@ -1168,24 +1233,21 @@
                 <button
                     type="button"
                     id="btnTutup"
-                    aria-label="Tutup">
-
+                    class="btn-tutup"
+                    aria-label="Tutup"
+                >
                     ×
-
                 </button>
 
             </div>
 
 
-            <!-- ISI MODAL -->
-
             <div
                 id="modalContent"
-                class="modal-content">
+                class="modal-content"
+            >
             </div>
 
-
-            <!-- FOOTER MODAL -->
 
             <div class="modal-footer">
 
@@ -1195,31 +1257,32 @@
                     href="#"
                     target="_blank"
                     rel="noopener noreferrer"
-                    download>
-
+                    download
+                >
                     Download
-
                 </a>
 
             </div>
+
 
         </div>
 
     </div>
 
 
-
-    <!-- =========================================
+    <!-- =====================================
          SUPABASE
-    ========================================= -->
+    ===================================== -->
 
     <script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
 
+
     <script src="supabase-client.js"></script>
 
-    <script src="pengumuman.js?v=5"></script>
+
+    <script src="pengumuman.js?v=6"></script>
 
 
 </body>
