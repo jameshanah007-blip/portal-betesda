@@ -44,23 +44,14 @@
         }
 
         .header-container {
-            width: min(1100px, 92%);
-            margin: 0 auto;
-            min-height: 70px;
+    width: min(1100px, 92%);
+    margin: 0 auto;
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .brand {
-            text-decoration: none;
-            color: #173f67;
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 0.2px;
-        }
 
         .btn-kembali {
             display: inline-flex;
@@ -696,9 +687,6 @@
                 min-height: 62px;
             }
 
-            .brand {
-                font-size: 15px;
-            }
 
             .btn-kembali {
                 padding:
@@ -787,15 +775,6 @@
 
         @media (max-width: 380px) {
 
-            .header-container {
-                gap: 10px;
-            }
-
-            .brand {
-                font-size: 14px;
-            }
-
-
             .modal-keterangan {
                 padding:
                     17px
@@ -819,27 +798,19 @@
 
     <header class="top-header">
 
-        <div class="header-container">
+    <div class="header-container">
 
-            <a
-                href="index.html"
-                class="brand">
+        <a
+            href="index.html"
+            class="btn-kembali">
 
-                GPIL Jemaat Betesda Purwosari
+            ← Kembali
 
-            </a>
+        </a>
 
-            <a
-                href="index.html"
-                class="btn-kembali">
+    </div>
 
-                ← Kembali
-
-            </a>
-
-        </div>
-
-    </header>
+</header>
 
 
     <!-- =========================
