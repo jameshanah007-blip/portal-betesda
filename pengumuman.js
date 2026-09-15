@@ -19,7 +19,7 @@ async function ambilPengumuman() {
     container.innerHTML = `
         <div class="state-message">
             <div class="state-icon">📄</div>
-            <h3>Memuat dokumen...</h3>
+            <h3>Memuat pengumuman...</h3>
             <p>Mohon tunggu sebentar.</p>
         </div>
     `;
@@ -57,7 +57,7 @@ async function ambilPengumuman() {
         container.innerHTML = `
             <div class="state-message">
                 <div class="state-icon">⚠️</div>
-                <h3>Dokumen belum dapat dimuat</h3>
+                <h3>Pengumuman belum dapat dimuat</h3>
                 <p>Silakan coba lagi beberapa saat.</p>
             </div>
         `;
@@ -66,7 +66,7 @@ async function ambilPengumuman() {
 
 
 // =====================================================
-// TAMPILKAN DOKUMEN
+// TAMPILKAN PENGUMUMAN
 // =====================================================
 
 function tampilkanPengumuman() {
@@ -84,8 +84,8 @@ function tampilkanPengumuman() {
         container.innerHTML = `
             <div class="state-message">
                 <div class="state-icon">📂</div>
-                <h3>Belum ada dokumen</h3>
-                <p>Dokumen jemaat akan ditampilkan di sini.</p>
+                <h3>Belum ada pengumuman</h3>
+                <p>Informasi jemaat akan ditampilkan di sini.</p>
             </div>
         `;
 
@@ -108,22 +108,29 @@ function buatCardDokumen(item) {
     const id =
         item?.id ?? "";
 
-    const nama =
+    const judul =
+        item?.judul ||
+        "Pengumuman";
+
+    const namaFile =
         item?.nama_asli ||
         item?.nama_file ||
-        "Dokumen";
+        "";
 
     const jenis =
-        getJenisFile(nama);
+        namaFile
+            ? getJenisFile(namaFile)
+            : "file";
 
     const format =
-        getLabelFormat(jenis);
+        namaFile
+            ? getLabelFormat(jenis)
+            : "INFORMASI";
 
     const icon =
-        getIconFile(jenis);
-
-    const ukuran =
-        formatUkuran(item?.ukuran_file);
+        namaFile
+            ? getIconFile(jenis)
+            : "📢";
 
     const tanggal =
         formatTanggal(item?.created_at);
@@ -134,7 +141,7 @@ function buatCardDokumen(item) {
             data-id="${escapeAttribute(id)}"
             tabindex="0"
             role="button"
-            aria-label="Buka ${escapeAttribute(nama)}"
+            aria-label="Buka ${escapeAttribute(judul)}"
         >
 
             <div
@@ -147,7 +154,7 @@ function buatCardDokumen(item) {
             <div class="dokumen-info">
 
                 <h2 class="dokumen-title">
-                    ${escapeHtml(nama)}
+                    ${escapeHtml(judul)}
                 </h2>
 
                 <div class="dokumen-meta">
@@ -159,12 +166,6 @@ function buatCardDokumen(item) {
                     ${
                         tanggal
                             ? `<span>${escapeHtml(tanggal)}</span>`
-                            : ""
-                    }
-
-                    ${
-                        ukuran
-                            ? `<span>${escapeHtml(ukuran)}</span>`
                             : ""
                     }
 
@@ -185,7 +186,7 @@ function buatCardDokumen(item) {
 
 
 // =====================================================
-// KLIK DOKUMEN
+// KLIK PENGUMUMAN
 // =====================================================
 
 document.addEventListener(
@@ -258,28 +259,45 @@ document.addEventListener(
 
 
 // =====================================================
-// BUKA DOKUMEN
+// BUKA PENGUMUMAN
 // =====================================================
 
 function bukaDokumen(item) {
 
+    const judul =
+        item?.judul ||
+        "Pengumuman";
+
+    const keterangan =
+        item?.keterangan ||
+        "";
+
     const nama =
         item?.nama_asli ||
         item?.nama_file ||
-        "Dokumen";
+        "";
 
     const url =
         item?.url_file ||
         "";
 
+
+    // =================================================
+    // JIKA TIDAK ADA FILE
+    //
+    // Tetap buka modal untuk membaca isi pengumuman.
+    // =================================================
+
     if (!url) {
 
-        alert(
-            "File dokumen tidak tersedia."
+        bukaModalPengumuman(
+            judul,
+            keterangan
         );
 
         return;
     }
+
 
     const jenis =
         getJenisFile(nama);
@@ -288,13 +306,19 @@ function bukaDokumen(item) {
     // =================================================
     // KHUSUS PDF
     //
-    // JANGAN menggunakan iframe.
-    // Langsung buka URL PDF.
+    // Tetap buka PDF langsung di browser HP.
     // =================================================
 
     if (jenis === "pdf") {
 
-        bukaPDFLangsung(url);
+        bukaModalDenganKeterangan(
+            item,
+            judul,
+            keterangan,
+            nama,
+            url,
+            jenis
+        );
 
         return;
     }
@@ -307,6 +331,9 @@ function bukaDokumen(item) {
     if (jenis === "image") {
 
         bukaModalGambar(
+            item,
+            judul,
+            keterangan,
             nama,
             url
         );
@@ -321,6 +348,8 @@ function bukaDokumen(item) {
 
     bukaModalFile(
         item,
+        judul,
+        keterangan,
         nama,
         url,
         jenis
@@ -329,67 +358,12 @@ function bukaDokumen(item) {
 
 
 // =====================================================
-// BUKA PDF LANGSUNG DI HP
+// MODAL PENGUMUMAN TANPA FILE
 // =====================================================
 
-function bukaPDFLangsung(url) {
-
-    try {
-
-        /*
-         * Pada HP, kita tidak memakai iframe.
-         *
-         * window.open() akan menyerahkan
-         * URL PDF kepada browser HP.
-         */
-
-        const halamanPDF =
-            window.open(
-                url,
-                "_blank"
-            );
-
-
-        /*
-         * Jika browser memblokir window.open,
-         * gunakan navigasi langsung.
-         */
-
-        if (
-            !halamanPDF ||
-            halamanPDF.closed ||
-            typeof halamanPDF.closed === "undefined"
-        ) {
-
-            window.location.href =
-                url;
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Gagal membuka PDF:",
-            error
-        );
-
-        /*
-         * Fallback terakhir:
-         * langsung menuju URL PDF.
-         */
-
-        window.location.href =
-            url;
-    }
-}
-
-
-// =====================================================
-// MODAL GAMBAR
-// =====================================================
-
-function bukaModalGambar(
-    nama,
-    url
+function bukaModalPengumuman(
+    judul,
+    keterangan
 ) {
 
     const modal =
@@ -418,37 +392,32 @@ function bukaModalGambar(
     }
 
     modalJudul.textContent =
-        nama;
+        judul;
 
     modalNamaFile.textContent =
-        "GAMBAR";
+        "INFORMASI JEMAAT";
 
     modalContent.innerHTML = `
-        <img
-            src="${escapeAttribute(url)}"
-            alt="${escapeAttribute(nama)}"
-        >
+        <div class="modal-keterangan active">
+            ${escapeHtml(keterangan)}
+        </div>
     `;
 
-    btnDownload.href =
-        buatUrlDownload(
-            url,
-            nama
-        );
-
     btnDownload.style.display =
-        "inline-flex";
+        "none";
 
     bukaModal();
 }
 
 
 // =====================================================
-// MODAL FILE LAIN
+// MODAL DENGAN KETERANGAN
 // =====================================================
 
-function bukaModalFile(
+function bukaModalDenganKeterangan(
     item,
+    judul,
+    keterangan,
     nama,
     url,
     jenis
@@ -480,12 +449,189 @@ function bukaModalFile(
     }
 
     modalJudul.textContent =
-        nama;
+        judul;
 
     modalNamaFile.textContent =
         getLabelFormat(jenis);
 
     modalContent.innerHTML = `
+        ${
+            keterangan
+                ? `
+                    <div class="modal-keterangan active">
+                        ${escapeHtml(keterangan)}
+                    </div>
+                `
+                : ""
+        }
+
+        <div class="file-open-box">
+
+            <div class="file-open-icon">
+                ${getIconFile(jenis)}
+            </div>
+
+            <h3>
+                ${escapeHtml(nama)}
+            </h3>
+
+            <p>
+                File PDF siap dibuka.
+            </p>
+
+            <a
+                href="${escapeAttribute(url)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-open-file"
+            >
+                Buka PDF
+            </a>
+
+        </div>
+    `;
+
+    btnDownload.href =
+        buatUrlDownload(
+            url,
+            nama
+        );
+
+    btnDownload.style.display =
+        "inline-flex";
+
+    bukaModal();
+}
+
+
+// =====================================================
+// MODAL GAMBAR
+// =====================================================
+
+function bukaModalGambar(
+    item,
+    judul,
+    keterangan,
+    nama,
+    url
+) {
+
+    const modal =
+        document.getElementById("modal");
+
+    const modalJudul =
+        document.getElementById("modalJudul");
+
+    const modalNamaFile =
+        document.getElementById("modalNamaFile");
+
+    const modalContent =
+        document.getElementById("modalContent");
+
+    const btnDownload =
+        document.getElementById("btnDownload");
+
+    if (
+        !modal ||
+        !modalJudul ||
+        !modalNamaFile ||
+        !modalContent ||
+        !btnDownload
+    ) {
+        return;
+    }
+
+    modalJudul.textContent =
+        judul;
+
+    modalNamaFile.textContent =
+        "GAMBAR";
+
+    modalContent.innerHTML = `
+        ${
+            keterangan
+                ? `
+                    <div class="modal-keterangan active">
+                        ${escapeHtml(keterangan)}
+                    </div>
+                `
+                : ""
+        }
+
+        <img
+            src="${escapeAttribute(url)}"
+            alt="${escapeAttribute(nama)}"
+        >
+    `;
+
+    btnDownload.href =
+        buatUrlDownload(
+            url,
+            nama
+        );
+
+    btnDownload.style.display =
+        "inline-flex";
+
+    bukaModal();
+}
+
+
+// =====================================================
+// MODAL FILE LAIN
+// =====================================================
+
+function bukaModalFile(
+    item,
+    judul,
+    keterangan,
+    nama,
+    url,
+    jenis
+) {
+
+    const modal =
+        document.getElementById("modal");
+
+    const modalJudul =
+        document.getElementById("modalJudul");
+
+    const modalNamaFile =
+        document.getElementById("modalNamaFile");
+
+    const modalContent =
+        document.getElementById("modalContent");
+
+    const btnDownload =
+        document.getElementById("btnDownload");
+
+    if (
+        !modal ||
+        !modalJudul ||
+        !modalNamaFile ||
+        !modalContent ||
+        !btnDownload
+    ) {
+        return;
+    }
+
+    modalJudul.textContent =
+        judul;
+
+    modalNamaFile.textContent =
+        getLabelFormat(jenis);
+
+    modalContent.innerHTML = `
+        ${
+            keterangan
+                ? `
+                    <div class="modal-keterangan active">
+                        ${escapeHtml(keterangan)}
+                    </div>
+                `
+                : ""
+        }
+
         <div class="file-open-box">
 
             <div class="file-open-icon">
@@ -564,6 +710,11 @@ function tutupModal() {
             "modalContent"
         );
 
+    const btnDownload =
+        document.getElementById(
+            "btnDownload"
+        );
+
     if (!modal) return;
 
     modal.classList.remove(
@@ -580,6 +731,12 @@ function tutupModal() {
 
     if (modalContent) {
         modalContent.innerHTML = "";
+    }
+
+    if (btnDownload) {
+        btnDownload.href = "#";
+        btnDownload.style.display =
+            "inline-flex";
     }
 }
 
