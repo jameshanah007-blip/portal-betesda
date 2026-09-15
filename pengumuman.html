@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
 
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        content="width=device-width, initial-scale=1.0">
 
     <title>Informasi Jemaat</title>
-
 
     <style>
 
@@ -19,708 +16,569 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             margin: 0;
-
+            padding: 0;
+            background: #f4f7fa;
+            color: #1e293b;
             font-family:
                 Arial,
                 Helvetica,
                 sans-serif;
-
-            background: #f4f6f8;
-
-            color: #334155;
         }
 
+        /* =========================
+           HEADER
+        ========================= */
 
-        /* =====================================
-           BAGIAN ATAS
-        ===================================== */
-
-        .top-area {
-
-            width: 100%;
-
-            max-width: 1000px;
-
-            margin: auto;
-
-            padding:
-                12px
-                12px
-                5px;
+        .top-header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
+        .header-container {
+            width: min(1100px, 92%);
+            margin: 0 auto;
+            min-height: 70px;
 
-        /* =====================================
-           TOMBOL KEMBALI
-        ===================================== */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            text-decoration: none;
+            color: #173f67;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
 
         .btn-kembali {
-
             display: inline-flex;
-
             align-items: center;
-
+            justify-content: center;
             gap: 8px;
 
-            padding:
-                9px
-                15px;
+            padding: 9px 14px;
+
+            border: 1px solid #d7e1ea;
+            border-radius: 8px;
 
             background: #ffffff;
-
-            color: #1f4e79;
+            color: #245d8f;
 
             text-decoration: none;
-
-            border: 1px solid #dfe6ec;
-
-            border-radius: 10px;
-
-            font-size: 14px;
-
-            font-weight: 600;
-
-            box-shadow:
-                0 2px 8px
-                rgba(0, 0, 0, 0.06);
+            font-size: 13px;
+            font-weight: 700;
 
             transition:
-                all 0.2s ease;
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
         }
-
 
         .btn-kembali:hover {
-
-            background: #1f4e79;
-
-            color: #ffffff;
-
-            border-color: #1f4e79;
-
-            transform:
-                translateY(-1px);
+            background: #f4f8fb;
+            border-color: #b8ccdc;
+            transform: translateY(-1px);
         }
 
 
-        /* =====================================
-           HEADER
-        ===================================== */
+        /* =========================
+           HALAMAN
+        ========================= */
+
+        .page {
+            width: min(1100px, 92%);
+            margin: 0 auto;
+            padding: 42px 0 60px;
+        }
 
         .page-header {
-
-            max-width: 1000px;
-
-            margin:
-                8px auto
-                20px;
-
-            padding:
-                8px 15px
-                0;
-
-            text-align: center;
+            margin-bottom: 24px;
         }
 
-
-        .page-header h1 {
-
-            margin: 0;
-
-            color: #1f4e79;
-
-            font-size: 25px;
-
-            line-height: 1.35;
-
-            font-weight: 700;
-        }
-
-
-        .header-line {
-
-            width: 55px;
-
-            height: 3px;
-
-            margin:
-                10px auto
-                0;
-
-            background: #1f4e79;
-
-            border-radius: 10px;
-        }
-
-
-        /* =====================================
-           CONTAINER
-        ===================================== */
-
-        .container {
-
-            width: 100%;
-
-            max-width: 1000px;
-
-            margin: auto;
-
-            padding:
-                0 12px
-                35px;
-        }
-
-
-        /* =====================================
-           PENCARIAN
-        ===================================== */
-
-        .pencarian-box {
-
-            margin-bottom: 18px;
-
-            background: #ffffff;
-
-            border: 1px solid #e2e8f0;
-
-            border-radius: 12px;
-
-            padding: 10px 12px;
-
-            box-shadow:
-                0 2px 8px
-                rgba(0, 0, 0, 0.05);
-        }
-
-
-        .pencarian-wrapper {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 10px;
-        }
-
-
-        .pencarian-icon {
-
-            flex:
-                0 0 auto;
-
-            width: 20px;
-
-            height: 20px;
-
-            color: #1f4e79;
-        }
-
-
-        .pencarian-input {
-
-            width: 100%;
-
-            border: none;
-
-            outline: none;
-
-            background: transparent;
-
-            color: #334155;
-
-            font-family: inherit;
-
-            font-size: 14px;
-        }
-
-
-        .pencarian-input::placeholder {
-
-            color: #94a3b8;
-        }
-
-
-        .btn-hapus-pencarian {
-
-            display: none;
-
-            flex:
-                0 0 auto;
-
-            align-items: center;
-
-            justify-content: center;
-
-            width: 26px;
-
-            height: 26px;
-
-            border: none;
-
-            border-radius: 50%;
-
-            background: #edf2f7;
-
-            color: #64748b;
-
-            font-size: 18px;
-
-            line-height: 1;
-
-            cursor: pointer;
-        }
-
-
-        .btn-hapus-pencarian:hover {
-
-            background: #e2e8f0;
-
-            color: #334155;
-        }
-
-
-        /* =====================================
-           HASIL PENCARIAN
-        ===================================== */
-
-        .info-hasil {
-
-            margin:
-                0 2px
-                14px;
-
-            color: #64748b;
+        .page-header span {
+            display: block;
+            margin-bottom: 7px;
+
+            color: #6b7f91;
 
             font-size: 12px;
-        }
-
-
-        /* =====================================
-           DAFTAR PENGUMUMAN
-        ===================================== */
-
-        .daftar-pengumuman {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr;
-
-            gap: 12px;
-        }
-
-
-        /* =====================================
-           KARTU PENGUMUMAN
-        ===================================== */
-
-        .dokumen-card {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 14px;
-
-            width: 100%;
-
-            padding:
-                15px;
-
-            background: #ffffff;
-
-            border:
-                1px solid
-                #e2e8f0;
-
-            border-radius: 12px;
-
-            box-shadow:
-                0 2px 9px
-                rgba(0, 0, 0, 0.06);
-
-            cursor: pointer;
-
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease,
-                border-color 0.2s ease;
-        }
-
-
-        .dokumen-card:hover {
-
-            transform:
-                translateY(-2px);
-
-            border-color: #c7d7e5;
-
-            box-shadow:
-                0 6px 16px
-                rgba(0, 0, 0, 0.09);
-        }
-
-
-        /* =====================================
-           ICON
-        ===================================== */
-
-        .file-icon {
-
-            flex:
-                0 0 auto;
-
-            width: 44px;
-
-            height: 44px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border-radius: 10px;
-
-            background: #edf4fa;
-
-            color: #1f4e79;
-        }
-
-
-        .file-icon svg {
-
-            width: 23px;
-
-            height: 23px;
-        }
-
-
-        /* =====================================
-           ISI KARTU
-        ===================================== */
-
-        .dokumen-info {
-
-            min-width: 0;
-
-            flex: 1;
-        }
-
-
-        .dokumen-title {
-
-            margin: 0;
-
-            padding:
-                0 4px;
-
-            color: #334155;
-
-            font-size: 14px;
-
-            line-height: 1.45;
-
             font-weight: 700;
 
-            word-break: break-word;
-        }
-
-
-        .dokumen-meta {
-
-            margin-top: 5px;
-
-            padding:
-                0 4px;
-
-            color: #94a3b8;
-
-            font-size: 11px;
-
-            line-height: 1.4;
-        }
-
-
-        .dokumen-deskripsi {
-
-            margin-top: 6px;
-
-            padding:
-                0 4px;
-
-            color: #64748b;
-
-            font-size: 12px;
-
-            line-height: 1.55;
-
-            display:
-                -webkit-box;
-
-            -webkit-line-clamp: 2;
-
-            -webkit-box-orient: vertical;
-
-            overflow: hidden;
-        }
-
-
-        .format-badge {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            margin-left: 5px;
-
-            padding:
-                2px 6px;
-
-            border-radius: 5px;
-
-            background: #f1f5f9;
-
-            color: #64748b;
-
-            font-size: 9px;
-
-            font-weight: 700;
-
+            letter-spacing: 1.1px;
             text-transform: uppercase;
         }
 
+        .page-header h1 {
+            margin: 0;
 
-        /* =====================================
-           PANAH
-        ===================================== */
+            color: #173f67;
 
-        .open-arrow {
-
-            flex:
-                0 0 auto;
-
-            color: #94a3b8;
-
-            font-size: 22px;
-
-            line-height: 1;
+            font-size: 30px;
+            line-height: 1.2;
+            font-weight: 700;
         }
 
-
-        /* =====================================
-           KEADAAN KOSONG
-        ===================================== */
-
-        .kosong {
-
-            text-align: center;
-
-            background: #ffffff;
-
-            border:
-                1px solid
-                #e2e8f0;
-
-            border-radius: 12px;
-
-            padding:
-                45px 20px;
+        .page-header p {
+            margin: 9px 0 0;
 
             color: #64748b;
 
-            box-shadow:
-                0 2px 8px
-                rgba(0, 0, 0, 0.05);
-        }
-
-
-        .kosong strong {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #475569;
-
             font-size: 14px;
-        }
-
-
-        .kosong p {
-
-            margin: 0;
-
-            font-size: 12px;
-
             line-height: 1.6;
         }
 
 
-        /* =====================================
-           MODAL
-        ===================================== */
+        /* =========================
+           PENCARIAN
+        ========================= */
 
-        .modal {
-
-            display: none;
-
-            position: fixed;
-
-            z-index: 9999;
-
-            inset: 0;
-
-            padding:
-                20px;
-
-            background:
-                rgba(15, 23, 42, 0.72);
-
-            align-items: center;
-
-            justify-content: center;
+        .pencarian-box {
+            margin-bottom: 22px;
         }
 
+        .pencarian-wrapper {
+            position: relative;
+            width: 100%;
+        }
 
-        .modal-box {
+        .pencarian-icon {
+            position: absolute;
 
+            left: 15px;
+            top: 50%;
+
+            width: 18px;
+            height: 18px;
+
+            transform: translateY(-50%);
+
+            color: #7a8da0;
+
+            pointer-events: none;
+        }
+
+        .pencarian-input {
             width: 100%;
 
-            max-width: 700px;
-
-            max-height: 90vh;
-
-            overflow: hidden;
-
-            background: #ffffff;
-
-            border-radius: 14px;
-
-            box-shadow:
-                0 20px 50px
-                rgba(0, 0, 0, 0.22);
-        }
-
-
-        /* =====================================
-           HEADER MODAL
-        ===================================== */
-
-        .modal-header {
-
-            display: flex;
-
-            align-items: flex-start;
-
-            justify-content: space-between;
-
-            gap: 20px;
+            height: 46px;
 
             padding:
-                20px 32px;
+                0 46px
+                0 44px;
 
-            border-bottom:
-                1px solid
-                #e2e8f0;
+            border: 1px solid #d8e2eb;
+            border-radius: 9px;
+
+            outline: none;
+
+            background: #ffffff;
+            color: #1e293b;
+
+            font-family: inherit;
+            font-size: 14px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
         }
 
-
-        .modal-header-text {
-
-            min-width: 0;
-        }
-
-
-        .modal-header h2 {
-
-            margin: 0;
-
-            color: #1f4e79;
-
-            font-size: 18px;
-
-            line-height: 1.45;
-
-            word-break: break-word;
-        }
-
-
-        .modal-nama-file {
-
-            margin-top: 5px;
-
+        .pencarian-input::placeholder {
             color: #94a3b8;
-
-            font-size: 11px;
         }
 
+        .pencarian-input:focus {
+            border-color: #6f9abd;
 
-        .btn-tutup {
+            box-shadow:
+                0 0 0 3px
+                rgba(36, 93, 143, 0.08);
+        }
 
-            flex:
-                0 0 auto;
+        .btn-hapus-pencarian {
+            position: absolute;
 
-            width: 32px;
+            right: 10px;
+            top: 50%;
 
-            height: 32px;
+            width: 28px;
+            height: 28px;
 
-            display: flex;
+            transform: translateY(-50%);
 
+            display: none;
             align-items: center;
-
             justify-content: center;
 
             border: none;
+            border-radius: 50%;
 
-            border-radius: 8px;
-
-            background: #f1f5f9;
-
+            background: #edf2f7;
             color: #64748b;
 
-            font-size: 22px;
-
+            font-size: 18px;
             line-height: 1;
 
             cursor: pointer;
         }
 
+        .btn-hapus-pencarian:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .info-hasil {
+            margin:
+                0 0
+                16px;
+
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           DAFTAR PENGUMUMAN
+        ========================= */
+
+        #daftarPengumuman {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 16px;
+        }
+
+        .dokumen-card {
+            display: flex;
+            align-items: center;
+
+            min-width: 0;
+
+            padding: 17px 18px;
+
+            border: 1px solid #e1e8ef;
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 3px 12px
+                rgba(23, 63, 103, 0.04);
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .dokumen-card:hover {
+            border-color: #b9ccdc;
+
+            box-shadow:
+                0 7px 18px
+                rgba(23, 63, 103, 0.08);
+
+            transform: translateY(-2px);
+        }
+
+        .file-icon {
+            flex: 0 0 auto;
+
+            width: 42px;
+            height: 42px;
+
+            margin-right: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: #edf4fa;
+            color: #245d8f;
+        }
+
+        .file-icon svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        .dokumen-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .dokumen-title {
+            margin: 0;
+
+            color: #1e3a56;
+
+            font-size: 14px;
+            line-height: 1.5;
+            font-weight: 700;
+
+            word-break: break-word;
+        }
+
+        .dokumen-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 7px;
+
+            margin-top: 5px;
+
+            color: #7a8da0;
+
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .format-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 3px 7px;
+
+            border-radius: 5px;
+
+            background: #f1f5f9;
+            color: #64748b;
+
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .open-arrow {
+            flex: 0 0 auto;
+
+            margin-left: 12px;
+
+            color: #8aa0b2;
+
+            font-size: 19px;
+            line-height: 1;
+
+            transition:
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .dokumen-card:hover .open-arrow {
+            color: #245d8f;
+            transform: translateX(2px);
+        }
+
+
+        /* =========================
+           KEADAAN KOSONG
+        ========================= */
+
+        .kosong {
+            grid-column: 1 / -1;
+
+            padding: 45px 20px;
+
+            border: 1px solid #e1e8ef;
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            text-align: center;
+        }
+
+        .kosong p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 1000;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(15, 23, 42, 0.72);
+        }
+
+        .modal-box {
+            position: relative;
+
+            width: min(720px, 94vw);
+
+            max-height: 90vh;
+
+            display: flex;
+            flex-direction: column;
+
+            overflow: hidden;
+
+            border-radius: 12px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0, 0, 0, 0.25);
+        }
+
+
+        /* =========================
+           MODAL HEADER
+        ========================= */
+
+        .modal-header {
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 18px;
+
+            padding: 20px 32px;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            background: #ffffff;
+        }
+
+        .modal-header-text {
+            min-width: 0;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+
+            color: #173f67;
+
+            font-size: 18px;
+            line-height: 1.4;
+            font-weight: 700;
+
+            word-break: break-word;
+        }
+
+        .modal-header small {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #7a8da0;
+
+            font-size: 11px;
+        }
+
+        .btn-tutup {
+            flex: 0 0 auto;
+
+            width: 32px;
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: none;
+            border-radius: 7px;
+
+            background: #f1f5f9;
+            color: #64748b;
+
+            font-size: 22px;
+            line-height: 1;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
 
         .btn-tutup:hover {
-
             background: #e2e8f0;
-
             color: #334155;
         }
 
 
-        /* =====================================
-           ISI MODAL
-        ===================================== */
+        /* =========================
+           MODAL CONTENT
+        ========================= */
 
         .modal-content {
+            flex: 0 1 auto;
+
+            width: 100%;
 
             max-height:
-                calc(90vh - 140px);
+                calc(90vh - 150px);
 
             overflow-y: auto;
 
-            padding:
-                0;
+            margin: 0;
+            padding: 0;
+
+            text-align: left;
+
+            background: #ffffff;
         }
 
+        /*
+            PENTING:
+            Jangan menambahkan padding: 0 pada
+            .modal-keterangan di selector lain.
+        */
 
         .modal-keterangan {
-
             display: block;
+
+            width: 100%;
 
             margin: 0;
 
             padding:
-                22px 32px 24px;
+                20px
+                32px
+                24px
+                32px;
+
+            box-sizing: border-box;
 
             background: #ffffff;
 
@@ -728,9 +586,11 @@
 
             font-size: 14px;
 
-            line-height: 1.8;
+            line-height: 1.7;
 
             text-align: left;
+
+            text-indent: 0;
 
             white-space: pre-wrap;
 
@@ -740,232 +600,226 @@
         }
 
 
-        .modal-image {
+        /* =========================
+           GAMBAR DALAM MODAL
+        ========================= */
 
+        .modal-gambar {
             display: block;
 
-            width: auto;
+            width: 100%;
 
             max-width: 100%;
 
-            max-height: 65vh;
-
-            margin:
-                20px auto;
+            max-height:
+                calc(90vh - 150px);
 
             object-fit: contain;
+
+            background: #f8fafc;
         }
 
 
-        .modal-file {
+        /* =========================
+           FILE LAIN
+        ========================= */
 
+        .modal-file {
             padding:
-                35px 32px;
+                30px 32px;
 
             text-align: center;
         }
 
+        .modal-file-icon {
+            width: 56px;
+            height: 56px;
 
-        .modal-file p {
-
-            margin: 0 0 18px;
-
-            color: #64748b;
-
-            font-size: 14px;
-        }
-
-
-        /* =====================================
-           FOOTER MODAL
-        ===================================== */
-
-        .modal-footer {
+            margin: 0 auto 14px;
 
             display: flex;
+            align-items: center;
+            justify-content: center;
 
-            justify-content: flex-end;
+            border-radius: 10px;
 
-            padding:
-                14px 32px;
+            background: #edf4fa;
+            color: #245d8f;
+        }
 
-            border-top:
-                1px solid
-                #e2e8f0;
+        .modal-file-icon svg {
+            width: 27px;
+            height: 27px;
+        }
+
+        .modal-file p {
+            margin: 0;
+
+            color: #475569;
+
+            font-size: 14px;
+            line-height: 1.6;
         }
 
 
+        /* =========================
+           MODAL FOOTER
+        ========================= */
+
+        .modal-footer {
+            flex-shrink: 0;
+
+            display: flex;
+            justify-content: flex-end;
+
+            padding: 14px 32px;
+
+            border-top: 1px solid #e2e8f0;
+
+            background: #ffffff;
+        }
+
         .btn-download {
-
             display: inline-flex;
-
             align-items: center;
-
             justify-content: center;
 
-            min-width: 100px;
+            min-height: 38px;
 
-            padding:
-                9px 15px;
+            padding: 0 15px;
 
-            border-radius: 8px;
+            border-radius: 7px;
 
-            background: #1f4e79;
-
+            background: #245d8f;
             color: #ffffff;
 
             text-decoration: none;
 
             font-size: 13px;
+            font-weight: 700;
 
-            font-weight: 600;
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
         }
-
 
         .btn-download:hover {
-
-            background: #173b5d;
+            background: #173f67;
+            transform: translateY(-1px);
         }
 
 
-        /* =====================================
-           MOBILE
-        ===================================== */
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            #daftarPengumuman {
+                grid-template-columns: 1fr;
+            }
+
+            .page {
+                padding-top: 32px;
+            }
+
+        }
+
 
         @media (max-width: 600px) {
 
-            .top-area {
-
-                padding:
-                    10px
-                    10px
-                    4px;
+            .header-container {
+                min-height: 62px;
             }
 
-
-            .page-header {
-
-                margin:
-                    7px auto
-                    18px;
-
-                padding:
-                    5px 12px
-                    0;
+            .brand {
+                font-size: 15px;
             }
 
+            .btn-kembali {
+                padding:
+                    8px
+                    11px;
+
+                font-size: 12px;
+            }
+
+            .page {
+                width: 92%;
+                padding:
+                    28px
+                    0
+                    45px;
+            }
 
             .page-header h1 {
-
-                font-size: 21px;
+                font-size: 25px;
             }
 
-
-            .container {
-
-                padding:
-                    0 10px
-                    25px;
-            }
-
-
-            .pencarian-box {
-
-                padding:
-                    9px 11px;
-            }
-
-
-            .dokumen-card {
-
-                gap: 11px;
-
-                padding:
-                    13px;
-            }
-
-
-            .file-icon {
-
-                width: 40px;
-
-                height: 40px;
-            }
-
-
-            .file-icon svg {
-
-                width: 21px;
-
-                height: 21px;
-            }
-
-
-            .dokumen-title {
-
+            .page-header p {
                 font-size: 13px;
             }
 
-
-            .dokumen-meta {
-
-                font-size: 10px;
+            .dokumen-card {
+                padding:
+                    15px;
             }
 
+            .file-icon {
+                width: 40px;
+                height: 40px;
 
-            .dokumen-deskripsi {
-
-                font-size: 11px;
+                margin-right: 12px;
             }
 
+            .dokumen-title {
+                font-size: 13px;
+            }
 
             .modal {
-
-                padding:
-                    10px;
+                padding: 10px;
             }
-
 
             .modal-box {
-
+                width: 100%;
                 max-height: 92vh;
 
-                border-radius: 12px;
+                border-radius: 10px;
             }
 
-
             .modal-header {
-
                 padding:
-                    16px
+                    17px
                     20px;
             }
 
-
             .modal-header h2 {
-
                 font-size: 16px;
             }
 
-
             .modal-content {
-
                 max-height:
-                    calc(92vh - 120px);
+                    calc(92vh - 130px);
             }
-
 
             .modal-keterangan {
-
                 padding:
-                    20px
+                    18px
                     24px
-                    22px;
+                    22px
+                    24px;
+
+                font-size: 14px;
+                line-height: 1.7;
             }
 
+            .modal-file {
+                padding:
+                    25px
+                    24px;
+            }
 
             .modal-footer {
-
                 padding:
                     12px
                     20px;
@@ -974,63 +828,26 @@
         }
 
 
-        /* =====================================
-           HP KECIL
-        ===================================== */
-
         @media (max-width: 380px) {
 
-            .btn-kembali {
-
-                padding:
-                    8px
-                    12px;
-
-                font-size: 13px;
+            .header-container {
+                gap: 10px;
             }
 
+            .brand {
+                font-size: 14px;
+            }
 
             .page-header h1 {
-
-                font-size: 19px;
+                font-size: 23px;
             }
-
-
-            .dokumen-card {
-
-                padding:
-                    11px;
-            }
-
-
-            .file-icon {
-
-                width: 38px;
-
-                height: 38px;
-
-                border-radius: 9px;
-            }
-
-
-            .dokumen-title {
-
-                font-size: 12px;
-            }
-
-
-            .dokumen-deskripsi {
-
-                font-size: 10px;
-            }
-
 
             .modal-keterangan {
-
                 padding:
+                    17px
                     20px
-                    22px
-                    22px;
+                    21px
+                    20px;
             }
 
         }
@@ -1039,51 +856,65 @@
 
 </head>
 
-
 <body>
 
 
-    <!-- =====================================
-         TOMBOL KEMBALI
-    ===================================== -->
+    <!-- =========================
+         HEADER
+    ========================= -->
 
-    <div class="top-area">
+    <header class="top-header">
 
-        <a
-            href="index.html"
-            class="btn-kembali"
-        >
-            ← Kembali
-        </a>
+        <div class="header-container">
 
-    </div>
+            <a
+                href="index.html"
+                class="brand">
 
+                GPIL Jemaat Betesda Purwosari
 
-    <!-- =====================================
-         JUDUL
-    ===================================== -->
+            </a>
 
-    <header class="page-header">
+            <a
+                href="index.html"
+                class="btn-kembali">
 
-        <h1>
-            Informasi Jemaat
-        </h1>
+                ← Kembali
 
-        <div class="header-line"></div>
+            </a>
+
+        </div>
 
     </header>
 
 
-    <!-- =====================================
-         KONTEN
-    ===================================== -->
+    <!-- =========================
+         HALAMAN
+    ========================= -->
 
-    <main class="container">
+    <main class="page">
+
+        <div class="page-header">
+
+            <span>
+                Portal Jemaat
+            </span>
+
+            <h1>
+                Informasi Jemaat
+            </h1>
+
+            <p>
+                Informasi dan pengumuman terbaru
+                dari jemaat.
+            </p>
+
+        </div>
 
 
-        <!-- =================================
+        <!-- =========================
              PENCARIAN
-        ================================= -->
+        ========================= -->
 
         <div class="pencarian-box">
 
@@ -1097,18 +928,20 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    aria-hidden="true"
-                >
+                    aria-hidden="true">
 
                     <circle
                         cx="11"
                         cy="11"
-                        r="7"
-                    ></circle>
+                        r="7">
+                    </circle>
 
-                    <path
-                        d="M20 20l-3.5-3.5"
-                    ></path>
+                    <line
+                        x1="16.65"
+                        y1="16.65"
+                        x2="21"
+                        y2="21">
+                    </line>
 
                 </svg>
 
@@ -1118,17 +951,17 @@
                     id="inputPencarian"
                     class="pencarian-input"
                     placeholder="Cari pengumuman..."
-                    autocomplete="off"
-                >
+                    autocomplete="off">
 
 
                 <button
                     type="button"
                     id="btnHapusPencarian"
                     class="btn-hapus-pencarian"
-                    aria-label="Hapus pencarian"
-                >
+                    aria-label="Hapus pencarian">
+
                     ×
+
                 </button>
 
             </div>
@@ -1136,65 +969,58 @@
         </div>
 
 
-        <!-- =================================
-             JUMLAH HASIL
-        ================================= -->
-
         <div
             id="infoHasil"
-            class="info-hasil"
-        >
+            class="info-hasil">
         </div>
 
 
-        <!-- =================================
+        <!-- =========================
              DAFTAR
-        ================================= -->
+        ========================= -->
 
-        <div
-            id="daftarPengumuman"
-            class="daftar-pengumuman"
-        >
+        <div id="daftarPengumuman">
 
-            <div class="loading">
-                Memuat informasi...
+            <div class="kosong">
+
+                <p>
+                    Memuat informasi...
+                </p>
+
             </div>
 
         </div>
 
-
     </main>
 
 
-    <!-- =====================================
+    <!-- =========================
          MODAL
-    ===================================== -->
+    ========================= -->
 
     <div
         id="modal"
         class="modal"
-        aria-hidden="true"
-    >
+        aria-hidden="true">
 
         <div
             class="modal-box"
             role="dialog"
             aria-modal="true"
             aria-labelledby="modalJudul"
-        >
+            onclick="event.stopPropagation()">
+
 
             <div class="modal-header">
 
                 <div class="modal-header-text">
 
                     <h2 id="modalJudul">
+                        Pengumuman
                     </h2>
 
-                    <div
-                        id="modalNamaFile"
-                        class="modal-nama-file"
-                    >
-                    </div>
+                    <small id="modalNamaFile">
+                    </small>
 
                 </div>
 
@@ -1203,9 +1029,10 @@
                     type="button"
                     id="btnTutup"
                     class="btn-tutup"
-                    aria-label="Tutup"
-                >
+                    aria-label="Tutup">
+
                     ×
+
                 </button>
 
             </div>
@@ -1213,8 +1040,7 @@
 
             <div
                 id="modalContent"
-                class="modal-content"
-            >
+                class="modal-content">
             </div>
 
 
@@ -1226,9 +1052,10 @@
                     href="#"
                     target="_blank"
                     rel="noopener noreferrer"
-                    download
-                >
+                    download>
+
                     Download
+
                 </a>
 
             </div>
@@ -1238,21 +1065,16 @@
     </div>
 
 
-    <!-- =====================================
+    <!-- =========================
          SUPABASE
-    ===================================== -->
+    ========================= -->
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="supabase-client.js"></script>
 
-
-    <script src="pengumuman.js?v=8"></script>
+    <script src="pengumuman.js?v=9"></script>
 
 
 </body>
-
 </html>
