@@ -1,12 +1,12 @@
 /* =========================================================
    KELOLA PENGUMUMAN
-   TAMBAH + EDIT + HAPUS
-   SUPABASE DATABASE + STORAGE
+   Tambah • Edit • Hapus • Upload File
    ========================================================= */
 
+"use strict";
 
 /* =========================================================
-   ELEMENT HTML
+   DOM
    ========================================================= */
 
 const inputFile =
@@ -30,9 +30,6 @@ const button =
 const buttonBatalEdit =
     document.getElementById("btnBatalEdit");
 
-const formTitle =
-    document.getElementById("formTitle");
-
 const daftarPengumuman =
     document.getElementById("daftarPengumuman");
 
@@ -47,45 +44,39 @@ const confirmText =
    KONFIGURASI
    ========================================================= */
 
+const NAMA_BUCKET =
+    "pengumuman";
+
 const MAX_SIZE =
     20 * 1024 * 1024;
 
-
-const EXTENSI_DIIJINKAN = [
-
+const ALLOWED_EXTENSIONS = [
     "pdf",
     "doc",
     "docx",
-
     "xls",
     "xlsx",
-
     "ppt",
     "pptx",
-
     "jpg",
     "jpeg",
     "png",
     "gif",
     "webp",
-
     "txt",
     "csv",
     "rtf",
-
     "odt",
     "ods",
     "odp",
-
     "zip",
     "rar",
     "7z"
-
 ];
 
 
 /* =========================================================
-   MODE EDIT
+   STATE
    ========================================================= */
 
 let modeEdit = false;
@@ -99,30 +90,148 @@ let idAkanDihapus = null;
    CEK SUPABASE
    ========================================================= */
 
-if (
-    typeof supabaseClient === "undefined" ||
-    !supabaseClient
-) {
+function cekSupabase() {
 
-    console.error(
-        "supabaseClient tidak ditemukan."
-    );
+    if (
+        typeof supabaseClient ===
+        "undefined"
+    ) {
+        throw new Error(
+            "supabaseClient belum tersedia."
+        );
+    }
 
-    tampilkanStatus(
-        "Koneksi Supabase belum tersedia.",
-        true
-    );
+    if (!supabaseClient) {
+        throw new Error(
+            "Koneksi Supabase belum tersedia."
+        );
+    }
 
 }
 
 
 /* =========================================================
-   SAAT HALAMAN SELESAI
+   STATUS
+   ========================================================= */
+
+function tampilkanStatus(
+    pesan,
+    tipe = "info"
+) {
+
+    if (!status) return;
+
+    status.className =
+        "status " + tipe;
+
+    status.textContent =
+        pesan;
+
+}
+
+
+/* =========================================================
+   DOM READY
    ========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
-    function () {
+    function() {
+
+        if (inputFile) {
+
+            inputFile.addEventListener(
+                "change",
+                function() {
+
+                    const file =
+                        inputFile.files &&
+                        inputFile.files[0];
+
+                    if (!file) {
+
+                        if (infoFile) {
+                            infoFile.textContent =
+                                "File bersifat opsional.";
+                        }
+
+                        return;
+                    }
+
+                    const hasil =
+                        validasiFile(file);
+
+                    if (!hasil.valid) {
+
+                        tampilkanStatus(
+                            hasil.pesan,
+                            "error"
+                        );
+
+                        inputFile.value = "";
+
+                        if (infoFile) {
+                            infoFile.textContent =
+                                "File bersifat opsional.";
+                        }
+
+                        return;
+                    }
+
+                    if (infoFile) {
+
+                        infoFile.textContent =
+                            file.name +
+                            " • " +
+                            formatUkuran(file.size);
+
+                    }
+
+                    tampilkanStatus(
+                        "",
+                        ""
+                    );
+
+                }
+            );
+
+        }
+
+
+        if (buttonBatalEdit) {
+
+            buttonBatalEdit.addEventListener(
+                "click",
+                function() {
+
+                    batalEdit();
+
+                }
+            );
+
+        }
+
+
+        if (confirmOverlay) {
+
+            confirmOverlay.addEventListener(
+                "click",
+                function(event) {
+
+                    if (
+                        event.target ===
+                        confirmOverlay
+                    ) {
+
+                        tutupKonfirmasiHapus();
+
+                    }
+
+                }
+            );
+
+        }
+
 
         ambilDaftarPengumuman();
 
@@ -131,229 +240,304 @@ document.addEventListener(
 
 
 /* =========================================================
-   PILIH FILE
+   AMBIL DAFTAR PENGUMUMAN
    ========================================================= */
 
-if (inputFile) {
+async function ambilDaftarPengumuman() {
 
-    inputFile.addEventListener(
-        "change",
-        function () {
+    if (!daftarPengumuman) {
+        return;
+    }
 
-            const file =
-                this.files?.[0];
+    daftarPengumuman.innerHTML = `
+        <div class="daftar-loading">
+            Memuat pengumuman...
+        </div>
+    `;
 
+    try {
 
-            if (!file) {
-
-                infoFile.style.display =
-                    "none";
-
-                infoFile.innerHTML =
-                    "";
-
-                return;
-
-            }
+        cekSupabase();
 
 
-            const namaFile =
-                file.name ||
-                "file";
+        /*
+         * Timeout 15 detik.
+         * Supaya halaman tidak terus-terusan
+         * menampilkan "Memuat pengumuman..."
+         */
 
-
-            const ekstensi =
-                ambilEkstensi(
-                    namaFile
-                );
-
-
-            /* =========================
-               CEK FORMAT
-            ========================= */
-
-            if (
-                !EXTENSI_DIIJINKAN.includes(
-                    ekstensi
+        const queryPromise =
+            supabaseClient
+                .from("pengumuman")
+                .select(
+                    [
+                        "id",
+                        "judul",
+                        "keterangan",
+                        "nama_file",
+                        "nama_asli",
+                        "url_file",
+                        "tipe_file",
+                        "ukuran_file",
+                        "created_at"
+                    ].join(", ")
                 )
-            ) {
-
-                alert(
-                    "Format file belum didukung."
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
                 );
 
-                this.value =
-                    "";
 
-                infoFile.style.display =
-                    "none";
+        const timeoutPromise =
+            new Promise(
+                function(_, reject) {
 
-                infoFile.innerHTML =
-                    "";
+                    setTimeout(
+                        function() {
 
-                return;
+                            reject(
+                                new Error(
+                                    "Permintaan ke Supabase terlalu lama. Periksa koneksi internet atau pengaturan RLS tabel pengumuman."
+                                )
+                            );
 
-            }
+                        },
+                        15000
+                    );
 
-
-            /* =========================
-               CEK UKURAN
-            ========================= */
-
-            if (
-                file.size >
-                MAX_SIZE
-            ) {
-
-                alert(
-                    "Ukuran file maksimal 20 MB.\n\n" +
-                    "Ukuran file Anda: " +
-                    formatUkuran(
-                        file.size
-                    )
-                );
-
-                this.value =
-                    "";
-
-                infoFile.style.display =
-                    "none";
-
-                infoFile.innerHTML =
-                    "";
-
-                return;
-
-            }
+                }
+            );
 
 
-            /* =========================
-               TAMPILKAN INFO
-            ========================= */
-
-            infoFile.innerHTML =
-                `
-                <strong>
-                    ${escapeHTML(namaFile)}
-                </strong>
-                <br>
-                Ukuran:
-                ${formatUkuran(file.size)}
-                <br>
-                Tipe:
-                ${escapeHTML(
-                    file.type ||
-                    "Tipe tidak terdeteksi"
-                )}
-                `;
+        const hasil =
+            await Promise.race([
+                queryPromise,
+                timeoutPromise
+            ]);
 
 
-            infoFile.style.display =
-                "block";
+        const data =
+            hasil.data;
+
+        const error =
+            hasil.error;
+
+
+        if (error) {
+
+            console.error(
+                "Error mengambil pengumuman:",
+                error
+            );
+
+            throw new Error(
+                jelaskanErrorDatabase(
+                    error
+                )
+            );
 
         }
-    );
+
+
+        tampilkanDaftarPengumuman(
+            data || []
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Gagal memuat pengumuman:",
+            error
+        );
+
+        daftarPengumuman.innerHTML = `
+            <div class="daftar-kosong">
+                <strong>
+                    Pengumuman gagal dimuat.
+                </strong>
+
+                <br><br>
+
+                ${escapeHTML(
+                    error?.message ||
+                    "Terjadi kesalahan saat mengambil data."
+                )}
+            </div>
+        `;
+
+    }
 
 }
 
 
 /* =========================================================
-   SIMPAN PENGUMUMAN
+   TAMPILKAN DAFTAR
+   ========================================================= */
+
+function tampilkanDaftarPengumuman(
+    data
+) {
+
+    if (!daftarPengumuman) {
+        return;
+    }
+
+
+    if (
+        !Array.isArray(data) ||
+        data.length === 0
+    ) {
+
+        daftarPengumuman.innerHTML = `
+            <div class="daftar-kosong">
+                Belum ada pengumuman.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    daftarPengumuman.innerHTML =
+        data
+            .map(function(item) {
+
+                return buatItemPengumuman(
+                    item
+                );
+
+            })
+            .join("");
+
+}
+
+
+/* =========================================================
+   BUAT ITEM PENGUMUMAN
+   ========================================================= */
+
+function buatItemPengumuman(
+    item
+) {
+
+    const id =
+        item.id;
+
+    const judul =
+        item.judul ||
+        "Tanpa Judul";
+
+    const keterangan =
+        item.keterangan ||
+        "";
+
+    const namaFile =
+        item.nama_asli ||
+        item.nama_file ||
+        "";
+
+    const tanggal =
+        formatTanggal(
+            item.created_at
+        );
+
+    const fileInfo =
+        namaFile
+            ? `
+                <div class="pengumuman-file">
+                    ${escapeHTML(namaFile)}
+                    ${
+                        item.ukuran_file
+                            ? " • " +
+                              formatUkuran(
+                                  item.ukuran_file
+                              )
+                            : ""
+                    }
+                </div>
+            `
+            : `
+                <div class="pengumuman-file">
+                    Informasi teks
+                </div>
+            `;
+
+
+    return `
+        <div
+            class="pengumuman-item"
+            data-id="${escapeAttribute(id)}"
+        >
+
+            <div class="pengumuman-info">
+
+                <div class="pengumuman-judul">
+                    ${escapeHTML(judul)}
+                </div>
+
+                <div class="pengumuman-tanggal">
+                    ${escapeHTML(tanggal)}
+                </div>
+
+                <div class="pengumuman-keterangan">
+                    ${escapeHTML(
+                        rapikanKeterangan(
+                            keterangan
+                        )
+                    )}
+                </div>
+
+                ${fileInfo}
+
+            </div>
+
+
+            <div class="pengumuman-actions">
+
+                <button
+                    type="button"
+                    class="btn-edit"
+                    onclick="mulaiEdit(${escapeAttribute(id)})"
+                >
+                    Edit
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-hapus"
+                    onclick="konfirmasiHapus(${escapeAttribute(id)})"
+                >
+                    Hapus
+                </button>
+
+            </div>
+
+        </div>
+    `;
+
+}
+
+
+/* =========================================================
+   SIMPAN
    ========================================================= */
 
 async function simpanPengumuman() {
 
-    const judul =
-        judulInput.value.trim();
-
-
-    const keterangan =
-        keteranganInput.value.trim();
-
-
-    const file =
-        inputFile.files?.[0];
-
-
-    /* =====================================================
-       CEK JUDUL
-    ===================================================== */
-
-    if (!judul) {
-
-        alert(
-            "Silakan isi judul pengumuman."
-        );
-
-        judulInput.focus();
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       CEK ISI
-    ===================================================== */
-
-    if (!keterangan) {
-
-        alert(
-            "Silakan isi pengumuman."
-        );
-
-        keteranganInput.focus();
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       CEK SUPABASE
-    ===================================================== */
-
-    if (
-        typeof supabaseClient === "undefined" ||
-        !supabaseClient
-    ) {
-
-        tampilkanStatus(
-            "Supabase belum terhubung.",
-            true
-        );
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       MODE EDIT
-    ===================================================== */
-
     if (modeEdit) {
 
-        await prosesEdit(
-            judul,
-            keterangan,
-            file
-        );
+        await prosesEdit();
 
-        return;
+    } else {
+
+        await prosesTambah();
 
     }
-
-
-    /* =====================================================
-       MODE TAMBAH
-    ===================================================== */
-
-    await prosesTambah(
-        judul,
-        keterangan,
-        file
-    );
 
 }
 
@@ -362,95 +546,143 @@ async function simpanPengumuman() {
    TAMBAH PENGUMUMAN
    ========================================================= */
 
-async function prosesTambah(
-    judul,
-    keterangan,
-    file
-) {
+async function prosesTambah() {
 
-    button.disabled =
-        true;
+    const judul =
+        judulInput?.value.trim() ||
+        "";
 
-    button.innerHTML =
-        "Menyimpan...";
+    const keterangan =
+        keteranganInput?.value ||
+        "";
 
-
-    tampilkanStatus(
-        "Menyimpan pengumuman..."
-    );
+    const keteranganRapi =
+        rapikanKeterangan(
+            keterangan
+        );
 
 
-    let path = null;
+    if (!judul) {
 
-    let urlFile = null;
+        tampilkanStatus(
+            "Judul pengumuman wajib diisi.",
+            "error"
+        );
 
-    let namaFile = null;
+        judulInput?.focus();
 
-    let namaAsli = null;
+        return;
 
-    let tipeFile = null;
+    }
 
-    let ukuranFile = null;
+
+    if (!keteranganRapi) {
+
+        tampilkanStatus(
+            "Isi pengumuman wajib diisi.",
+            "error"
+        );
+
+        keteranganInput?.focus();
+
+        return;
+
+    }
+
+
+    const file =
+        inputFile?.files &&
+        inputFile.files[0]
+            ? inputFile.files[0]
+            : null;
+
+
+    if (file) {
+
+        const hasil =
+            validasiFile(file);
+
+        if (!hasil.valid) {
+
+            tampilkanStatus(
+                hasil.pesan,
+                "error"
+            );
+
+            return;
+
+        }
+
+    }
 
 
     try {
 
-        /* =================================================
-           UPLOAD FILE JIKA ADA
-        ================================================= */
+        cekSupabase();
+
+        kunciForm(true);
+
+        tampilkanStatus(
+            file
+                ? "Mengunggah file..."
+                : "Menyimpan pengumuman...",
+            "info"
+        );
+
+
+        let path = null;
+
+        let urlFile = null;
+
+        let namaFile = null;
+
+        let namaAsli = null;
+
+        let tipeFile = null;
+
+        let ukuranFile = null;
+
+
+        /*
+         * Upload file hanya jika admin
+         * memilih file.
+         */
 
         if (file) {
 
-            validasiFile(
-                file
-            );
-
-
-            tampilkanStatus(
-                "Mengupload file..."
-            );
-
-
-            const hasil =
+            const hasilUpload =
                 await uploadFile(
                     file
                 );
 
-
             path =
-                hasil.path;
+                hasilUpload.path;
 
             urlFile =
-                hasil.urlFile;
+                hasilUpload.url;
 
             namaFile =
-                hasil.namaFile;
+                hasilUpload.namaFile;
 
             namaAsli =
-                hasil.namaAsli;
+                hasilUpload.namaAsli;
 
             tipeFile =
-                hasil.tipeFile;
+                hasilUpload.tipeFile;
 
             ukuranFile =
-                hasil.ukuranFile;
+                hasilUpload.ukuranFile;
 
         }
 
 
-        /* =================================================
-           SIMPAN DATABASE
-        ================================================= */
-
         tampilkanStatus(
-            "Menyimpan data pengumuman..."
+            "Menyimpan pengumuman...",
+            "info"
         );
 
 
-        const {
-            data,
-            error
-        } =
+        const hasil =
             await supabaseClient
                 .from("pengumuman")
                 .insert([
@@ -459,7 +691,7 @@ async function prosesTambah(
                             judul,
 
                         keterangan:
-                            keterangan,
+                            keteranganRapi,
 
                         nama_file:
                             namaFile,
@@ -480,17 +712,19 @@ async function prosesTambah(
                 .select();
 
 
-        if (error) {
+        if (hasil.error) {
 
             console.error(
-                "Database error:",
-                error
+                "Error insert pengumuman:",
+                hasil.error
             );
 
 
-            /* =========================
-               HAPUS FILE JIKA GAGAL
-            ========================= */
+            /*
+             * Jika database gagal,
+             * hapus file yang tadi berhasil
+             * diupload.
+             */
 
             if (path) {
 
@@ -503,53 +737,46 @@ async function prosesTambah(
 
             throw new Error(
                 jelaskanErrorDatabase(
-                    error
+                    hasil.error
                 )
             );
 
         }
 
 
-        console.log(
-            "Data tersimpan:",
-            data
-        );
-
-
         tampilkanStatus(
-            "✓ Pengumuman berhasil dipublikasikan.",
-            false
+            "Pengumuman berhasil dipublikasikan.",
+            "success"
         );
 
 
         resetForm();
 
-
         await ambilDaftarPengumuman();
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.error(
-            "Tambah pengumuman error:",
+            "Gagal menyimpan pengumuman:",
             error
         );
 
-
         tampilkanStatus(
-            "Gagal menyimpan: " +
-            error.message,
-            true
+            "Gagal menyimpan pengumuman: " +
+            (
+                error?.message ||
+                "Terjadi kesalahan."
+            ),
+            "error"
         );
 
+    }
 
-    } finally {
+    finally {
 
-        button.disabled =
-            false;
-
-        button.innerHTML =
-            "Publikasikan Pengumuman";
+        kunciForm(false);
 
     }
 
@@ -560,201 +787,301 @@ async function prosesTambah(
    EDIT PENGUMUMAN
    ========================================================= */
 
-async function prosesEdit(
-    judul,
-    keterangan,
-    fileBaru
-) {
+async function prosesEdit() {
 
     if (!dataEdit) {
 
-        batalEdit();
+        tampilkanStatus(
+            "Data pengumuman yang diedit tidak ditemukan.",
+            "error"
+        );
 
         return;
 
     }
 
 
-    button.disabled =
-        true;
+    const judul =
+        judulInput?.value.trim() ||
+        "";
 
-    button.innerHTML =
-        "Menyimpan Perubahan...";
+    const keterangan =
+        keteranganInput?.value ||
+        "";
+
+    const keteranganRapi =
+        rapikanKeterangan(
+            keterangan
+        );
 
 
-    tampilkanStatus(
-        "Menyimpan perubahan..."
-    );
+    if (!judul) {
+
+        tampilkanStatus(
+            "Judul pengumuman wajib diisi.",
+            "error"
+        );
+
+        judulInput?.focus();
+
+        return;
+
+    }
 
 
-    let pathBaru = null;
+    if (!keteranganRapi) {
+
+        tampilkanStatus(
+            "Isi pengumuman wajib diisi.",
+            "error"
+        );
+
+        keteranganInput?.focus();
+
+        return;
+
+    }
+
+
+    const file =
+        inputFile?.files &&
+        inputFile.files[0]
+            ? inputFile.files[0]
+            : null;
+
+
+    if (file) {
+
+        const hasil =
+            validasiFile(file);
+
+        if (!hasil.valid) {
+
+            tampilkanStatus(
+                hasil.pesan,
+                "error"
+            );
+
+            return;
+
+        }
+
+    }
 
 
     try {
 
-        let updateData = {
+        cekSupabase();
 
-            judul:
-                judul,
-
-            keterangan:
-                keterangan
-
-        };
+        kunciForm(true);
 
 
-        /* =================================================
-           JIKA MEMILIH FILE BARU
-        ================================================= */
+        let pathFileBaru = null;
 
-        if (fileBaru) {
 
-            validasiFile(
-                fileBaru
+        /*
+         * Jika admin memilih file baru,
+         * upload terlebih dahulu.
+         */
+
+        if (file) {
+
+            tampilkanStatus(
+                "Mengunggah file baru...",
+                "info"
             );
 
 
+            const hasilUpload =
+                await uploadFile(
+                    file
+                );
+
+
+            pathFileBaru =
+                hasilUpload.path;
+
+
+            const dataUpdate = {
+
+                judul:
+                    judul,
+
+                keterangan:
+                    keteranganRapi,
+
+                nama_file:
+                    hasilUpload.namaFile,
+
+                nama_asli:
+                    hasilUpload.namaAsli,
+
+                url_file:
+                    hasilUpload.url,
+
+                tipe_file:
+                    hasilUpload.tipeFile,
+
+                ukuran_file:
+                    hasilUpload.ukuranFile
+
+            };
+
+
             tampilkanStatus(
-                "Mengupload file baru..."
+                "Memperbarui pengumuman...",
+                "info"
             );
 
 
             const hasil =
-                await uploadFile(
-                    fileBaru
+                await supabaseClient
+                    .from("pengumuman")
+                    .update(
+                        dataUpdate
+                    )
+                    .eq(
+                        "id",
+                        dataEdit.id
+                    );
+
+
+            if (hasil.error) {
+
+                console.error(
+                    "Error update pengumuman:",
+                    hasil.error
                 );
 
 
-            pathBaru =
-                hasil.path;
+                /*
+                 * Jika update gagal,
+                 * hapus file baru.
+                 */
+
+                if (pathFileBaru) {
+
+                    await hapusFileStorage(
+                        pathFileBaru
+                    );
+
+                }
 
 
-            updateData.nama_file =
-                hasil.namaFile;
-
-            updateData.nama_asli =
-                hasil.namaAsli;
-
-            updateData.url_file =
-                hasil.urlFile;
-
-            updateData.tipe_file =
-                hasil.tipeFile;
-
-            updateData.ukuran_file =
-                hasil.ukuranFile;
-
-        }
-
-
-        /* =================================================
-           UPDATE DATABASE
-        ================================================= */
-
-        tampilkanStatus(
-            "Memperbarui data..."
-        );
-
-
-        const {
-            error
-        } =
-            await supabaseClient
-                .from("pengumuman")
-                .update(
-                    updateData
-                )
-                .eq(
-                    "id",
-                    dataEdit.id
-                );
-
-
-        if (error) {
-
-            /* =========================
-               HAPUS FILE BARU
-               JIKA DATABASE GAGAL
-            ========================= */
-
-            if (pathBaru) {
-
-                await hapusFileStorage(
-                    pathBaru
+                throw new Error(
+                    jelaskanErrorDatabase(
+                        hasil.error
+                    )
                 );
 
             }
 
 
-            throw new Error(
-                jelaskanErrorDatabase(
-                    error
-                )
-            );
+            /*
+             * Setelah database berhasil,
+             * hapus file lama jika ada.
+             */
+
+            const pathFileLama =
+                ambilPathStorage(
+                    dataEdit
+                );
+
+
+            if (
+                pathFileLama &&
+                pathFileLama !==
+                    pathFileBaru
+            ) {
+
+                await hapusFileStorage(
+                    pathFileLama
+                );
+
+            }
 
         }
 
+        else {
 
-        /* =================================================
-           HAPUS FILE LAMA
-           JIKA ADA FILE BARU
-        ================================================= */
+            /*
+             * Tidak ada file baru.
+             * File lama tetap dipertahankan.
+             */
 
-        if (
-            fileBaru &&
-            dataEdit.nama_file
-        ) {
-
-            await hapusFileStorage(
-                dataEdit.nama_file
+            tampilkanStatus(
+                "Memperbarui pengumuman...",
+                "info"
             );
+
+
+            const hasil =
+                await supabaseClient
+                    .from("pengumuman")
+                    .update({
+                        judul:
+                            judul,
+
+                        keterangan:
+                            keteranganRapi
+                    })
+                    .eq(
+                        "id",
+                        dataEdit.id
+                    );
+
+
+            if (hasil.error) {
+
+                console.error(
+                    "Error update pengumuman:",
+                    hasil.error
+                );
+
+                throw new Error(
+                    jelaskanErrorDatabase(
+                        hasil.error
+                    )
+                );
+
+            }
 
         }
 
 
         tampilkanStatus(
-            "✓ Pengumuman berhasil diperbarui.",
-            false
+            "Pengumuman berhasil diperbarui.",
+            "success"
         );
 
 
-        resetForm();
-
+        batalEdit();
 
         await ambilDaftarPengumuman();
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.error(
-            "Edit error:",
+            "Gagal memperbarui pengumuman:",
             error
         );
 
-
         tampilkanStatus(
-            "Gagal mengedit: " +
-            error.message,
-            true
+            "Gagal memperbarui pengumuman: " +
+            (
+                error?.message ||
+                "Terjadi kesalahan."
+            ),
+            "error"
         );
 
+    }
 
-    } finally {
+    finally {
 
-        button.disabled =
-            false;
-
-        if (modeEdit) {
-
-            button.innerHTML =
-                "Simpan Perubahan";
-
-        } else {
-
-            button.innerHTML =
-                "Publikasikan Pengumuman";
-
-        }
+        kunciForm(false);
 
     }
 
@@ -765,77 +1092,224 @@ async function prosesEdit(
    MULAI EDIT
    ========================================================= */
 
-function mulaiEdit(item) {
+function mulaiEdit(id) {
+
+    const item =
+        window.daftarDataPengumuman
+            ?.find(function(data) {
+
+                return String(data.id) ===
+                    String(id);
+
+            });
+
 
     if (!item) {
+
+        /*
+         * Jika data belum tersimpan di window,
+         * ambil ulang dari Supabase.
+         */
+
+        ambilDataUntukEdit(id);
+
         return;
+
     }
 
 
-    modeEdit =
-        true;
+    mulaiEditDenganData(
+        item
+    );
+
+}
 
 
-    dataEdit =
-        item;
+/* =========================================================
+   AMBIL DATA UNTUK EDIT
+   ========================================================= */
+
+async function ambilDataUntukEdit(
+    id
+) {
+
+    try {
+
+        cekSupabase();
+
+        tampilkanStatus(
+            "Mengambil data pengumuman...",
+            "info"
+        );
 
 
-    formTitle.textContent =
-        "Edit Pengumuman";
+        const hasil =
+            await supabaseClient
+                .from("pengumuman")
+                .select(
+                    [
+                        "id",
+                        "judul",
+                        "keterangan",
+                        "nama_file",
+                        "nama_asli",
+                        "url_file",
+                        "tipe_file",
+                        "ukuran_file",
+                        "created_at"
+                    ].join(", ")
+                )
+                .eq(
+                    "id",
+                    id
+                )
+                .maybeSingle();
 
 
-    button.innerHTML =
-        "Simpan Perubahan";
+        if (hasil.error) {
+
+            throw new Error(
+                jelaskanErrorDatabase(
+                    hasil.error
+                )
+            );
+
+        }
 
 
-    buttonBatalEdit.style.display =
-        "block";
+        if (!hasil.data) {
+
+            throw new Error(
+                "Data pengumuman tidak ditemukan."
+            );
+
+        }
 
 
-    judulInput.value =
-        item.judul || "";
+        mulaiEditDenganData(
+            hasil.data
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Gagal mengambil data edit:",
+            error
+        );
+
+        tampilkanStatus(
+            error?.message ||
+            "Gagal mengambil data pengumuman.",
+            "error"
+        );
+
+    }
+
+}
 
 
-    keteranganInput.value =
-        item.keterangan || "";
+/* =========================================================
+   ISI FORM EDIT
+   ========================================================= */
+
+function mulaiEditDenganData(
+    item
+) {
+
+    modeEdit = true;
+
+    dataEdit = item;
 
 
-    inputFile.value =
-        "";
+    if (judulInput) {
+
+        judulInput.value =
+            item.judul || "";
+
+    }
 
 
-    if (item.nama_asli) {
+    if (keteranganInput) {
 
-        infoFile.innerHTML =
-            `
-            File saat ini:
-            <strong>
-                ${escapeHTML(
-                    item.nama_asli
-                )}
-            </strong>
-            <br>
-            Pilih file baru jika ingin menggantinya.
-            `;
+        keteranganInput.value =
+            rapikanKeterangan(
+                item.keterangan || ""
+            );
 
-        infoFile.style.display =
-            "block";
+    }
 
-    } else {
 
-        infoFile.innerHTML =
-            "Tidak ada file yang dilampirkan.";
+    if (inputFile) {
 
-        infoFile.style.display =
-            "block";
+        inputFile.value = "";
+
+    }
+
+
+    if (infoFile) {
+
+        if (
+            item.nama_asli ||
+            item.nama_file
+        ) {
+
+            infoFile.textContent =
+                "File saat ini: " +
+                (
+                    item.nama_asli ||
+                    item.nama_file
+                ) +
+                (
+                    item.ukuran_file
+                        ? " • " +
+                          formatUkuran(
+                              item.ukuran_file
+                          )
+                        : ""
+                ) +
+                ". Pilih file baru jika ingin mengganti.";
+
+        }
+
+        else {
+
+            infoFile.textContent =
+                "Belum ada file. Pilih file jika diperlukan.";
+
+        }
+
+    }
+
+
+    if (button) {
+
+        button.textContent =
+            "Simpan Perubahan";
+
+    }
+
+
+    if (buttonBatalEdit) {
+
+        buttonBatalEdit.style.display =
+            "inline-flex";
 
     }
 
 
     tampilkanStatus(
-        "Mode edit aktif. Silakan ubah data lalu simpan.",
-        false
+        "Mode edit aktif.",
+        "info"
     );
+
+
+    if (judulInput) {
+
+        judulInput.focus();
+
+    }
 
 
     window.scrollTo({
@@ -852,51 +1326,34 @@ function mulaiEdit(item) {
 
 function batalEdit() {
 
-    modeEdit =
-        false;
+    modeEdit = false;
+
+    dataEdit = null;
 
 
-    dataEdit =
-        null;
+    resetForm();
 
 
-    formTitle.textContent =
-        "Tambah Pengumuman";
+    if (button) {
+
+        button.textContent =
+            "Publikasikan Pengumuman";
+
+    }
 
 
-    button.innerHTML =
-        "Publikasikan Pengumuman";
+    if (buttonBatalEdit) {
+
+        buttonBatalEdit.style.display =
+            "none";
+
+    }
 
 
-    buttonBatalEdit.style.display =
-        "none";
-
-
-    judulInput.value =
-        "";
-
-    keteranganInput.value =
-        "";
-
-    inputFile.value =
-        "";
-
-
-    infoFile.innerHTML =
-        "";
-
-    infoFile.style.display =
-        "none";
-
-
-    status.innerHTML =
-        "";
-
-    status.style.background =
-        "transparent";
-
-    status.style.border =
-        "none";
+    tampilkanStatus(
+        "",
+        ""
+    );
 
 }
 
@@ -907,242 +1364,33 @@ function batalEdit() {
 
 function resetForm() {
 
-    modeEdit =
-        false;
+    if (judulInput) {
 
-
-    dataEdit =
-        null;
-
-
-    formTitle.textContent =
-        "Tambah Pengumuman";
-
-
-    judulInput.value =
-        "";
-
-    keteranganInput.value =
-        "";
-
-    inputFile.value =
-        "";
-
-
-    infoFile.innerHTML =
-        "";
-
-    infoFile.style.display =
-        "none";
-
-
-    buttonBatalEdit.style.display =
-        "none";
-
-
-    button.innerHTML =
-        "Publikasikan Pengumuman";
-
-}
-
-
-/* =========================================================
-   AMBIL DAFTAR PENGUMUMAN
-   ========================================================= */
-
-async function ambilDaftarPengumuman() {
-
-    if (!daftarPengumuman) {
-        return;
-    }
-
-
-    daftarPengumuman.innerHTML =
-        `
-        <div class="daftar-loading">
-            Memuat pengumuman...
-        </div>
-        `;
-
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("pengumuman")
-                .select("*")
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
-
-
-        if (error) {
-
-            throw error;
-
-        }
-
-
-        tampilkanDaftarPengumuman(
-            data || []
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Gagal mengambil pengumuman:",
-            error
-        );
-
-
-        daftarPengumuman.innerHTML =
-            `
-            <div class="daftar-kosong">
-                Gagal memuat pengumuman.
-                <br>
-                ${escapeHTML(
-                    error.message ||
-                    ""
-                )}
-            </div>
-            `;
-
-    }
-
-}
-
-
-/* =========================================================
-   TAMPILKAN DAFTAR
-   ========================================================= */
-
-function tampilkanDaftarPengumuman(
-    data
-) {
-
-    if (!data.length) {
-
-        daftarPengumuman.innerHTML =
-            `
-            <div class="daftar-kosong">
-                Belum ada pengumuman.
-            </div>
-            `;
-
-        return;
+        judulInput.value = "";
 
     }
 
 
-    daftarPengumuman.innerHTML =
-        data
-            .map(
-                function (item) {
+    if (keteranganInput) {
 
-                    return buatItemPengumuman(
-                        item
-                    );
+        keteranganInput.value = "";
 
-                }
-            )
-            .join("");
-
-}
+    }
 
 
-/* =========================================================
-   BUAT ITEM PENGUMUMAN
-   ========================================================= */
+    if (inputFile) {
 
-function buatItemPengumuman(
-    item
-) {
+        inputFile.value = "";
 
-    const judul =
-        item.judul ||
-        "Tanpa judul";
+    }
 
 
-    const tanggal =
-        formatTanggal(
-            item.created_at
-        );
+    if (infoFile) {
 
+        infoFile.textContent =
+            "File bersifat opsional.";
 
-    const file =
-        item.nama_asli ||
-        item.nama_file ||
-        "";
-
-
-    return `
-        <div class="pengumuman-item">
-
-            <div class="pengumuman-icon">
-                ${file ? "▣" : "●"}
-            </div>
-
-
-            <div class="pengumuman-info">
-
-                <div class="pengumuman-judul">
-                    ${escapeHTML(judul)}
-                </div>
-
-
-                <div class="pengumuman-tanggal">
-                    ${escapeHTML(tanggal)}
-                </div>
-
-
-                ${
-                    file
-                        ? `
-                        <div class="pengumuman-file">
-                            File:
-                            ${escapeHTML(file)}
-                        </div>
-                        `
-                        : `
-                        <div class="pengumuman-file">
-                            Pengumuman teks
-                        </div>
-                        `
-                }
-
-            </div>
-
-
-            <div class="pengumuman-actions">
-
-                <button
-                    type="button"
-                    class="btn-edit"
-                    onclick='mulaiEdit(${JSON.stringify(item).replace(/'/g, "&#39;")})'
-                >
-                    Edit
-                </button>
-
-
-                <button
-                    type="button"
-                    class="btn-hapus"
-                    onclick="konfirmasiHapus('${escapeAttribute(item.id)}', '${escapeAttribute(judul)}')"
-                >
-                    Hapus
-                </button>
-
-            </div>
-
-        </div>
-    `;
+    }
 
 }
 
@@ -1152,27 +1400,50 @@ function buatItemPengumuman(
    ========================================================= */
 
 function konfirmasiHapus(
-    id,
-    judul
+    id
 ) {
 
     idAkanDihapus =
         id;
 
 
-    confirmText.innerHTML =
-        `
-        Pengumuman
-        <strong>
-            "${escapeHTML(judul)}"
-        </strong>
-        akan dihapus secara permanen.
-        `;
+    const item =
+        window.daftarDataPengumuman
+            ?.find(function(data) {
+
+                return String(data.id) ===
+                    String(id);
+
+            });
 
 
-    confirmOverlay.classList.add(
-        "active"
-    );
+    const judul =
+        item?.judul ||
+        "pengumuman ini";
+
+
+    if (confirmText) {
+
+        confirmText.textContent =
+            "Apakah Anda yakin ingin menghapus \"" +
+            judul +
+            "\"?";
+
+    }
+
+
+    if (confirmOverlay) {
+
+        confirmOverlay.classList.add(
+            "active"
+        );
+
+        confirmOverlay.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+    }
 
 }
 
@@ -1187,9 +1458,18 @@ function tutupKonfirmasiHapus() {
         null;
 
 
-    confirmOverlay.classList.remove(
-        "active"
-    );
+    if (confirmOverlay) {
+
+        confirmOverlay.classList.remove(
+            "active"
+        );
+
+        confirmOverlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+    }
 
 }
 
@@ -1200,8 +1480,15 @@ function tutupKonfirmasiHapus() {
 
 async function lanjutkanHapus() {
 
-    if (!idAkanDihapus) {
+    if (
+        idAkanDihapus ===
+        null ||
+        idAkanDihapus ===
+        undefined
+    ) {
+
         return;
+
     }
 
 
@@ -1209,48 +1496,30 @@ async function lanjutkanHapus() {
         idAkanDihapus;
 
 
-    tutupKonfirmasiHapus();
+    const item =
+        window.daftarDataPengumuman
+            ?.find(function(data) {
 
+                return String(data.id) ===
+                    String(id);
 
-    tampilkanStatus(
-        "Menghapus pengumuman..."
-    );
+            });
 
 
     try {
 
-        /* =================================================
-           AMBIL DATA TERLEBIH DAHULU
-        ================================================= */
+        cekSupabase();
 
-        const {
-            data: item,
-            error: ambilError
-        } =
-            await supabaseClient
-                .from("pengumuman")
-                .select("*")
-                .eq(
-                    "id",
-                    id
-                )
-                .single();
+        tutupKonfirmasiHapus();
 
 
-        if (ambilError) {
+        tampilkanStatus(
+            "Menghapus pengumuman...",
+            "info"
+        );
 
-            throw ambilError;
 
-        }
-
-
-        /* =================================================
-           HAPUS DATABASE
-        ================================================= */
-
-        const {
-            error: deleteError
-        } =
+        const hasil =
             await supabaseClient
                 .from("pengumuman")
                 .delete()
@@ -1260,65 +1529,66 @@ async function lanjutkanHapus() {
                 );
 
 
-        if (deleteError) {
+        if (hasil.error) {
 
-            throw deleteError;
+            console.error(
+                "Error hapus pengumuman:",
+                hasil.error
+            );
 
-        }
-
-
-        /* =================================================
-           HAPUS FILE STORAGE
-        ================================================= */
-
-        if (
-            item &&
-            item.nama_file
-        ) {
-
-            await hapusFileStorage(
-                item.nama_file
+            throw new Error(
+                jelaskanErrorDatabase(
+                    hasil.error
+                )
             );
 
         }
 
 
-        /* =================================================
-           JIKA SEDANG EDIT DATA INI
-        ================================================= */
+        /*
+         * Hapus file Storage setelah
+         * database berhasil dihapus.
+         */
 
-        if (
-            dataEdit &&
-            String(dataEdit.id) ===
-            String(id)
-        ) {
+        const pathFile =
+            ambilPathStorage(
+                item
+            );
 
-            batalEdit();
+
+        if (pathFile) {
+
+            await hapusFileStorage(
+                pathFile
+            );
 
         }
 
 
         tampilkanStatus(
-            "✓ Pengumuman berhasil dihapus.",
-            false
+            "Pengumuman berhasil dihapus.",
+            "success"
         );
 
 
         await ambilDaftarPengumuman();
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.error(
-            "Hapus error:",
+            "Gagal menghapus pengumuman:",
             error
         );
 
-
         tampilkanStatus(
-            "Gagal menghapus: " +
-            error.message,
-            true
+            "Gagal menghapus pengumuman: " +
+            (
+                error?.message ||
+                "Terjadi kesalahan."
+            ),
+            "error"
         );
 
     }
@@ -1334,54 +1604,48 @@ async function uploadFile(
     file
 ) {
 
+    cekSupabase();
+
+
     const ekstensi =
         ambilEkstensi(
             file.name
         );
 
 
-    let namaBersih =
+    const namaAman =
         bersihkanNamaFile(
             file.name
         );
 
 
-    if (!namaBersih) {
-
-        namaBersih =
-            "dokumen." +
-            ekstensi;
-
-    }
-
-
-    const waktu =
-        Date.now();
-
-
-    const random =
+    const namaUnik =
+        Date.now() +
+        "_" +
         Math.random()
             .toString(36)
-            .substring(
-                2,
-                10
-            );
+            .substring(2, 10) +
+        "_" +
+        namaAman;
 
 
     const path =
-        waktu +
-        "-" +
-        random +
-        "-" +
-        namaBersih;
+        namaUnik;
 
 
-    const {
-        error: uploadError
-    } =
+    const contentType =
+        tentukanContentType(
+            file,
+            ekstensi
+        );
+
+
+    const hasil =
         await supabaseClient
             .storage
-            .from("pengumuman")
+            .from(
+                NAMA_BUCKET
+            )
             .upload(
                 path,
                 file,
@@ -1389,54 +1653,45 @@ async function uploadFile(
                     cacheControl:
                         "3600",
 
-                    contentType:
-                        tentukanContentType(
-                            file,
-                            ekstensi
-                        ),
-
                     upsert:
-                        false
+                        false,
+
+                    contentType:
+                        contentType
                 }
             );
 
 
-    if (uploadError) {
+    if (hasil.error) {
+
+        console.error(
+            "Error upload Storage:",
+            hasil.error
+        );
 
         throw new Error(
             jelaskanErrorStorage(
-                uploadError
+                hasil.error
             )
         );
 
     }
 
 
-    const {
-        data: urlData
-    } =
+    const publicUrl =
         supabaseClient
             .storage
-            .from("pengumuman")
+            .from(
+                NAMA_BUCKET
+            )
             .getPublicUrl(
                 path
             );
 
 
-    if (
-        !urlData ||
-        !urlData.publicUrl
-    ) {
-
-        await hapusFileStorage(
-            path
-        );
-
-        throw new Error(
-            "Alamat file tidak berhasil dibuat."
-        );
-
-    }
+    const url =
+        publicUrl?.data?.publicUrl ||
+        null;
 
 
     return {
@@ -1444,8 +1699,8 @@ async function uploadFile(
         path:
             path,
 
-        urlFile:
-            urlData.publicUrl,
+        url:
+            url,
 
         namaFile:
             path,
@@ -1454,71 +1709,12 @@ async function uploadFile(
             file.name,
 
         tipeFile:
-            file.type ||
-            tentukanContentType(
-                file,
-                ekstensi
-            ),
+            contentType,
 
         ukuranFile:
             file.size
 
     };
-
-}
-
-
-/* =========================================================
-   VALIDASI FILE
-   ========================================================= */
-
-function validasiFile(
-    file
-) {
-
-    if (
-        !Number.isFinite(
-            file.size
-        ) ||
-        file.size <= 0
-    ) {
-
-        throw new Error(
-            "File tidak dapat dibaca."
-        );
-
-    }
-
-
-    if (
-        file.size >
-        MAX_SIZE
-    ) {
-
-        throw new Error(
-            "Ukuran file maksimal 20 MB."
-        );
-
-    }
-
-
-    const ekstensi =
-        ambilEkstensi(
-            file.name
-        );
-
-
-    if (
-        !EXTENSI_DIIJINKAN.includes(
-            ekstensi
-        )
-    ) {
-
-        throw new Error(
-            "Format file tidak didukung."
-        );
-
-    }
 
 }
 
@@ -1538,27 +1734,32 @@ async function hapusFileStorage(
 
     try {
 
-        const {
-            error
-        } =
+        cekSupabase();
+
+
+        const hasil =
             await supabaseClient
                 .storage
-                .from("pengumuman")
+                .from(
+                    NAMA_BUCKET
+                )
                 .remove([
                     path
                 ]);
 
 
-        if (error) {
+        if (hasil.error) {
 
             console.error(
                 "Gagal menghapus file Storage:",
-                error
+                hasil.error
             );
 
         }
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             "Error hapus Storage:",
@@ -1566,6 +1767,146 @@ async function hapusFileStorage(
         );
 
     }
+
+}
+
+
+/* =========================================================
+   AMBIL PATH STORAGE
+   ========================================================= */
+
+function ambilPathStorage(
+    item
+) {
+
+    if (!item) {
+        return null;
+    }
+
+
+    /*
+     * Jika nama_file menyimpan path,
+     * gunakan langsung.
+     */
+
+    if (item.nama_file) {
+
+        return item.nama_file;
+
+    }
+
+
+    /*
+     * Jika tidak ada nama_file tetapi
+     * ada URL Supabase Storage,
+     * coba ambil bagian path-nya.
+     */
+
+    if (item.url_file) {
+
+        try {
+
+            const marker =
+                "/storage/v1/object/public/" +
+                NAMA_BUCKET +
+                "/";
+
+
+            const posisi =
+                item.url_file.indexOf(
+                    marker
+                );
+
+
+            if (posisi !== -1) {
+
+                return decodeURIComponent(
+                    item.url_file.substring(
+                        posisi +
+                        marker.length
+                    )
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Gagal membaca path Storage:",
+                error
+            );
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   VALIDASI FILE
+   ========================================================= */
+
+function validasiFile(
+    file
+) {
+
+    if (!file) {
+
+        return {
+            valid: true
+        };
+
+    }
+
+
+    if (file.size > MAX_SIZE) {
+
+        return {
+
+            valid: false,
+
+            pesan:
+                "Ukuran file terlalu besar. Maksimal 20 MB."
+
+        };
+
+    }
+
+
+    const ekstensi =
+        ambilEkstensi(
+            file.name
+        );
+
+
+    if (
+        !ALLOWED_EXTENSIONS.includes(
+            ekstensi
+        )
+    ) {
+
+        return {
+
+            valid: false,
+
+            pesan:
+                "Format file tidak didukung: ." +
+                ekstensi
+
+        };
+
+    }
+
+
+    return {
+        valid: true
+    };
 
 }
 
@@ -1583,14 +1924,19 @@ function ambilEkstensi(
     }
 
 
+    const nama =
+        String(
+            namaFile
+        ).toLowerCase();
+
+
     const bagian =
-        namaFile
-            .toLowerCase()
-            .split(".");
+        nama.split(".");
 
 
     if (
-        bagian.length < 2
+        bagian.length <
+        2
     ) {
 
         return "";
@@ -1613,42 +1959,19 @@ function bersihkanNamaFile(
     namaFile
 ) {
 
-    if (!namaFile) {
-        return "";
-    }
-
-
-    let nama =
-        namaFile
-            .normalize("NFKD")
-            .replace(
-                /[\u0300-\u036f]/g,
-                ""
-            );
-
-
-    nama =
-        nama.replace(
+    return String(
+        namaFile ||
+        "file"
+    )
+        .trim()
+        .replace(
             /[^a-zA-Z0-9._-]/g,
-            "-"
+            "_"
+        )
+        .replace(
+            /_+/g,
+            "_"
         );
-
-
-    nama =
-        nama.replace(
-            /-+/g,
-            "-"
-        );
-
-
-    nama =
-        nama.replace(
-            /^[-.]+|[-.]+$/g,
-            ""
-        );
-
-
-    return nama;
 
 }
 
@@ -1672,7 +1995,7 @@ function tentukanContentType(
     }
 
 
-    const mime = {
+    const tipe = {
 
         pdf:
             "application/pdf",
@@ -1726,24 +2049,158 @@ function tentukanContentType(
             "application/vnd.rar",
 
         "7z":
-            "application/x-7z-compressed",
-
-        odt:
-            "application/vnd.oasis.opendocument.text",
-
-        ods:
-            "application/vnd.oasis.opendocument.spreadsheet",
-
-        odp:
-            "application/vnd.oasis.opendocument.presentation"
+            "application/x-7z-compressed"
 
     };
 
 
     return (
-        mime[ekstensi] ||
+        tipe[ekstensi] ||
         "application/octet-stream"
     );
+
+}
+
+
+/* =========================================================
+   RAPKAN KETERANGAN
+   ========================================================= */
+
+function rapikanKeterangan(
+    teks
+) {
+
+    if (
+        teks === null ||
+        teks === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(teks)
+
+        .replace(
+            /\r\n/g,
+            "\n"
+        )
+
+        .replace(
+            /\r/g,
+            "\n"
+        )
+
+        .replace(
+            /^[\s\u00A0\u200B\u200C\u200D\uFEFF]+/,
+            ""
+        )
+
+        .split("\n")
+
+        .map(
+            function(baris) {
+
+                return baris
+
+                    .replace(
+                        /^[\s\u00A0\u200B\u200C\u200D\uFEFF]+/,
+                        ""
+                    )
+
+                    .replace(
+                        /[\s\u00A0\u200B\u200C\u200D\uFEFF]+$/,
+                        ""
+                    );
+
+            }
+        )
+
+        .join("\n")
+
+        .replace(
+            /[\s\u00A0\u200B\u200C\u200D\uFEFF]+$/,
+            ""
+        );
+
+}
+
+
+/* =========================================================
+   FORMAT UKURAN
+   ========================================================= */
+
+function formatUkuran(
+    bytes
+) {
+
+    if (
+        bytes === null ||
+        bytes === undefined ||
+        bytes === ""
+    ) {
+
+        return "";
+
+    }
+
+
+    const ukuran =
+        Number(bytes);
+
+
+    if (!Number.isFinite(ukuran)) {
+
+        return "";
+
+    }
+
+
+    if (
+        ukuran <
+        1024
+    ) {
+
+        return ukuran +
+            " B";
+
+    }
+
+
+    if (
+        ukuran <
+        1024 * 1024
+    ) {
+
+        return (
+            ukuran /
+            1024
+        ).toFixed(1) +
+        " KB";
+
+    }
+
+
+    if (
+        ukuran <
+        1024 * 1024 * 1024
+    ) {
+
+        return (
+            ukuran /
+            (1024 * 1024)
+        ).toFixed(1) +
+        " MB";
+
+    }
+
+
+    return (
+        ukuran /
+        (1024 * 1024 * 1024)
+    ).toFixed(1) +
+    " GB";
 
 }
 
@@ -1757,7 +2214,9 @@ function formatTanggal(
 ) {
 
     if (!tanggal) {
-        return "";
+
+        return "-";
+
     }
 
 
@@ -1773,12 +2232,14 @@ function formatTanggal(
         )
     ) {
 
-        return "";
+        return String(
+            tanggal
+        );
 
     }
 
 
-    return new Intl.DateTimeFormat(
+    return date.toLocaleDateString(
         "id-ID",
         {
             day:
@@ -1796,67 +2257,57 @@ function formatTanggal(
             minute:
                 "2-digit"
         }
-    ).format(
-        date
     );
 
 }
 
 
 /* =========================================================
-   FORMAT UKURAN
+   KUNCI FORM
    ========================================================= */
 
-function formatUkuran(
-    bytes
+function kunciForm(
+    terkunci
 ) {
 
-    if (!bytes) {
+    if (judulInput) {
 
-        return "0 B";
-
-    }
-
-
-    if (
-        bytes <
-        1024
-    ) {
-
-        return (
-            bytes +
-            " B"
-        );
+        judulInput.disabled =
+            terkunci;
 
     }
 
 
-    if (
-        bytes <
-        1024 * 1024
-    ) {
+    if (keteranganInput) {
 
-        return (
-            (
-                bytes /
-                1024
-            ).toFixed(1) +
-            " KB"
-        );
+        keteranganInput.disabled =
+            terkunci;
 
     }
 
 
-    return (
-        (
-            bytes /
-            (
-                1024 *
-                1024
-            )
-        ).toFixed(1) +
-        " MB"
-    );
+    if (inputFile) {
+
+        inputFile.disabled =
+            terkunci;
+
+    }
+
+
+    if (button) {
+
+        button.disabled =
+            terkunci;
+
+    }
+
+
+    if (buttonBatalEdit) {
+
+        buttonBatalEdit.disabled =
+            terkunci;
+
+    }
 
 }
 
@@ -1869,45 +2320,70 @@ function jelaskanErrorStorage(
     error
 ) {
 
+    console.error(
+        "Detail error Storage:",
+        error
+    );
+
+
     const message =
         error?.message ||
         "";
 
 
-    const lower =
-        message.toLowerCase();
+    const statusCode =
+        error?.statusCode ||
+        "";
 
 
     if (
-        lower.includes(
-            "row-level security"
-        )
+        statusCode ===
+        "413"
     ) {
 
         return (
-            "Upload ditolak oleh keamanan Supabase Storage. " +
-            "Periksa policy bucket pengumuman."
+            "File terlalu besar."
         );
 
     }
 
 
     if (
-        lower.includes(
-            "not found"
-        )
+        message
+            .toLowerCase()
+            .includes(
+                "bucket"
+            )
     ) {
 
         return (
-            "Bucket Storage 'pengumuman' tidak ditemukan."
+            "Bucket Storage \"pengumuman\" belum tersedia atau tidak dapat diakses."
+        );
+
+    }
+
+
+    if (
+        message
+            .toLowerCase()
+            .includes(
+                "row-level"
+            )
+    ) {
+
+        return (
+            "Akses Storage ditolak oleh RLS Policy."
         );
 
     }
 
 
     return (
-        message ||
-        "Upload file ke Storage gagal."
+        "Storage: " +
+        (
+            message ||
+            "Gagal mengunggah file."
+        )
     );
 
 }
@@ -1948,7 +2424,11 @@ function jelaskanErrorDatabase(
 
 
     return (
-        message +
+        "Database: " +
+        (
+            message ||
+            "Terjadi kesalahan database."
+        ) +
         (
             details
                 ? " | Detail: " +
@@ -1973,46 +2453,6 @@ function jelaskanErrorDatabase(
 
 
 /* =========================================================
-   TAMPILKAN STATUS
-   ========================================================= */
-
-function tampilkanStatus(
-    pesan,
-    error = false
-) {
-
-    if (!status) {
-        return;
-    }
-
-
-    status.innerHTML =
-        escapeHTML(
-            pesan
-        );
-
-
-    status.style.background =
-        error
-            ? "#fef2f2"
-            : "#f8fafc";
-
-
-    status.style.color =
-        error
-            ? "#b91c1c"
-            : "#475569";
-
-
-    status.style.border =
-        error
-            ? "1px solid #fecaca"
-            : "1px solid #e5eaf0";
-
-}
-
-
-/* =========================================================
    ESCAPE HTML
    ========================================================= */
 
@@ -2020,38 +2460,26 @@ function escapeHTML(
     value
 ) {
 
-    if (
-        value === null ||
-        value === undefined
-    ) {
-
-        return "";
-
-    }
-
-
-    return String(value)
-
+    return String(
+        value ??
+        ""
+    )
         .replace(
             /&/g,
             "&amp;"
         )
-
         .replace(
             /</g,
             "&lt;"
         )
-
         .replace(
             />/g,
             "&gt;"
         )
-
         .replace(
             /"/g,
             "&quot;"
         )
-
         .replace(
             /'/g,
             "&#039;"
@@ -2068,74 +2496,86 @@ function escapeAttribute(
     value
 ) {
 
-    if (
-        value === null ||
-        value === undefined
-    ) {
-
-        return "";
-
-    }
-
-
-    return String(value)
+    return String(
+        value ??
+        ""
+    )
         .replace(
-            /\\/g,
-            "\\\\"
-        )
-        .replace(
-            /'/g,
-            "\\'"
+            /&/g,
+            "&amp;"
         )
         .replace(
             /"/g,
             "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
         );
 
 }
 
 
 /* =========================================================
-   TUTUP MODAL DENGAN KLIK LUAR
+   SIMPAN DATA DAFTAR
    ========================================================= */
 
-if (confirmOverlay) {
+/*
+ * Fungsi ini dipanggil ulang setelah data
+ * berhasil diambil agar tombol Edit dan Hapus
+ * dapat menemukan data berdasarkan ID.
+ */
 
-    confirmOverlay.addEventListener(
-        "click",
-        function (event) {
+const tampilkanDaftarPengumumanLama =
+    tampilkanDaftarPengumuman;
 
-            if (
-                event.target ===
-                confirmOverlay
-            ) {
 
-                tutupKonfirmasiHapus();
+/*
+ * Bungkus fungsi asli agar data juga
+ * disimpan ke window.
+ */
 
-            }
+tampilkanDaftarPengumuman =
+    function(data) {
 
-        }
-    );
+        window.daftarDataPengumuman =
+            Array.isArray(data)
+                ? data
+                : [];
 
-}
+        tampilkanDaftarPengumumanLama(
+            window.daftarDataPengumuman
+        );
+
+    };
 
 
 /* =========================================================
-   ESCAPE KEY
+   EKSPOR FUNGSI KE WINDOW
    ========================================================= */
 
-document.addEventListener(
-    "keydown",
-    function (event) {
+window.simpanPengumuman =
+    simpanPengumuman;
 
-        if (
-            event.key ===
-            "Escape"
-        ) {
+window.mulaiEdit =
+    mulaiEdit;
 
-            tutupKonfirmasiHapus();
+window.batalEdit =
+    batalEdit;
 
-        }
+window.konfirmasiHapus =
+    konfirmasiHapus;
 
-    }
-);
+window.tutupKonfirmasiHapus =
+    tutupKonfirmasiHapus;
+
+window.lanjutkanHapus =
+    lanjutkanHapus;
