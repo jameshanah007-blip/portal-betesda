@@ -1413,14 +1413,14 @@ function exportPDF() {
 
 
     doc.text(
-        "Ketua Persekutuan Pemuda GPIL",
+        "Ketua Persekutuan Pemuda",
         220,
         posisiAkhir + 6
     );
 
 
     doc.text(
-        "Jemaat Betesda Purwosari",
+        "GPIL Jemaat Betesda Purwosari",
         220,
         posisiAkhir + 12
     );
