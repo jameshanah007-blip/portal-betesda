@@ -1382,3 +1382,13 @@ function escapeHTML(value) {
             "&#039;"
         );
 }
+
+
+// ============================================
+// KEMBALI KE HALAMAN ADMIN
+// ============================================
+
+function kembaliKeAdmin() {
+
+    window.location.href = "kelola-admin.html";
+}
