@@ -16,7 +16,7 @@
     >
 
     <title>
-        Kelola Jadwal - GPIL Jemaat Betesda Purwosari
+        Kelola Jadwal
     </title>
 
     <link
@@ -44,7 +44,7 @@
 
             margin: 0;
 
-            padding: 16px;
+            padding: 12px;
 
             background:
                 #f4f7fa;
@@ -57,7 +57,8 @@
                 Helvetica,
                 sans-serif;
 
-            line-height: 1.5;
+            line-height:
+                1.5;
 
         }
 
@@ -71,83 +72,10 @@
             width: 100%;
 
             max-width:
-                1100px;
+                1200px;
 
             margin:
                 0 auto;
-
-        }
-
-
-        /* ========================================
-           HEADER
-        ======================================== */
-
-        .jadwal-header {
-
-            position: relative;
-
-            padding:
-                26px 22px;
-
-            margin-bottom:
-                14px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #1f4e79,
-                    #285f91
-                );
-
-            color:
-                #ffffff;
-
-            border-radius:
-                16px;
-
-            text-align:
-                center;
-
-            box-shadow:
-                0 6px 18px
-                rgba(
-                    31,
-                    78,
-                    121,
-                    0.18
-                );
-
-        }
-
-
-        .jadwal-header h1 {
-
-            margin:
-                0 0 5px;
-
-            font-size:
-                24px;
-
-            font-weight:
-                800;
-
-            letter-spacing:
-                -0.3px;
-
-        }
-
-
-        .jadwal-header p {
-
-            margin:
-                0;
-
-            font-size:
-                14px;
-
-            opacity:
-                0.92;
 
         }
 
@@ -159,7 +87,7 @@
         .btn-kembali {
 
             display:
-                flex;
+                inline-flex;
 
             align-items:
                 center;
@@ -167,17 +95,14 @@
             justify-content:
                 center;
 
-            width:
-                100%;
-
             min-height:
-                46px;
+                40px;
 
             margin-bottom:
-                16px;
+                14px;
 
             padding:
-                11px 16px;
+                8px 16px;
 
             background:
                 #ffffff;
@@ -189,7 +114,7 @@
                 1px solid #cbd8e5;
 
             border-radius:
-                10px;
+                8px;
 
             text-decoration:
                 none;
@@ -211,11 +136,11 @@
             background:
                 #1f4e79;
 
-            border-color:
-                #1f4e79;
-
             color:
                 #ffffff;
+
+            border-color:
+                #1f4e79;
 
         }
 
@@ -230,24 +155,24 @@
                 20px;
 
             padding:
-                20px;
+                18px;
 
             background:
                 #ffffff;
 
             border:
-                1px solid #e1e7ed;
+                1px solid #dfe6ed;
 
             border-radius:
-                14px;
+                12px;
 
             box-shadow:
-                0 3px 12px
+                0 2px 10px
                 rgba(
                     15,
                     23,
                     42,
-                    0.05
+                    0.04
                 );
 
         }
@@ -262,10 +187,10 @@
                 center;
 
             gap:
-                10px;
+                9px;
 
             margin-bottom:
-                18px;
+                15px;
 
         }
 
@@ -276,7 +201,7 @@
                 4px;
 
             height:
-                25px;
+                23px;
 
             background:
                 #1f4e79;
@@ -296,13 +221,17 @@
                 #1f4e79;
 
             font-size:
-                19px;
+                18px;
 
             font-weight:
                 800;
 
         }
 
+
+        /* ========================================
+           FORM GRID
+        ======================================== */
 
         .form-grid {
 
@@ -311,12 +240,15 @@
 
             grid-template-columns:
                 repeat(
-                    2,
-                    minmax(0, 1fr)
+                    4,
+                    minmax(
+                        0,
+                        1fr
+                    )
                 );
 
             gap:
-                15px;
+                12px;
 
         }
 
@@ -332,24 +264,16 @@
         }
 
 
-        .form-group.full {
-
-            grid-column:
-                1 / -1;
-
-        }
-
-
         .form-group label {
 
             margin-bottom:
-                6px;
+                5px;
 
             color:
                 #334155;
 
             font-size:
-                13px;
+                12px;
 
             font-weight:
                 700;
@@ -364,10 +288,10 @@
                 100%;
 
             min-height:
-                46px;
+                43px;
 
             padding:
-                11px 13px;
+                9px 11px;
 
             background:
                 #ffffff;
@@ -379,7 +303,7 @@
                 1px solid #cbd5e1;
 
             border-radius:
-                9px;
+                8px;
 
             outline:
                 none;
@@ -388,7 +312,7 @@
                 inherit;
 
             font-size:
-                14px;
+                13px;
 
             transition:
                 border-color 0.2s ease,
@@ -409,14 +333,14 @@
                     31,
                     78,
                     121,
-                    0.10
+                    0.09
                 );
 
         }
 
 
         /* ========================================
-           FORM BUTTONS
+           BUTTON FORM
         ======================================== */
 
         .form-actions {
@@ -424,11 +348,14 @@
             display:
                 flex;
 
+            justify-content:
+                flex-end;
+
             gap:
-                10px;
+                8px;
 
             margin-top:
-                18px;
+                13px;
 
         }
 
@@ -436,22 +363,19 @@
         .btn {
 
             min-height:
-                46px;
+                40px;
 
             padding:
-                10px 20px;
-
-            border:
-                none;
+                8px 18px;
 
             border-radius:
-                9px;
+                8px;
 
             font-family:
                 inherit;
 
             font-size:
-                14px;
+                13px;
 
             font-weight:
                 700;
@@ -473,8 +397,8 @@
             color:
                 #ffffff;
 
-            flex:
-                1;
+            border:
+                1px solid #1f4e79;
 
         }
 
@@ -482,6 +406,9 @@
         .btn-simpan:hover {
 
             background:
+                #173d61;
+
+            border-color:
                 #173d61;
 
         }
@@ -504,13 +431,13 @@
                 none;
 
             background:
-                #eef2f6;
+                #ffffff;
 
             color:
                 #475569;
 
             border:
-                1px solid #d6dee7;
+                1px solid #cbd5e1;
 
         }
 
@@ -518,19 +445,19 @@
         .btn-batal:hover {
 
             background:
-                #e2e8f0;
+                #f1f5f9;
 
         }
 
 
         /* ========================================
-           DAFTAR JADWAL
+           BAGIAN JADWAL
         ======================================== */
 
         .jadwal-section {
 
             margin-bottom:
-                20px;
+                18px;
 
         }
 
@@ -543,14 +470,8 @@
             align-items:
                 center;
 
-            justify-content:
-                space-between;
-
-            gap:
-                12px;
-
             margin-bottom:
-                10px;
+                8px;
 
         }
 
@@ -564,7 +485,7 @@
                 center;
 
             gap:
-                10px;
+                8px;
 
         }
 
@@ -575,7 +496,7 @@
                 4px;
 
             height:
-                25px;
+                22px;
 
             background:
                 #1f4e79;
@@ -595,7 +516,7 @@
                 #1f4e79;
 
             font-size:
-                18px;
+                17px;
 
             font-weight:
                 800;
@@ -622,15 +543,15 @@
                 1px solid #dfe6ed;
 
             border-radius:
-                12px;
+                10px;
 
             box-shadow:
-                0 3px 12px
+                0 2px 9px
                 rgba(
                     15,
                     23,
                     42,
-                    0.05
+                    0.04
                 );
 
             -webkit-overflow-scrolling:
@@ -649,7 +570,7 @@
                 100%;
 
             min-width:
-                720px;
+                650px;
 
             border-collapse:
                 collapse;
@@ -671,7 +592,7 @@
         .jadwal-table th {
 
             padding:
-                13px 14px;
+                10px 12px;
 
             color:
                 #1f4e79;
@@ -683,7 +604,7 @@
                 left;
 
             font-size:
-                12px;
+                11px;
 
             font-weight:
                 800;
@@ -703,13 +624,13 @@
         .jadwal-table td {
 
             padding:
-                13px 14px;
-
-            border-bottom:
-                1px solid #edf1f5;
+                10px 12px;
 
             color:
                 #334155;
+
+            border-bottom:
+                1px solid #edf1f5;
 
             vertical-align:
                 middle;
@@ -742,13 +663,13 @@
 
 
         /* ========================================
-           KOLOM
+           LEBAR KOLOM
         ======================================== */
 
         .col-tempat {
 
             width:
-                34%;
+                35%;
 
             min-width:
                 220px;
@@ -759,10 +680,10 @@
         .col-tanggal {
 
             width:
-                16%;
+                15%;
 
             min-width:
-                125px;
+                120px;
 
             white-space:
                 nowrap;
@@ -776,7 +697,7 @@
                 32%;
 
             min-width:
-                220px;
+                210px;
 
         }
 
@@ -787,13 +708,13 @@
                 18%;
 
             min-width:
-                130px;
+                125px;
 
         }
 
 
         /* ========================================
-           AKSI
+           TOMBOL AKSI
         ======================================== */
 
         .aksi-wrapper {
@@ -805,7 +726,7 @@
                 center;
 
             gap:
-                7px;
+                6px;
 
         }
 
@@ -814,10 +735,10 @@
         .btn-hapus {
 
             min-height:
-                34px;
+                32px;
 
             padding:
-                7px 12px;
+                6px 11px;
 
             border-radius:
                 7px;
@@ -826,7 +747,7 @@
                 inherit;
 
             font-size:
-                12px;
+                11px;
 
             font-weight:
                 700;
@@ -891,7 +812,7 @@
 
 
         /* ========================================
-           EMPTY / LOADING
+           DATA KOSONG
         ======================================== */
 
         .empty-row {
@@ -900,7 +821,7 @@
                 center !important;
 
             padding:
-                25px !important;
+                18px !important;
 
             color:
                 #64748b !important;
@@ -915,7 +836,7 @@
         .jadwal-footer {
 
             padding:
-                15px 5px 10px;
+                8px 5px 5px;
 
             text-align:
                 center;
@@ -924,7 +845,7 @@
                 #94a3b8;
 
             font-size:
-                12px;
+                11px;
 
         }
 
@@ -957,39 +878,45 @@
            TABLET
         ======================================== */
 
-        @media (max-width: 760px) {
+        @media (max-width: 850px) {
+
+            .form-grid {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(
+                            0,
+                            1fr
+                        )
+                    );
+
+            }
+
+        }
+
+
+        /* ========================================
+           HP
+        ======================================== */
+
+        @media (max-width: 600px) {
 
             body {
 
                 padding:
+                    8px;
+
+            }
+
+
+            .btn-kembali {
+
+                width:
+                    100%;
+
+                margin-bottom:
                     10px;
-
-            }
-
-
-            .jadwal-header {
-
-                padding:
-                    22px 16px;
-
-                border-radius:
-                    13px;
-
-            }
-
-
-            .jadwal-header h1 {
-
-                font-size:
-                    21px;
-
-            }
-
-
-            .jadwal-header p {
-
-                font-size:
-                    13px;
 
             }
 
@@ -997,6 +924,28 @@
             .form-section {
 
                 padding:
+                    13px;
+
+                margin-bottom:
+                    16px;
+
+                border-radius:
+                    10px;
+
+            }
+
+
+            .section-heading {
+
+                margin-bottom:
+                    12px;
+
+            }
+
+
+            .section-heading h2 {
+
+                font-size:
                     16px;
 
             }
@@ -1008,15 +957,16 @@
                     1fr;
 
                 gap:
-                    13px;
+                    10px;
 
             }
 
 
-            .form-group.full {
+            .form-group input,
+            .form-group select {
 
-                grid-column:
-                    auto;
+                min-height:
+                    44px;
 
             }
 
@@ -1037,100 +987,10 @@
             }
 
 
-            .jadwal-section-title h2 {
-
-                font-size:
-                    17px;
-
-            }
-
-        }
-
-
-        /* ========================================
-           HP KECIL
-        ======================================== */
-
-        @media (max-width: 480px) {
-
-            .jadwal-container {
-
-                width:
-                    100%;
-
-            }
-
-
-            .jadwal-header {
+            .jadwal-section {
 
                 margin-bottom:
-                    10px;
-
-            }
-
-
-            .jadwal-header h1 {
-
-                font-size:
-                    19px;
-
-            }
-
-
-            .jadwal-header p {
-
-                font-size:
-                    12px;
-
-            }
-
-
-            .btn-kembali {
-
-                min-height:
-                    44px;
-
-                font-size:
-                    13px;
-
-            }
-
-
-            .form-section {
-
-                padding:
-                    14px;
-
-                border-radius:
-                    11px;
-
-            }
-
-
-            .section-heading h2 {
-
-                font-size:
-                    17px;
-
-            }
-
-
-            .form-group label {
-
-                font-size:
-                    12px;
-
-            }
-
-
-            .form-group input,
-            .form-group select {
-
-                min-height:
-                    45px;
-
-                font-size:
-                    13px;
+                    15px;
 
             }
 
@@ -1138,7 +998,7 @@
             .jadwal-section-title h2 {
 
                 font-size:
-                    16px;
+                    15px;
 
             }
 
@@ -1146,7 +1006,7 @@
             .table-wrapper {
 
                 border-radius:
-                    10px;
+                    8px;
 
             }
 
@@ -1154,7 +1014,7 @@
             .jadwal-table {
 
                 min-width:
-                    680px;
+                    630px;
 
             }
 
@@ -1162,10 +1022,10 @@
             .jadwal-table th {
 
                 padding:
-                    11px 12px;
+                    9px 10px;
 
                 font-size:
-                    11px;
+                    10px;
 
             }
 
@@ -1173,7 +1033,7 @@
             .jadwal-table td {
 
                 padding:
-                    11px 12px;
+                    9px 10px;
 
                 font-size:
                     12px;
@@ -1185,13 +1045,45 @@
             .btn-hapus {
 
                 min-height:
-                    32px;
+                    31px;
 
                 padding:
-                    6px 10px;
+                    5px 9px;
 
                 font-size:
+                    10px;
+
+            }
+
+        }
+
+
+        /* ========================================
+           HP SANGAT KECIL
+        ======================================== */
+
+        @media (max-width: 380px) {
+
+            body {
+
+                padding:
+                    6px;
+
+            }
+
+
+            .form-section {
+
+                padding:
                     11px;
+
+            }
+
+
+            .jadwal-table {
+
+                min-width:
+                    600px;
 
             }
 
@@ -1209,23 +1101,6 @@
 
 
     <!-- ======================================
-         HEADER
-    ======================================= -->
-
-    <header class="jadwal-header">
-
-        <h1>
-            Kelola Jadwal
-        </h1>
-
-        <p>
-            GPIL Jemaat Betesda Purwosari
-        </p>
-
-    </header>
-
-
-    <!-- ======================================
          KEMBALI
     ======================================= -->
 
@@ -1233,12 +1108,12 @@
         href="kelola-admin.html"
         class="btn-kembali"
     >
-        Kembali ke Admin
+        Kembali
     </a>
 
 
     <!-- ======================================
-         FORM
+         FORM KELOLA JADWAL
     ======================================= -->
 
     <section class="form-section">
@@ -1251,7 +1126,7 @@
             ></div>
 
             <h2>
-                Tambah / Edit Jadwal
+                Jadwal Kumpulan
             </h2>
 
         </div>
@@ -1269,8 +1144,10 @@
 
                 <div class="form-group">
 
-                    <label for="kelompok">
-                        Kelompok Kumpulan
+                    <label
+                        for="kelompok"
+                    >
+                        Kelompok
                     </label>
 
                     <select
@@ -1303,7 +1180,9 @@
 
                 <div class="form-group">
 
-                    <label for="tanggal">
+                    <label
+                        for="tanggal"
+                    >
                         Tanggal
                     </label>
 
@@ -1320,8 +1199,10 @@
 
                 <div class="form-group">
 
-                    <label for="tempat">
-                        Tempat Kumpulan
+                    <label
+                        for="tempat"
+                    >
+                        Tempat
                     </label>
 
                     <select
@@ -1342,7 +1223,9 @@
 
                 <div class="form-group">
 
-                    <label for="pelayanFirman">
+                    <label
+                        for="pelayanFirman"
+                    >
                         Pelayan Firman
                     </label>
 
@@ -1363,9 +1246,12 @@
             </div>
 
 
-            <!-- BUTTON -->
+            <!-- =================================
+                 TOMBOL
+            ================================== -->
 
             <div class="form-actions">
+
 
                 <button
                     type="submit"
@@ -1385,6 +1271,7 @@
                     Batal Edit
                 </button>
 
+
             </div>
 
 
@@ -1394,7 +1281,7 @@
 
 
     <!-- ======================================
-         JADWAL RUMAH TANGGA
+         RUMAH TANGGA
     ======================================= -->
 
     <section class="jadwal-section">
@@ -1421,23 +1308,32 @@
 
             <table class="jadwal-table">
 
+
                 <thead>
 
                     <tr>
 
-                        <th class="col-tempat">
+                        <th
+                            class="col-tempat"
+                        >
                             Tempat
                         </th>
 
-                        <th class="col-tanggal">
+                        <th
+                            class="col-tanggal"
+                        >
                             Tanggal
                         </th>
 
-                        <th class="col-pelayan">
+                        <th
+                            class="col-pelayan"
+                        >
                             Pelayan Firman
                         </th>
 
-                        <th class="col-aksi">
+                        <th
+                            class="col-aksi"
+                        >
                             Aksi
                         </th>
 
@@ -1451,6 +1347,7 @@
                 >
                 </tbody>
 
+
             </table>
 
         </div>
@@ -1459,7 +1356,7 @@
 
 
     <!-- ======================================
-         JADWAL PKB
+         PKB
     ======================================= -->
 
     <section class="jadwal-section">
@@ -1486,23 +1383,32 @@
 
             <table class="jadwal-table">
 
+
                 <thead>
 
                     <tr>
 
-                        <th class="col-tempat">
+                        <th
+                            class="col-tempat"
+                        >
                             Tempat
                         </th>
 
-                        <th class="col-tanggal">
+                        <th
+                            class="col-tanggal"
+                        >
                             Tanggal
                         </th>
 
-                        <th class="col-pelayan">
+                        <th
+                            class="col-pelayan"
+                        >
                             Pelayan Firman
                         </th>
 
-                        <th class="col-aksi">
+                        <th
+                            class="col-aksi"
+                        >
                             Aksi
                         </th>
 
@@ -1516,6 +1422,7 @@
                 >
                 </tbody>
 
+
             </table>
 
         </div>
@@ -1524,7 +1431,7 @@
 
 
     <!-- ======================================
-         JADWAL PW
+         PW
     ======================================= -->
 
     <section class="jadwal-section">
@@ -1551,23 +1458,32 @@
 
             <table class="jadwal-table">
 
+
                 <thead>
 
                     <tr>
 
-                        <th class="col-tempat">
+                        <th
+                            class="col-tempat"
+                        >
                             Tempat
                         </th>
 
-                        <th class="col-tanggal">
+                        <th
+                            class="col-tanggal"
+                        >
                             Tanggal
                         </th>
 
-                        <th class="col-pelayan">
+                        <th
+                            class="col-pelayan"
+                        >
                             Pelayan Firman
                         </th>
 
-                        <th class="col-aksi">
+                        <th
+                            class="col-aksi"
+                        >
                             Aksi
                         </th>
 
@@ -1580,6 +1496,7 @@
                     id="jadwalListPW"
                 >
                 </tbody>
+
 
             </table>
 
@@ -1594,7 +1511,7 @@
 
     <footer class="jadwal-footer">
 
-        GPIL Jemaat Betesda Purwosari
+        Kelola Jadwal Kumpulan
 
     </footer>
 
@@ -1603,7 +1520,7 @@
 
 
 <!-- ========================================
-     SUPABASE
+     SCRIPT
 ========================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
