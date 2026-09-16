@@ -1,655 +1,464 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Kelola Jadwal</title>
 
-
     <style>
-
         * {
             box-sizing: border-box;
         }
 
-
         body {
             margin: 0;
-
-            padding: 15px;
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            background: #f5f7fa;
-
-            color: #333;
+            padding: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8fafc;
+            color: #1f2937;
         }
-
 
         .container {
-            max-width: 900px;
-
-            margin: auto;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
+        /* =========================
+           HEADER
+        ========================= */
 
-        /* =================================
-           JUDUL HALAMAN
-        ================================= */
-
-        .header {
-            margin-bottom: 15px;
-        }
-
-
-        .header h1 {
-            margin: 0;
-
-            font-size: 22px;
-
-            color: #1f4e79;
-        }
-
-
-        .header p {
-            margin: 5px 0 0;
-
-            font-size: 13px;
-
-            color: #666;
-        }
-
-
-        /* =================================
-           TOMBOL KEMBALI
-        ================================= */
-
-        .btn-kembali {
-            display: inline-block;
-
-            margin-bottom: 15px;
-
-            padding: 8px 12px;
-
-            background: #e9ecef;
-
-            color: #333;
-
-            text-decoration: none;
-
-            border-radius: 6px;
-
-            font-size: 13px;
-
-            font-weight: bold;
-        }
-
-
-        .btn-kembali:hover {
-            background: #dfe3e6;
-        }
-
-
-        /* =================================
-           FORM
-        ================================= */
-
-        .form-container {
-            background: white;
-
-            padding: 15px;
-
-            border-radius: 8px;
-
-            border: 1px solid #ddd;
-
+        .page-header {
             margin-bottom: 20px;
         }
 
-
-        .form-container h2 {
-            margin-top: 0;
-
-            margin-bottom: 15px;
-
-            color: #1f4e79;
-
-            font-size: 18px;
+        .page-header h1 {
+            margin: 0 0 5px;
+            font-size: 24px;
+            color: #111827;
         }
 
+        .page-header p {
+            margin: 0;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-box {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+        }
+
+        .form-title {
+            margin: 0 0 15px;
+            font-size: 17px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
 
         .form-group {
-            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
         }
-
 
         .form-group label {
-            display: block;
-
-            margin-bottom: 5px;
-
+            margin-bottom: 6px;
             font-size: 13px;
-
-            font-weight: bold;
-
-            color: #444;
+            font-weight: 600;
+            color: #374151;
         }
 
-
-        .form-group select,
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
-
-            padding: 9px 10px;
-
-            border: 1px solid #ccc;
-
+            height: 40px;
+            padding: 8px 10px;
+            border: 1px solid #d1d5db;
             border-radius: 6px;
-
-            background: white;
-
+            background: #ffffff;
+            color: #111827;
             font-size: 14px;
-
             outline: none;
         }
 
-
-        .form-group select:focus,
-        .form-group input:focus {
-            border-color: #1f4e79;
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
         }
 
+        /* =========================
+           TOMBOL FORM
+        ========================= */
 
-        /* =================================
-           TOMBOL SIMPAN
-        ================================= */
+        .form-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
 
-        .btn-simpan {
-            width: 100%;
-
-            padding: 10px;
-
+        .btn-simpan,
+        .btn-batal {
             border: none;
-
             border-radius: 6px;
-
-            background: #1f4e79;
-
-            color: white;
-
-            font-size: 14px;
-
-            font-weight: bold;
-
+            min-height: 40px;
+            padding: 9px 16px;
+            font-size: 13px;
+            font-weight: 700;
             cursor: pointer;
         }
 
+        .btn-simpan {
+            background: #2563eb;
+            color: white;
+        }
 
         .btn-simpan:hover {
-            opacity: 0.9;
+            background: #1d4ed8;
         }
 
+        .btn-batal {
+            background: #e5e7eb;
+            color: #374151;
+        }
 
-        /* =================================
+        .btn-batal:hover {
+            background: #d1d5db;
+        }
+
+        .btn-simpan:disabled,
+        .btn-batal:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* =========================
            DAFTAR JADWAL
-        ================================= */
+        ========================= */
 
-        .daftar {
-            margin-top: 10px;
+        .list-box {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
         }
 
-
-        .daftar h2 {
-            margin: 0 0 12px;
-
-            color: #1f4e79;
-
-            font-size: 18px;
+        .list-title {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 700;
+            color: #111827;
         }
 
-
-        /* =================================
-           JUDUL KELOMPOK
-        ================================= */
-
-        .judul-kelompok {
-            margin-top: 18px;
-
-            margin-bottom: 5px;
-
-            padding: 8px 10px;
-
-            background: #1f4e79;
-
-            color: white;
-
-            border-radius: 6px;
-
-            font-size: 13px;
-
-            font-weight: bold;
+        .jadwal-group-title {
+            margin: 20px 0 8px;
+            padding-bottom: 7px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+            font-weight: 700;
+            color: #374151;
         }
 
+        .jadwal-group-title:first-child {
+            margin-top: 15px;
+        }
 
-        /* =================================
-           TABEL
-        ================================= */
+        /* =========================
+           TABLE
+        ========================= */
 
-        .tabel-jadwal {
+        .table-wrapper {
             width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
 
+        .jadwal-table {
+            width: 100%;
             border-collapse: collapse;
+            font-size: 13px;
+            background: #ffffff;
+        }
 
-            background: white;
-
-            table-layout: fixed;
-
+        .jadwal-table th {
+            padding: 8px 10px;
+            background: #f3f4f6;
+            border-bottom: 2px solid #d1d5db;
+            color: #374151;
             font-size: 12px;
-        }
-
-
-        .tabel-jadwal th {
-            padding: 7px 5px;
-
-            background: #eef2f5;
-
-            border: 1px solid #d5d5d5;
-
-            color: #333;
-
+            font-weight: 700;
             text-align: left;
-
-            font-size: 11px;
-
-            font-weight: bold;
-        }
-
-
-        .tabel-jadwal td {
-            padding: 7px 5px;
-
-            border: 1px solid #ddd;
-
-            vertical-align: middle;
-
-            line-height: 1.35;
-
-            word-wrap: break-word;
-
-            overflow-wrap: break-word;
-        }
-
-
-        /* =================================
-           LEBAR KOLOM
-        ================================= */
-
-        .tabel-jadwal th:nth-child(1),
-        .tabel-jadwal td:nth-child(1) {
-            width: 34%;
-        }
-
-
-        .tabel-jadwal th:nth-child(2),
-        .tabel-jadwal td:nth-child(2) {
-            width: 21%;
-        }
-
-
-        .tabel-jadwal th:nth-child(3),
-        .tabel-jadwal td:nth-child(3) {
-            width: 30%;
-        }
-
-
-        .tabel-jadwal th:nth-child(4),
-        .tabel-jadwal td:nth-child(4) {
-            width: 15%;
-        }
-
-
-        /* =================================
-           KOLOM AKSI
-        ================================= */
-
-        .kolom-aksi {
-            text-align: center;
-
             white-space: nowrap;
         }
 
-
-        .btn-edit,
-        .btn-hapus {
-            width: 28px;
-
-            height: 28px;
-
-            padding: 0;
-
-            border: none;
-
-            border-radius: 5px;
-
-            cursor: pointer;
-
-            font-size: 13px;
+        .jadwal-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #374151;
+            vertical-align: middle;
         }
 
-
-        .btn-edit {
-            background: #e7f1ff;
+        .jadwal-table tbody tr:hover {
+            background: #f9fafb;
         }
 
-
-        .btn-hapus {
-            background: #ffe8e8;
-
-            margin-left: 2px;
+        .jadwal-table td:first-child {
+            font-weight: 600;
+            color: #111827;
         }
 
-
-        .btn-edit:hover,
-        .btn-hapus:hover {
-            opacity: 0.75;
+        .jadwal-table td:nth-child(2) {
+            white-space: nowrap;
         }
 
-
-        /* =================================
-           TIDAK ADA DATA
-        ================================= */
-
-        .kosong {
-            padding: 15px;
-
-            background: white;
-
-            border: 1px solid #ddd;
-
-            border-radius: 6px;
-
+        .jadwal-table th:last-child,
+        .jadwal-table td:last-child {
+            width: 1%;
+            white-space: nowrap;
             text-align: center;
+        }
 
-            color: #777;
+        /* =========================
+           TOMBOL AKSI
+        ========================= */
 
+        .btn-edit-jadwal,
+        .btn-hapus-jadwal {
+            border: none;
+            border-radius: 5px;
+            padding: 5px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-edit-jadwal {
+            background: #eef2ff;
+            color: #4338ca;
+        }
+
+        .btn-edit-jadwal:hover {
+            background: #e0e7ff;
+        }
+
+        .btn-hapus-jadwal {
+            background: #fef2f2;
+            color: #dc2626;
+            margin-left: 3px;
+        }
+
+        .btn-hapus-jadwal:hover {
+            background: #fee2e2;
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-data {
+            padding: 25px 10px;
+            text-align: center;
+            color: #6b7280;
             font-size: 13px;
         }
 
-
-        /* =================================
+        /* =========================
            MOBILE
-        ================================= */
+        ========================= */
 
         @media (max-width: 600px) {
 
             body {
-                padding: 10px;
-            }
-
-
-            .header h1 {
-                font-size: 20px;
-            }
-
-
-            .header p {
-                font-size: 12px;
-            }
-
-
-            .form-container {
                 padding: 12px;
             }
 
-
-            .form-container h2 {
-                font-size: 17px;
+            .page-header h1 {
+                font-size: 20px;
             }
 
-
-            .tabel-jadwal {
-                font-size: 11px;
+            .page-header p {
+                font-size: 13px;
             }
 
-
-            .tabel-jadwal th {
-                padding: 6px 4px;
-
-                font-size: 10px;
+            .form-box,
+            .list-box {
+                padding: 12px;
+                border-radius: 8px;
             }
 
-
-            .tabel-jadwal td {
-                padding: 6px 4px;
-
-                font-size: 11px;
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 11px;
             }
 
+            .form-group input,
+            .form-group select {
+                height: 38px;
+                font-size: 13px;
+            }
 
-            .judul-kelompok {
-                padding: 7px 8px;
+            .form-actions {
+                margin-top: 13px;
+            }
 
+            .btn-simpan,
+            .btn-batal {
+                flex: 1;
+                padding: 8px 10px;
                 font-size: 12px;
             }
 
+            .jadwal-table {
+                min-width: 620px;
+                font-size: 12px;
+            }
 
-            .btn-edit,
-            .btn-hapus {
-                width: 25px;
-
-                height: 25px;
-
+            .jadwal-table th {
+                padding: 7px 8px;
                 font-size: 11px;
             }
 
+            .jadwal-table td {
+                padding: 7px 8px;
+            }
+
+            .btn-edit-jadwal,
+            .btn-hapus-jadwal {
+                padding: 4px 6px;
+                font-size: 10px;
+            }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
+<div class="container">
 
-    <div class="container">
+    <!-- HEADER -->
+    <div class="page-header">
+        <h1>Kelola Jadwal</h1>
+        <p>Tambah, ubah, dan hapus jadwal pelayanan.</p>
+    </div>
 
+    <!-- FORM -->
+    <div class="form-box">
 
-        <!-- =================================
-             HEADER
-        ================================= -->
+        <h2 class="form-title">Form Jadwal</h2>
 
-        <div class="header">
+        <div class="form-grid">
 
-            <a
-                href="index.html"
-                class="btn-kembali"
-            >
-                ← Kembali
-            </a>
+            <!-- KELOMPOK -->
+            <div class="form-group">
+                <label for="kelompok">Kelompok</label>
 
+                <select id="kelompok">
+                    <option value="">-- Pilih Kelompok --</option>
+                    <option value="Rumah Tangga">Rumah Tangga</option>
+                    <option value="PKB">PKB</option>
+                    <option value="PW">PW</option>
+                </select>
+            </div>
 
-            <h1>
-                Kelola Jadwal
-            </h1>
+            <!-- TANGGAL -->
+            <div class="form-group">
+                <label for="tanggal">Tanggal</label>
 
+                <input
+                    type="text"
+                    id="tanggal"
+                    placeholder="DD/MM/YYYY"
+                    maxlength="10"
+                    inputmode="numeric"
+                    autocomplete="off"
+                >
+            </div>
 
-            <p>
-                Tambah, edit, dan hapus jadwal kumpulan.
-            </p>
+            <!-- TEMPAT -->
+            <div class="form-group">
+                <label for="tempat">Tempat</label>
+
+                <select id="tempat">
+                    <option value="">-- Pilih Tempat --</option>
+                </select>
+            </div>
+
+            <!-- PELAYAN FIRMAN -->
+            <div class="form-group">
+                <label for="pelayanFirman">Pelayan Firman</label>
+
+                <select id="pelayanFirman">
+                    <option value="">-- Pilih Pelayan Firman --</option>
+                </select>
+            </div>
 
         </div>
 
-
-        <!-- =================================
-             FORM JADWAL
-        ================================= -->
-
-        <div class="form-container">
-
-
-            <h2 id="judulForm">
-                Tambah Jadwal
-            </h2>
-
-
-            <!-- KELOMPOK -->
-
-            <div class="form-group">
-
-                <label for="kelompok">
-                    Kelompok
-                </label>
-
-
-                <select id="kelompok">
-
-                    <option value="">
-                        Pilih kelompok
-                    </option>
-
-                    <option value="Rumah Tangga">
-                        Rumah Tangga
-                    </option>
-
-                    <option value="PKB">
-                        PKB
-                    </option>
-
-                    <option value="PW">
-                        PW
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- TANGGAL -->
-
-            <div class="form-group">
-
-                <label for="tanggal">
-                    Tanggal
-                </label>
-
-
-                <input
-    type="text"
-    id="tanggal"
-    placeholder="dd/mm/yyyy"
-    maxlength="10"
-    inputmode="numeric"
-    autocomplete="off"
->
-
-            </div>
-
-
-            <!-- TEMPAT -->
-
-            <div class="form-group">
-
-                <label for="tempat">
-                    Tempat
-                </label>
-
-
-                <select id="tempat">
-
-                    <option value="">
-                        Pilih tempat
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- PELAYAN FIRMAN -->
-
-            <div class="form-group">
-
-                <label for="pelayanFirman">
-                    Pelayan Firman
-                </label>
-
-
-                <select id="pelayanFirman">
-
-                    <option value="">
-                        Pilih pelayan firman
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- TOMBOL SIMPAN -->
+        <!-- TOMBOL -->
+        <div class="form-actions">
 
             <button
                 type="button"
                 class="btn-simpan"
+                id="saveButton"
                 onclick="simpanJadwal()"
             >
                 💾 Simpan Jadwal
             </button>
 
+            <button
+                type="button"
+                class="btn-batal"
+                id="cancelButton"
+                onclick="batalEdit()"
+                style="display: none;"
+            >
+                ❌ Batal Edit
+            </button>
 
         </div>
-
-
-        <!-- =================================
-             DAFTAR JADWAL
-        ================================= -->
-
-        <div class="daftar">
-
-
-            <h2>
-                Jadwal Tersimpan
-            </h2>
-
-
-            <div id="jadwalList">
-
-                <div class="kosong">
-                    Belum ada jadwal yang tersimpan.
-                </div>
-
-            </div>
-
-
-        </div>
-
 
     </div>
 
+    <!-- DAFTAR -->
+    <div class="list-box">
 
-    <!-- =====================================
-         JAVASCRIPT
-    ===================================== -->
+        <h2 class="list-title">Daftar Jadwal</h2>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <div id="jadwalList">
+            <div class="empty-data">
+                Memuat data jadwal...
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="supabase-client.js"></script>
-
 <script src="daftar-jadwal.js"></script>
-
 <script src="kelola-jadwal.js"></script>
 
-
 </body>
-
 </html>
