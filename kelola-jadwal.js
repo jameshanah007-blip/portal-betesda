@@ -1,102 +1,179 @@
+/* =========================================
+   KELOLA JADWAL
+   GPIL Jemaat Betesda Purwosari
+========================================= */
+
+
 let idEdit = null;
+
 let jadwalData = [];
+
 let sedangMenyimpan = false;
 
 
-// ========================================
-// SAAT HALAMAN DIBUKA
-// ========================================
+/* =========================================
+   SAAT HALAMAN DIBUKA
+========================================= */
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    isiDropdownTempat();
-    isiDropdownPelayanFirman();
+        isiDropdownTempat();
 
-    muatData();
+        isiDropdownPelayanFirman();
 
-});
+        muatData();
+
+    }
+);
 
 
-// ========================================
-// AMBIL DATA DARI SUPABASE
-// ========================================
+/* =========================================
+   AMBIL DATA DARI SUPABASE
+========================================= */
 
 async function ambilJadwal() {
 
-    const { data, error } = await supabaseClient
+    const {
+        data,
+        error
+    } = await supabaseClient
         .from("jadwal_kumpulan")
         .select("*")
-        .order("tanggal", {
-            ascending: true
-        });
+        .order(
+            "tanggal",
+            {
+                ascending: true
+            }
+        );
+
 
     if (error) {
-        console.error("ERROR AMBIL DATA:", error);
+
+        console.error(
+            "ERROR AMBIL DATA:",
+            error
+        );
+
         throw error;
+
     }
 
+
     return data || [];
+
 }
 
 
-// ========================================
-// MUAT DATA
-// ========================================
+/* =========================================
+   MUAT DATA
+========================================= */
 
 async function muatData() {
 
     try {
 
-        jadwalData = await ambilJadwal();
+        jadwalData =
+            await ambilJadwal();
+
 
         console.log(
             "DATA JADWAL:",
             jadwalData
         );
 
+
         tampilkanJadwal();
+
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "GAGAL MEMUAT DATA:",
+            error
+        );
 
-        const list =
-            document.getElementById("jadwalList");
 
-        if (list) {
-
-            list.innerHTML = `
-                <tr>
-                    <td colspan="4"
-                        style="text-align:center;">
-                        Gagal memuat data jadwal.
-                    </td>
-                </tr>
-            `;
-
-        }
+        tampilkanPesanGagal();
 
     }
 
 }
 
 
-// ========================================
-// DROPDOWN TEMPAT
-// ========================================
+/* =========================================
+   PESAN GAGAL MEMUAT DATA
+========================================= */
+
+function tampilkanPesanGagal() {
+
+    const daftarTabel = [
+
+        "jadwalListRumahTangga",
+
+        "jadwalListPKB",
+
+        "jadwalListPW"
+
+    ];
+
+
+    daftarTabel.forEach(
+        function (id) {
+
+            const tbody =
+                document.getElementById(id);
+
+
+            if (!tbody) return;
+
+
+            tbody.innerHTML = `
+                <tr>
+                    <td
+                        colspan="4"
+                        class="empty-row"
+                    >
+                        Gagal memuat data jadwal.
+                    </td>
+                </tr>
+            `;
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   DROPDOWN TEMPAT
+========================================= */
 
 function isiDropdownTempat() {
 
     const select =
-        document.getElementById("tempat");
+        document.getElementById(
+            "tempat"
+        );
+
 
     if (!select) return;
+
+
+    const kelompok =
+        document.getElementById(
+            "kelompok"
+        )?.value || "";
+
 
     select.innerHTML =
         `<option value="">Pilih tempat</option>`;
 
+
     if (
-        typeof daftarTempat === "undefined"
+        typeof daftarTempat ===
+        "undefined"
     ) {
 
         console.warn(
@@ -104,72 +181,97 @@ function isiDropdownTempat() {
         );
 
         return;
+
     }
-
-
-    const kelompok =
-        document.getElementById("kelompok")
-            ?.value;
 
 
     let daftar = [];
 
 
     if (
-        kelompok === "Rumah Tangga" &&
-        Array.isArray(
-            daftarTempat.rumahTangga
-        )
+        kelompok === "Rumah Tangga"
     ) {
 
-        daftar =
-            daftarTempat.rumahTangga;
+        if (
+            Array.isArray(
+                daftarTempat.rumahTangga
+            )
+        ) {
+
+            daftar =
+                daftarTempat.rumahTangga;
+
+        }
 
     }
+
 
     else if (
-        kelompok === "PKB" &&
-        Array.isArray(
-            daftarTempat.pkb
-        )
+        kelompok === "PKB"
     ) {
 
-        daftar =
-            daftarTempat.pkb;
+        if (
+            Array.isArray(
+                daftarTempat.pkb
+            )
+        ) {
+
+            daftar =
+                daftarTempat.pkb;
+
+        }
 
     }
+
 
     else if (
-        kelompok === "PW" &&
-        Array.isArray(
-            daftarTempat.pw
-        )
+        kelompok === "PW"
     ) {
 
-        daftar =
-            daftarTempat.pw;
+        if (
+            Array.isArray(
+                daftarTempat.pw
+            )
+        ) {
+
+            daftar =
+                daftarTempat.pw;
+
+        }
 
     }
 
 
-    daftar.forEach(function (tempat) {
+    daftar.forEach(
+        function (tempat) {
 
-        const option =
-            document.createElement("option");
+            const option =
+                document.createElement(
+                    "option"
+                );
 
-        option.value = tempat;
-        option.textContent = tempat;
 
-        select.appendChild(option);
+            option.value =
+                tempat;
 
-    });
+
+            option.textContent =
+                tempat;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
 
 }
 
 
-// ========================================
-// DROPDOWN PELAYAN FIRMAN
-// ========================================
+/* =========================================
+   DROPDOWN PELAYAN FIRMAN
+========================================= */
 
 function isiDropdownPelayanFirman() {
 
@@ -178,7 +280,9 @@ function isiDropdownPelayanFirman() {
             "pelayanFirman"
         );
 
+
     if (!select) return;
+
 
     select.innerHTML =
         `<option value="">Pilih pelayan firman</option>`;
@@ -194,6 +298,18 @@ function isiDropdownPelayanFirman() {
         );
 
         return;
+
+    }
+
+
+    if (
+        !Array.isArray(
+            daftarPelayanFirman
+        )
+    ) {
+
+        return;
+
     }
 
 
@@ -205,10 +321,18 @@ function isiDropdownPelayanFirman() {
                     "option"
                 );
 
-            option.value = pelayan;
-            option.textContent = pelayan;
 
-            select.appendChild(option);
+            option.value =
+                pelayan;
+
+
+            option.textContent =
+                pelayan;
+
+
+            select.appendChild(
+                option
+            );
 
         }
     );
@@ -216,9 +340,9 @@ function isiDropdownPelayanFirman() {
 }
 
 
-// ========================================
-// PERUBAHAN KELOMPOK
-// ========================================
+/* =========================================
+   PERUBAHAN KELOMPOK
+========================================= */
 
 document.addEventListener(
     "change",
@@ -237,65 +361,152 @@ document.addEventListener(
 );
 
 
-// ========================================
-// SIMPAN / UPDATE JADWAL
-// ========================================
+/* =========================================
+   SIMPAN JADWAL
+========================================= */
 
 async function simpanJadwal(event) {
 
     if (event) {
+
         event.preventDefault();
+
     }
 
 
     if (sedangMenyimpan) {
+
         return;
+
+    }
+
+
+    const kelompokElement =
+        document.getElementById(
+            "kelompok"
+        );
+
+
+    const tanggalElement =
+        document.getElementById(
+            "tanggal"
+        );
+
+
+    const tempatElement =
+        document.getElementById(
+            "tempat"
+        );
+
+
+    const pelayanElement =
+        document.getElementById(
+            "pelayanFirman"
+        );
+
+
+    if (
+        !kelompokElement ||
+        !tanggalElement ||
+        !tempatElement ||
+        !pelayanElement
+    ) {
+
+        alert(
+            "Form jadwal tidak ditemukan."
+        );
+
+        return;
+
     }
 
 
     const kelompok =
-        document.getElementById(
-            "kelompok"
-        ).value.trim();
+        kelompokElement.value.trim();
+
 
     const tanggal =
-        document.getElementById(
-            "tanggal"
-        ).value;
+        tanggalElement.value;
+
 
     const tempat =
-        document.getElementById(
-            "tempat"
-        ).value.trim();
+        tempatElement.value.trim();
+
 
     const pelayanFirman =
-        document.getElementById(
-            "pelayanFirman"
-        ).value.trim();
+        pelayanElement.value.trim();
 
 
-    if (
-        !kelompok ||
-        !tanggal ||
-        !tempat ||
-        !pelayanFirman
-    ) {
+    /* =====================================
+       VALIDASI
+    ===================================== */
+
+    if (!kelompok) {
 
         alert(
-            "Semua data jadwal harus diisi."
+            "Silakan pilih kelompok kumpulan."
         );
 
+        kelompokElement.focus();
+
         return;
+
     }
 
 
+    if (!tanggal) {
+
+        alert(
+            "Silakan pilih tanggal."
+        );
+
+        tanggalElement.focus();
+
+        return;
+
+    }
+
+
+    if (!tempat) {
+
+        alert(
+            "Silakan pilih tempat kumpulan."
+        );
+
+        tempatElement.focus();
+
+        return;
+
+    }
+
+
+    if (!pelayanFirman) {
+
+        alert(
+            "Silakan pilih pelayan firman."
+        );
+
+        pelayanElement.focus();
+
+        return;
+
+    }
+
+
+    /* =====================================
+       DATA YANG AKAN DISIMPAN
+    ===================================== */
+
     const dataJadwal = {
 
-        kelompok: kelompok,
+        kelompok:
+            kelompok,
 
-        tanggal: tanggal,
+        tanggal:
+            tanggal,
 
-        tempat: tempat,
+        tempat:
+            tempat,
 
         pelayan_firman:
             pelayanFirman
@@ -303,42 +514,52 @@ async function simpanJadwal(event) {
     };
 
 
+    console.log(
+        "DATA JADWAL:",
+        dataJadwal
+    );
+
+
     sedangMenyimpan = true;
 
 
-    const button =
+    const saveButton =
         document.getElementById(
             "saveButton"
         );
 
 
-    if (button) {
-        button.disabled = true;
+    if (saveButton) {
+
+        saveButton.disabled = true;
+
     }
 
 
     try {
 
-        // ==================================
-        // MODE TAMBAH
-        // ==================================
+
+        /* =================================
+           MODE TAMBAH
+        ================================= */
 
         if (idEdit === null) {
 
+
             console.log(
-                "MENAMBAH DATA:",
-                dataJadwal
+                "MODE: TAMBAH"
             );
 
 
-            const { error } =
-                await supabaseClient
-                    .from(
-                        "jadwal_kumpulan"
-                    )
-                    .insert([
-                        dataJadwal
-                    ]);
+            const {
+                error
+            } = await supabaseClient
+                .from(
+                    "jadwal_kumpulan"
+                )
+                .insert(
+                    [dataJadwal]
+                );
 
 
             if (error) {
@@ -348,12 +569,15 @@ async function simpanJadwal(event) {
                     error
                 );
 
+
                 alert(
                     "Jadwal gagal disimpan.\n\n" +
                     error.message
                 );
 
+
                 return;
+
             }
 
 
@@ -364,16 +588,23 @@ async function simpanJadwal(event) {
         }
 
 
-        // ==================================
-        // MODE EDIT
-        // ==================================
+        /* =================================
+           MODE EDIT
+        ================================= */
 
         else {
 
+
             console.log(
-                "ID YANG DIUPDATE:",
+                "MODE: EDIT"
+            );
+
+
+            console.log(
+                "ID:",
                 idEdit
             );
+
 
             console.log(
                 "DATA BARU:",
@@ -381,18 +612,25 @@ async function simpanJadwal(event) {
             );
 
 
-            const { error } =
-                await supabaseClient
-                    .from(
-                        "jadwal_kumpulan"
-                    )
-                    .update(
-                        dataJadwal
-                    )
-                    .eq(
-                        "id",
-                        idEdit
-                    );
+            const {
+                error
+            } = await supabaseClient
+                .from(
+                    "jadwal_kumpulan"
+                )
+                .update(
+                    dataJadwal
+                )
+                .eq(
+                    "id",
+                    idEdit
+                );
+
+
+            console.log(
+                "UPDATE ERROR:",
+                error
+            );
 
 
             if (error) {
@@ -402,18 +640,16 @@ async function simpanJadwal(event) {
                     error
                 );
 
+
                 alert(
                     "Perubahan jadwal gagal disimpan.\n\n" +
                     error.message
                 );
 
+
                 return;
+
             }
-
-
-            console.log(
-                "UPDATE BERHASIL"
-            );
 
 
             alert(
@@ -423,49 +659,60 @@ async function simpanJadwal(event) {
         }
 
 
-        // ==================================
-        // RESET
-        // ==================================
+        /* =================================
+           RESET FORM
+        ================================= */
 
         idEdit = null;
 
+
         kosongkanForm();
+
 
         sembunyikanTombolBatal();
 
 
-        if (button) {
+        if (saveButton) {
 
-            button.textContent =
+            saveButton.textContent =
                 "Simpan Jadwal";
 
         }
 
 
-        // ==================================
-        // AMBIL ULANG DATA DARI DATABASE
-        // ==================================
+        /* =================================
+           MUAT ULANG DATA
+        ================================= */
 
         await muatData();
 
 
     } catch (error) {
 
+
         console.error(
             "ERROR SIMPAN:",
             error
         );
 
+
         alert(
-            "Terjadi kesalahan saat menyimpan data."
+            "Terjadi kesalahan saat menyimpan data.\n\n" +
+            error.message
         );
+
 
     } finally {
 
+
         sedangMenyimpan = false;
 
-        if (button) {
-            button.disabled = false;
+
+        if (saveButton) {
+
+            saveButton.disabled =
+                false;
+
         }
 
     }
@@ -473,18 +720,26 @@ async function simpanJadwal(event) {
 }
 
 
-// ========================================
-// EDIT JADWAL
-// ========================================
+/* =========================================
+   EDIT JADWAL
+========================================= */
 
 function editJadwal(id) {
+
+    console.log(
+        "EDIT ID:",
+        id
+    );
+
 
     const jadwal =
         jadwalData.find(
             function (item) {
 
-                return Number(item.id) ===
-                    Number(id);
+                return (
+                    Number(item.id) ===
+                    Number(id)
+                );
 
             }
         );
@@ -497,6 +752,7 @@ function editJadwal(id) {
         );
 
         return;
+
     }
 
 
@@ -504,43 +760,181 @@ function editJadwal(id) {
         Number(jadwal.id);
 
 
-    document.getElementById(
-        "kelompok"
-    ).value =
-        jadwal.kelompok || "";
+    const kelompokElement =
+        document.getElementById(
+            "kelompok"
+        );
 
 
-    // Isi ulang tempat sesuai kelompok
+    const tanggalElement =
+        document.getElementById(
+            "tanggal"
+        );
+
+
+    const tempatElement =
+        document.getElementById(
+            "tempat"
+        );
+
+
+    const pelayanElement =
+        document.getElementById(
+            "pelayanFirman"
+        );
+
+
+    /* =====================================
+       ISI FORM
+    ===================================== */
+
+    if (kelompokElement) {
+
+        kelompokElement.value =
+            jadwal.kelompok || "";
+
+    }
+
+
+    /*
+       Isi ulang dropdown tempat
+       berdasarkan kelompok.
+    */
+
     isiDropdownTempat();
 
 
-    document.getElementById(
-        "tanggal"
-    ).value =
-        jadwal.tanggal || "";
+    if (tanggalElement) {
+
+        tanggalElement.value =
+            jadwal.tanggal || "";
+
+    }
 
 
-    document.getElementById(
-        "tempat"
-    ).value =
-        jadwal.tempat || "";
+    if (tempatElement) {
+
+        /*
+           Jika tempat lama tidak ada
+           di daftar dropdown, tetap
+           masukkan sebagai option.
+        */
+
+        const tempatLama =
+            jadwal.tempat || "";
 
 
-    document.getElementById(
-        "pelayanFirman"
-    ).value =
-        jadwal.pelayan_firman || "";
+        if (
+            tempatLama &&
+            !Array.from(
+                tempatElement.options
+            ).some(
+                function (option) {
+
+                    return (
+                        option.value ===
+                        tempatLama
+                    );
+
+                }
+            )
+        ) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
 
 
-    const button =
+            option.value =
+                tempatLama;
+
+
+            option.textContent =
+                tempatLama;
+
+
+            tempatElement.appendChild(
+                option
+            );
+
+        }
+
+
+        tempatElement.value =
+            tempatLama;
+
+    }
+
+
+    if (pelayanElement) {
+
+        const pelayanLama =
+            jadwal.pelayan_firman || "";
+
+
+        /*
+           Jika pelayan lama tidak ada
+           di daftar dropdown, tetap
+           masukkan sebagai option.
+        */
+
+        if (
+            pelayanLama &&
+            !Array.from(
+                pelayanElement.options
+            ).some(
+                function (option) {
+
+                    return (
+                        option.value ===
+                        pelayanLama
+                    );
+
+                }
+            )
+        ) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                pelayanLama;
+
+
+            option.textContent =
+                pelayanLama;
+
+
+            pelayanElement.appendChild(
+                option
+            );
+
+        }
+
+
+        pelayanElement.value =
+            pelayanLama;
+
+    }
+
+
+    /* =====================================
+       UBAH TOMBOL
+    ===================================== */
+
+    const saveButton =
         document.getElementById(
             "saveButton"
         );
 
 
-    if (button) {
+    if (saveButton) {
 
-        button.textContent =
+        saveButton.textContent =
             "Simpan Perubahan";
 
     }
@@ -560,36 +954,50 @@ function editJadwal(id) {
     }
 
 
+    /* =====================================
+       SCROLL KE FORM
+    ===================================== */
+
     window.scrollTo({
+
         top: 0,
+
         behavior: "smooth"
+
     });
 
 }
 
 
-// ========================================
-// BATAL EDIT
-// ========================================
+/* =========================================
+   BATAL EDIT
+========================================= */
 
 function batalEdit() {
 
+    console.log(
+        "BATAL EDIT"
+    );
+
+
     idEdit = null;
 
+
     kosongkanForm();
+
 
     sembunyikanTombolBatal();
 
 
-    const button =
+    const saveButton =
         document.getElementById(
             "saveButton"
         );
 
 
-    if (button) {
+    if (saveButton) {
 
-        button.textContent =
+        saveButton.textContent =
             "Simpan Jadwal";
 
     }
@@ -597,21 +1005,21 @@ function batalEdit() {
 }
 
 
-// ========================================
-// SEMBUNYIKAN TOMBOL BATAL
-// ========================================
+/* =========================================
+   SEMBUNYIKAN TOMBOL BATAL
+========================================= */
 
 function sembunyikanTombolBatal() {
 
-    const button =
+    const cancelButton =
         document.getElementById(
             "cancelButton"
         );
 
 
-    if (button) {
+    if (cancelButton) {
 
-        button.style.display =
+        cancelButton.style.display =
             "none";
 
     }
@@ -619,9 +1027,9 @@ function sembunyikanTombolBatal() {
 }
 
 
-// ========================================
-// HAPUS JADWAL
-// ========================================
+/* =========================================
+   HAPUS JADWAL
+========================================= */
 
 async function hapusJadwal(id) {
 
@@ -632,22 +1040,32 @@ async function hapusJadwal(id) {
 
 
     if (!yakin) {
+
         return;
+
     }
 
 
     try {
 
-        const { error } =
-            await supabaseClient
-                .from(
-                    "jadwal_kumpulan"
-                )
-                .delete()
-                .eq(
-                    "id",
-                    id
-                );
+
+        console.log(
+            "HAPUS ID:",
+            id
+        );
+
+
+        const {
+            error
+        } = await supabaseClient
+            .from(
+                "jadwal_kumpulan"
+            )
+            .delete()
+            .eq(
+                "id",
+                id
+            );
 
 
         if (error) {
@@ -657,12 +1075,15 @@ async function hapusJadwal(id) {
                 error
             );
 
+
             alert(
                 "Jadwal gagal dihapus.\n\n" +
                 error.message
             );
 
+
             return;
+
         }
 
 
@@ -676,12 +1097,16 @@ async function hapusJadwal(id) {
 
     } catch (error) {
 
+
         console.error(
+            "ERROR HAPUS:",
             error
         );
 
+
         alert(
-            "Terjadi kesalahan saat menghapus jadwal."
+            "Terjadi kesalahan saat menghapus jadwal.\n\n" +
+            error.message
         );
 
     }
@@ -689,85 +1114,162 @@ async function hapusJadwal(id) {
 }
 
 
-// ========================================
-// TAMPILKAN JADWAL
-// ========================================
+/* =========================================
+   TAMPILKAN JADWAL
+========================================= */
 
 function tampilkanJadwal() {
 
-    const list =
-        document.getElementById(
-            "jadwalList"
-        );
+
+    const daftarTabel = {
+
+        "Rumah Tangga":
+            document.getElementById(
+                "jadwalListRumahTangga"
+            ),
+
+        "PKB":
+            document.getElementById(
+                "jadwalListPKB"
+            ),
+
+        "PW":
+            document.getElementById(
+                "jadwalListPW"
+            )
+
+    };
 
 
-    if (!list) return;
+    /* =====================================
+       BERSIHKAN SEMUA TABEL
+    ===================================== */
+
+    Object.values(
+        daftarTabel
+    ).forEach(
+        function (tbody) {
+
+            if (tbody) {
+
+                tbody.innerHTML = "";
+
+            }
+
+        }
+    );
 
 
-    list.innerHTML = "";
-
+    /* =====================================
+       URUTAN KELOMPOK
+    ===================================== */
 
     const kelompokList = [
+
         "Rumah Tangga",
+
         "PKB",
+
         "PW"
+
     ];
 
+
+    /* =====================================
+       TAMPILKAN PER KELOMPOK
+    ===================================== */
 
     kelompokList.forEach(
         function (kelompok) {
 
-            const dataKelompok =
+
+            const tbody =
+                daftarTabel[
+                    kelompok
+                ];
+
+
+            if (!tbody) {
+
+                return;
+
+            }
+
+
+            let dataKelompok =
                 jadwalData.filter(
                     function (item) {
 
-                        return item.kelompok ===
-                            kelompok;
+                        return (
+                            item.kelompok ===
+                            kelompok
+                        );
 
                     }
                 );
 
 
-            if (
-                dataKelompok.length === 0
-            ) {
-                return;
-            }
+            /* =================================
+               URUTKAN BERDASARKAN TANGGAL
+            ================================= */
 
+            dataKelompok.sort(
+                function (a, b) {
 
-            // ==============================
-            // JUDUL KELOMPOK
-            // ==============================
+                    return (
+                        new Date(
+                            a.tanggal
+                        ) -
+                        new Date(
+                            b.tanggal
+                        )
+                    );
 
-            const headingRow =
-                document.createElement(
-                    "tr"
-                );
-
-
-            headingRow.innerHTML = `
-                <td colspan="4"
-                    style="
-                        font-weight:700;
-                        background:#eef4f9;
-                        color:#1f4e79;
-                    ">
-                    ${escapeHTML(kelompok)}
-                </td>
-            `;
-
-
-            list.appendChild(
-                headingRow
+                }
             );
 
 
-            // ==============================
-            // DATA
-            // ==============================
+            /* =================================
+               JIKA KOSONG
+            ================================= */
+
+            if (
+                dataKelompok.length === 0
+            ) {
+
+                tbody.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="4"
+                            class="empty-row"
+                        >
+
+                            Belum ada jadwal
+                            ${escapeHTML(
+                                kelompok
+                            )}.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+
+                return;
+
+            }
+
+
+            /* =================================
+               TAMPILKAN DATA
+            ================================= */
 
             dataKelompok.forEach(
                 function (jadwal) {
+
 
                     const row =
                         document.createElement(
@@ -776,43 +1278,67 @@ function tampilkanJadwal() {
 
 
                     row.innerHTML = `
-                        <td>
-                            ${escapeHTML(
-                                jadwal.tempat || "-"
-                            )}
-                        </td>
 
                         <td>
+
+                            ${escapeHTML(
+                                jadwal.tempat ||
+                                "-"
+                            )}
+
+                        </td>
+
+
+                        <td>
+
                             ${formatTanggalIndonesia(
                                 jadwal.tanggal
                             )}
+
                         </td>
 
+
                         <td>
+
                             ${escapeHTML(
-                                jadwal.pelayan_firman || "-"
+                                jadwal.pelayan_firman ||
+                                "-"
                             )}
+
                         </td>
+
 
                         <td>
-                            <button
-                                type="button"
-                                onclick="editJadwal(${Number(jadwal.id)})"
-                            >
-                                Edit
-                            </button>
 
-                            <button
-                                type="button"
-                                onclick="hapusJadwal(${Number(jadwal.id)})"
+                            <div
+                                class="aksi-wrapper"
                             >
-                                Hapus
-                            </button>
+
+                                <button
+                                    type="button"
+                                    class="btn-edit"
+                                    onclick="editJadwal(${Number(jadwal.id)})"
+                                >
+                                    Edit
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="btn-hapus"
+                                    onclick="hapusJadwal(${Number(jadwal.id)})"
+                                >
+                                    Hapus
+                                </button>
+
+                            </div>
+
                         </td>
+
                     `;
 
 
-                    list.appendChild(
+                    tbody.appendChild(
                         row
                     );
 
@@ -822,65 +1348,59 @@ function tampilkanJadwal() {
         }
     );
 
-
-    if (
-        list.children.length === 0
-    ) {
-
-        list.innerHTML = `
-            <tr>
-                <td colspan="4"
-                    style="text-align:center;">
-                    Belum ada jadwal.
-                </td>
-            </tr>
-        `;
-
-    }
-
 }
 
 
-// ========================================
-// FORMAT TANGGAL INDONESIA
-// ========================================
+/* =========================================
+   FORMAT TANGGAL INDONESIA
+   YYYY-MM-DD
+   menjadi
+   DD-MM-YYYY
+========================================= */
 
 function formatTanggalIndonesia(
     tanggal
 ) {
 
     if (!tanggal) {
+
         return "-";
+
     }
 
 
     const parts =
-        tanggal.split("-");
+        String(tanggal).split("-");
 
 
     if (
         parts.length !== 3
     ) {
+
         return tanggal;
+
     }
 
 
     return (
+
         parts[2] +
         "-" +
         parts[1] +
         "-" +
         parts[0]
+
     );
 
 }
 
 
-// ========================================
-// KOSONGKAN FORM
-// ========================================
+/* =========================================
+   KOSONGKAN FORM
+========================================= */
 
 function kosongkanForm() {
+
 
     const kelompok =
         document.getElementById(
@@ -907,18 +1427,29 @@ function kosongkanForm() {
 
 
     if (kelompok) {
+
         kelompok.value = "";
+
     }
 
 
     if (tanggal) {
+
         tanggal.value = "";
+
     }
 
 
+    /*
+       Reset dropdown tempat.
+    */
+
     if (tempat) {
 
-        isiDropdownTempat();
+        tempat.innerHTML =
+            `<option value="">
+                Pilih tempat
+            </option>`;
 
     }
 
@@ -932,29 +1463,36 @@ function kosongkanForm() {
 }
 
 
-// ========================================
-// ESCAPE HTML
-// ========================================
+/* =========================================
+   ESCAPE HTML
+========================================= */
 
 function escapeHTML(value) {
 
-    return String(value ?? "")
+    return String(
+        value ?? ""
+    )
+
         .replace(
             /&/g,
             "&amp;"
         )
+
         .replace(
             /</g,
             "&lt;"
         )
+
         .replace(
             />/g,
             "&gt;"
         )
+
         .replace(
             /"/g,
             "&quot;"
         )
+
         .replace(
             /'/g,
             "&#039;"
@@ -963,9 +1501,9 @@ function escapeHTML(value) {
 }
 
 
-// ========================================
-// KEMBALI KE HALAMAN ADMIN
-// ========================================
+/* =========================================
+   KEMBALI KE HALAMAN ADMIN
+========================================= */
 
 function kembaliKeAdmin() {
 
