@@ -8,7 +8,7 @@ let sedangMenyimpan = false;
 
 
 // ============================================
-// SAAT HALAMAN SELESAI DIMUAT
+// HALAMAN SELESAI DIMUAT
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 // ============================================
-// AMBIL DATA JADWAL DARI SUPABASE
+// AMBIL DATA DARI SUPABASE
 // ============================================
 
 async function ambilJadwal() {
@@ -37,42 +37,45 @@ async function ambilJadwal() {
     const { data, error } = await supabaseClient
         .from("jadwal_kumpulan")
         .select("*")
-        .order("tanggal", { ascending: true })
-        .order("id", { ascending: true });
+        .order("tanggal", {
+            ascending: true
+        })
+        .order("id", {
+            ascending: true
+        });
 
     if (error) {
 
         console.error(
-            "Gagal mengambil data jadwal:",
+            "GAGAL MENGAMBIL DATA:",
             error
         );
+
+        jadwalData = [];
 
         alert(
             "Gagal mengambil data jadwal:\n\n" +
             error.message
         );
 
-        jadwalData = [];
-
         return;
     }
 
     jadwalData = (data || []).map(item => ({
         ...item,
-
-        // Sesuaikan nama kolom database
-        pelayanFirman: item.pelayan_firman
+        pelayanFirman:
+            item.pelayan_firman
     }));
 
     console.log(
-        "Data jadwal berhasil dimuat:",
+        "DATA JADWAL:",
         jadwalData
     );
 }
 
 
 // ============================================
-// MUAT ULANG DATA
+// MUAT DATA
 // ============================================
 
 async function muatData() {
@@ -84,7 +87,7 @@ async function muatData() {
 
 
 // ============================================
-// ISI DROPDOWN TEMPAT
+// DROPDOWN TEMPAT
 // ============================================
 
 function isiDropdownTempat() {
@@ -110,19 +113,29 @@ function isiDropdownTempat() {
 
     let daftar = [];
 
-    if (typeof daftarTempat !== "undefined") {
+    if (
+        typeof daftarTempat !==
+        "undefined"
+    ) {
 
-        if (kelompok.value === "Rumah Tangga") {
+        if (
+            kelompok.value ===
+            "Rumah Tangga"
+        ) {
 
             daftar =
                 daftarTempat.rumahTangga || [];
 
-        } else if (kelompok.value === "PKB") {
+        } else if (
+            kelompok.value === "PKB"
+        ) {
 
             daftar =
                 daftarTempat.pkb || [];
 
-        } else if (kelompok.value === "PW") {
+        } else if (
+            kelompok.value === "PW"
+        ) {
 
             daftar =
                 daftarTempat.pw || [];
@@ -132,26 +145,31 @@ function isiDropdownTempat() {
     daftar.forEach(tempat => {
 
         const option =
-            document.createElement("option");
+            document.createElement(
+                "option"
+            );
 
         option.value = tempat;
         option.textContent = tempat;
 
-        selectTempat.appendChild(option);
+        selectTempat.appendChild(
+            option
+        );
     });
 
-    // Kembalikan nilai sebelumnya
     if (
         nilaiLama &&
         daftar.includes(nilaiLama)
     ) {
-        selectTempat.value = nilaiLama;
+
+        selectTempat.value =
+            nilaiLama;
     }
 }
 
 
 // ============================================
-// ISI DROPDOWN PELAYAN FIRMAN
+// DROPDOWN PELAYAN FIRMAN
 // ============================================
 
 function isiDropdownPelayanFirman() {
@@ -186,12 +204,16 @@ function isiDropdownPelayanFirman() {
     daftarPelayanFirman.forEach(nama => {
 
         const option =
-            document.createElement("option");
+            document.createElement(
+                "option"
+            );
 
         option.value = nama;
         option.textContent = nama;
 
-        select.appendChild(option);
+        select.appendChild(
+            option
+        );
     });
 }
 
@@ -206,7 +228,6 @@ async function simpanJadwal(event) {
         event.preventDefault();
     }
 
-    // Mencegah klik dua kali
     if (sedangMenyimpan) {
         return;
     }
@@ -214,19 +235,29 @@ async function simpanJadwal(event) {
     sedangMenyimpan = true;
 
     const saveButton =
-        document.getElementById("saveButton");
+        document.getElementById(
+            "saveButton"
+        );
 
     const cancelButton =
-        document.getElementById("cancelButton");
+        document.getElementById(
+            "cancelButton"
+        );
 
     const kelompokElement =
-        document.getElementById("kelompok");
+        document.getElementById(
+            "kelompok"
+        );
 
     const tanggalElement =
-        document.getElementById("tanggal");
+        document.getElementById(
+            "tanggal"
+        );
 
     const tempatElement =
-        document.getElementById("tempat");
+        document.getElementById(
+            "tempat"
+        );
 
     const pelayanElement =
         document.getElementById(
@@ -322,7 +353,7 @@ async function simpanJadwal(event) {
 
 
     // ========================================
-    // DATA YANG AKAN DISIMPAN
+    // DATA YANG DIKIRIM
     // ========================================
 
     const dataJadwal = {
@@ -333,13 +364,10 @@ async function simpanJadwal(event) {
 
         tempat: tempat,
 
-        pelayan_firman: pelayanFirman
+        pelayan_firman:
+            pelayanFirman
     };
 
-
-    // ========================================
-    // CEK MODE
-    // ========================================
 
     const sedangEdit =
         idEdit !== null;
@@ -364,10 +392,6 @@ async function simpanJadwal(event) {
         cancelButton.disabled = true;
     }
 
-
-    // ========================================
-    // PROSES DATABASE
-    // ========================================
 
     try {
 
@@ -400,22 +424,77 @@ async function simpanJadwal(event) {
             );
 
 
-            // --------------------------------
+            // =================================
+            // CEK USER LOGIN
+            // =================================
+
+            const {
+                data: userData,
+                error: userError
+            } =
+                await supabaseClient
+                    .auth
+                    .getUser();
+
+
+            console.log(
+                "USER LOGIN:",
+                userData?.user
+            );
+
+            console.log(
+                "USER ERROR:",
+                userError
+            );
+
+
+            if (userError) {
+
+                console.error(
+                    "GAGAL CEK USER:",
+                    userError
+                );
+
+                alert(
+                    "Tidak dapat memeriksa akun login:\n\n" +
+                    userError.message
+                );
+
+                return;
+            }
+
+
+            if (!userData?.user) {
+
+                alert(
+                    "Anda belum login."
+                );
+
+                return;
+            }
+
+
+            // =================================
             // UPDATE DATABASE
-            // --------------------------------
+            // =================================
 
             const {
                 error: updateError
-            } = await supabaseClient
+            } =
+                await supabaseClient
 
-                .from("jadwal_kumpulan")
+                    .from(
+                        "jadwal_kumpulan"
+                    )
 
-                .update(dataJadwal)
+                    .update(
+                        dataJadwal
+                    )
 
-                .eq(
-                    "id",
-                    idYangDiedit
-                );
+                    .eq(
+                        "id",
+                        idYangDiedit
+                    );
 
 
             console.log(
@@ -424,9 +503,9 @@ async function simpanJadwal(event) {
             );
 
 
-            // --------------------------------
-            // JIKA UPDATE GAGAL
-            // --------------------------------
+            // =================================
+            // UPDATE ERROR
+            // =================================
 
             if (updateError) {
 
@@ -444,53 +523,183 @@ async function simpanJadwal(event) {
             }
 
 
-            // --------------------------------
-            // UPDATE BERHASIL
-            // --------------------------------
-
             console.log(
-                "UPDATE BERHASIL DIKIRIM KE DATABASE."
+                "UPDATE TIDAK MENGEMBALIKAN ERROR."
             );
 
 
-            // --------------------------------
-            // KELUAR DARI MODE EDIT
-            // --------------------------------
+            // =================================
+            // CEK DATA ID YANG SAMA
+            // =================================
 
-            idEdit = null;
+            const {
+                data: dataCek,
+                error: errorCek
+            } =
+                await supabaseClient
 
-            sembunyikanTombolBatal();
+                    .from(
+                        "jadwal_kumpulan"
+                    )
 
-            kosongkanForm();
+                    .select("*")
 
+                    .eq(
+                        "id",
+                        idYangDiedit
+                    )
 
-            // --------------------------------
-            // AMBIL DATA TERBARU
-            // --------------------------------
-
-            await muatData();
+                    .maybeSingle();
 
 
             console.log(
-                "DATA BERHASIL DIMUAT ULANG."
+                "DATA SETELAH UPDATE:",
+                dataCek
+            );
+
+            console.log(
+                "ERROR CEK:",
+                errorCek
             );
 
 
-            // --------------------------------
-            // PESAN BERHASIL
-            // --------------------------------
+            // =================================
+            // GAGAL MEMBACA DATA
+            // =================================
+
+            if (errorCek) {
+
+                console.error(
+                    "GAGAL MEMBACA DATA:",
+                    errorCek
+                );
+
+                alert(
+                    "Update dijalankan tetapi data tidak dapat diperiksa:\n\n" +
+                    errorCek.message
+                );
+
+                return;
+            }
+
+
+            // =================================
+            // DATA TIDAK DITEMUKAN
+            // =================================
+
+            if (!dataCek) {
+
+                console.error(
+                    "DATA TIDAK DITEMUKAN.",
+                    idYangDiedit
+                );
+
+                alert(
+                    "Data jadwal tidak ditemukan setelah proses update.\n\n" +
+                    "ID: " +
+                    idYangDiedit
+                );
+
+                return;
+            }
+
+
+            // =================================
+            // BANDINKAN DATA
+            // =================================
+
+            const dataSama =
+                String(
+                    dataCek.kelompok
+                ) === String(
+                    dataJadwal.kelompok
+                ) &&
+
+                String(
+                    dataCek.tanggal
+                ) === String(
+                    dataJadwal.tanggal
+                ) &&
+
+                String(
+                    dataCek.tempat
+                ) === String(
+                    dataJadwal.tempat
+                ) &&
+
+                String(
+                    dataCek.pelayan_firman
+                ) === String(
+                    dataJadwal.pelayan_firman
+                );
+
+
+            console.log(
+                "HASIL VERIFIKASI:",
+                dataSama
+            );
+
+
+            // =================================
+            // UPDATE BENAR-BENAR BERHASIL
+            // =================================
+
+            if (dataSama) {
+
+                console.log(
+                    "DATA BERHASIL DIUBAH."
+                );
+
+
+                idEdit = null;
+
+                sembunyikanTombolBatal();
+
+                kosongkanForm();
+
+
+                // Ambil data terbaru
+                await muatData();
+
+
+                alert(
+                    "Jadwal berhasil diperbarui."
+                );
+
+                return;
+            }
+
+
+            // =================================
+            // UPDATE TIDAK SESUAI
+            // =================================
+
+            console.error(
+                "DATA SETELAH UPDATE TIDAK SESUAI."
+            );
+
+            console.error(
+                "DATA DIKIRIM:",
+                dataJadwal
+            );
+
+            console.error(
+                "DATA DATABASE:",
+                dataCek
+            );
+
 
             alert(
-                "Jadwal berhasil diperbarui."
+                "Perubahan belum tersimpan dengan benar.\n\n" +
+                "Data di database tidak sama dengan data yang Anda kirim."
             );
-
 
             return;
         }
 
 
         // ====================================
-        // MODE TAMBAH DATA BARU
+        // MODE TAMBAH
         // ====================================
 
         console.log(
@@ -507,17 +716,18 @@ async function simpanJadwal(event) {
         );
 
 
-        // --------------------------------
-        // INSERT DATABASE
-        // --------------------------------
-
         const {
             error: insertError
-        } = await supabaseClient
+        } =
+            await supabaseClient
 
-            .from("jadwal_kumpulan")
+                .from(
+                    "jadwal_kumpulan"
+                )
 
-            .insert(dataJadwal);
+                .insert(
+                    dataJadwal
+                );
 
 
         console.log(
@@ -525,10 +735,6 @@ async function simpanJadwal(event) {
             insertError
         );
 
-
-        // --------------------------------
-        // JIKA INSERT GAGAL
-        // --------------------------------
 
         if (insertError) {
 
@@ -546,32 +752,15 @@ async function simpanJadwal(event) {
         }
 
 
-        // --------------------------------
-        // INSERT BERHASIL
-        // --------------------------------
-
         console.log(
             "JADWAL BERHASIL DISIMPAN."
         );
 
 
-        // --------------------------------
-        // BERSIHKAN FORM
-        // --------------------------------
-
         kosongkanForm();
-
-
-        // --------------------------------
-        // MUAT DATA TERBARU
-        // --------------------------------
 
         await muatData();
 
-
-        // --------------------------------
-        // PESAN BERHASIL
-        // --------------------------------
 
         alert(
             "Jadwal berhasil disimpan."
@@ -581,7 +770,7 @@ async function simpanJadwal(event) {
     } catch (error) {
 
         console.error(
-            "TERJADI KESALAHAN:",
+            "KESALAHAN:",
             error
         );
 
@@ -596,10 +785,6 @@ async function simpanJadwal(event) {
         sedangMenyimpan = false;
 
 
-        // --------------------------------
-        // AKTIFKAN KEMBALI TOMBOL SIMPAN
-        // --------------------------------
-
         if (saveButton) {
 
             saveButton.disabled = false;
@@ -610,10 +795,6 @@ async function simpanJadwal(event) {
                     : "Simpan Jadwal";
         }
 
-
-        // --------------------------------
-        // AKTIFKAN KEMBALI BATAL
-        // --------------------------------
 
         if (cancelButton) {
 
@@ -635,7 +816,7 @@ function editJadwal(id) {
 
 
     console.log(
-        "Memulai edit ID:",
+        "MEMULAI EDIT ID:",
         id
     );
 
@@ -651,7 +832,7 @@ function editJadwal(id) {
     if (!jadwal) {
 
         console.error(
-            "Jadwal tidak ditemukan untuk ID:",
+            "JADWAL TIDAK DITEMUKAN:",
             id
         );
 
@@ -663,22 +844,18 @@ function editJadwal(id) {
     }
 
 
-    // ========================================
-    // SIMPAN ID YANG SEDANG DIEDIT
-    // ========================================
-
     idEdit =
         Number(jadwal.id);
 
 
     console.log(
-        "ID EDIT DISIMPAN:",
+        "ID EDIT:",
         idEdit
     );
 
 
     // ========================================
-    // ISI KELOMPOK
+    // KELOMPOK
     // ========================================
 
     const kelompok =
@@ -694,15 +871,11 @@ function editJadwal(id) {
 
 
     // ========================================
-    // UPDATE DROPDOWN TEMPAT
+    // TEMPAT
     // ========================================
 
     isiDropdownTempat();
 
-
-    // ========================================
-    // ISI TEMPAT
-    // ========================================
 
     const tempat =
         document.getElementById(
@@ -717,7 +890,7 @@ function editJadwal(id) {
 
 
     // ========================================
-    // ISI PELAYAN FIRMAN
+    // PELAYAN FIRMAN
     // ========================================
 
     const pelayanFirman =
@@ -733,7 +906,7 @@ function editJadwal(id) {
 
 
     // ========================================
-    // ISI TANGGAL
+    // TANGGAL
     // ========================================
 
     const tanggal =
@@ -749,7 +922,7 @@ function editJadwal(id) {
 
 
     // ========================================
-    // UBAH TOMBOL
+    // TOMBOL
     // ========================================
 
     const saveButton =
@@ -791,7 +964,7 @@ function editJadwal(id) {
 
 
     // ========================================
-    // SCROLL KE FORM
+    // SCROLL KE ATAS
     // ========================================
 
     window.scrollTo({
@@ -815,7 +988,7 @@ function batalEdit() {
 
 
     console.log(
-        "Edit dibatalkan."
+        "EDIT DIBATALKAN."
     );
 
 
@@ -931,7 +1104,7 @@ async function hapusJadwal(id) {
 
 
     console.log(
-        "Menghapus jadwal ID:",
+        "MENGHAPUS ID:",
         id
     );
 
@@ -940,20 +1113,23 @@ async function hapusJadwal(id) {
 
         const {
             error
-        } = await supabaseClient
+        } =
+            await supabaseClient
 
-            .from("jadwal_kumpulan")
+                .from(
+                    "jadwal_kumpulan"
+                )
 
-            .delete()
+                .delete()
 
-            .eq(
-                "id",
-                id
-            );
+                .eq(
+                    "id",
+                    id
+                );
 
 
         console.log(
-            "ERROR DELETE:",
+            "DELETE ERROR:",
             error
         );
 
@@ -974,10 +1150,6 @@ async function hapusJadwal(id) {
         }
 
 
-        // ====================================
-        // JIKA YANG DIHAPUS SEDANG DIEDIT
-        // ====================================
-
         if (
             idEdit !== null &&
             Number(idEdit) ===
@@ -992,10 +1164,6 @@ async function hapusJadwal(id) {
         }
 
 
-        // ====================================
-        // MUAT DATA TERBARU
-        // ====================================
-
         await muatData();
 
 
@@ -1007,7 +1175,7 @@ async function hapusJadwal(id) {
     } catch (error) {
 
         console.error(
-            "KESALAHAN SAAT MENGHAPUS:",
+            "KESALAHAN DELETE:",
             error
         );
 
@@ -1040,11 +1208,8 @@ function tampilkanJadwal() {
 
 
     const kelompokList = [
-
         "Rumah Tangga",
-
         "PKB",
-
         "PW"
     ];
 
@@ -1060,19 +1225,15 @@ function tampilkanJadwal() {
                 );
 
 
-            // Tidak menampilkan kelompok
-            // jika belum memiliki jadwal
-
             if (
                 dataKelompok.length === 0
             ) {
-
                 return;
             }
 
 
             // =================================
-            // JUDUL KELOMPOK
+            // JUDUL
             // =================================
 
             const title =
@@ -1080,14 +1241,11 @@ function tampilkanJadwal() {
                     "div"
                 );
 
-
             title.className =
                 "jadwal-group-title";
 
-
             title.textContent =
                 kelompok;
-
 
             container.appendChild(
                 title
@@ -1095,14 +1253,13 @@ function tampilkanJadwal() {
 
 
             // =================================
-            // WRAPPER TABLE
+            // WRAPPER
             // =================================
 
             const wrapper =
                 document.createElement(
                     "div"
                 );
-
 
             wrapper.className =
                 "table-wrapper";
@@ -1116,7 +1273,6 @@ function tampilkanJadwal() {
                 document.createElement(
                     "table"
                 );
-
 
             table.className =
                 "jadwal-table";
@@ -1160,7 +1316,7 @@ function tampilkanJadwal() {
 
 
             // =================================
-            // ISI BARIS
+            // BARIS DATA
             // =================================
 
             dataKelompok.forEach(
@@ -1230,7 +1386,6 @@ function tampilkanJadwal() {
                 table
             );
 
-
             container.appendChild(
                 wrapper
             );
@@ -1239,7 +1394,7 @@ function tampilkanJadwal() {
 
 
     // ========================================
-    // JIKA TIDAK ADA DATA
+    // DATA KOSONG
     // ========================================
 
     if (
@@ -1260,7 +1415,7 @@ function tampilkanJadwal() {
 
 
 // ============================================
-// FORMAT TANGGAL INDONESIA
+// FORMAT TANGGAL
 // ============================================
 
 function formatTanggalIndonesia(
@@ -1285,13 +1440,11 @@ function formatTanggalIndonesia(
 
 
     return (
-
         bagian[2] +
         "/" +
         bagian[1] +
         "/" +
         bagian[0]
-
     );
 }
 
@@ -1338,11 +1491,9 @@ function kosongkanForm() {
     if (tempat) {
 
         tempat.innerHTML = `
-
             <option value="">
                 -- Pilih Tempat --
             </option>
-
         `;
     }
 
@@ -1399,7 +1550,7 @@ function escapeHTML(value) {
 
 
 // ============================================
-// KEMBALI KE HALAMAN ADMIN
+// KEMBALI KE ADMIN
 // ============================================
 
 function kembaliKeAdmin() {
