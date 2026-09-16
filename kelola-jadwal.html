@@ -1,650 +1,1266 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Kelola Jadwal</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#1f4e79"
+    >
+
+    <title>
+        Kelola Jadwal - GPIL Jemaat Betesda Purwosari
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
     <style>
+
+        /* ========================================
+           RESET
+        ======================================== */
+
         * {
             box-sizing: border-box;
         }
 
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
         body {
+
             margin: 0;
-            padding: 0;
-            background: #f5f6f8;
-            color: #1f2937;
+
+            padding: 16px;
+
+            background:
+                #f4f7fa;
+
+            color:
+                #1f2937;
+
             font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Roboto,
                 Arial,
+                Helvetica,
                 sans-serif;
+
+            line-height: 1.5;
+
         }
 
 
-        /* =========================================
+        /* ========================================
            CONTAINER
-           ========================================= */
+        ======================================== */
 
-        .admin-container {
+        .jadwal-container {
+
             width: 100%;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 24px;
+
+            max-width:
+                1100px;
+
+            margin:
+                0 auto;
+
         }
 
 
-        /* =========================================
+        /* ========================================
            HEADER
-           ========================================= */
+        ======================================== */
 
-        .page-header {
-            margin-bottom: 22px;
-        }
+        .jadwal-header {
 
-        .page-header h1 {
-            margin: 0 0 6px;
-            font-size: 25px;
-            font-weight: 700;
-            color: #111827;
-        }
+            position: relative;
 
-        .page-header p {
-            margin: 0;
-            font-size: 14px;
-            color: #6b7280;
-        }
+            padding:
+                26px 22px;
 
+            margin-bottom:
+                14px;
 
-        /* =========================================
-           TOMBOL KEMBALI
-           ========================================= */
+            background:
+                linear-gradient(
+                    135deg,
+                    #1f4e79,
+                    #285f91
+                );
 
-        .btn-kembali {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
+            color:
+                #ffffff;
 
-            margin-bottom: 16px;
+            border-radius:
+                16px;
 
-            padding: 8px 12px;
-
-            background: transparent;
-
-            border: 1px solid #d1d5db;
-            border-radius: 7px;
-
-            color: #4b5563;
-
-            font-size: 13px;
-            font-weight: 600;
-
-            cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                color 0.2s ease;
-        }
-
-        .btn-kembali:hover {
-            background: #f3f4f6;
-            border-color: #9ca3af;
-            color: #111827;
-        }
-
-        .btn-kembali-icon {
-            font-size: 17px;
-            line-height: 1;
-        }
-
-
-        /* =========================================
-           FORM PANEL
-           ========================================= */
-
-        .form-panel {
-            background: #ffffff;
-
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-
-            padding: 22px;
-
-            margin-bottom: 28px;
+            text-align:
+                center;
 
             box-shadow:
-                0 1px 2px rgba(0, 0, 0, 0.04);
+                0 6px 18px
+                rgba(
+                    31,
+                    78,
+                    121,
+                    0.18
+                );
+
         }
 
 
-        /* =========================================
-           MODE EDIT
-           ========================================= */
+        .jadwal-header h1 {
 
-        .edit-mode {
-            display: none;
+            margin:
+                0 0 5px;
 
-            margin-bottom: 18px;
+            font-size:
+                24px;
 
-            padding: 10px 13px;
+            font-weight:
+                800;
 
-            background: #f3f4f6;
+            letter-spacing:
+                -0.3px;
 
-            border-left: 3px solid #374151;
-
-            border-radius: 6px;
-
-            color: #374151;
-
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .edit-mode.active {
-            display: block;
         }
 
 
-        /* =========================================
-           FORM GRID
-           ========================================= */
+        .jadwal-header p {
+
+            margin:
+                0;
+
+            font-size:
+                14px;
+
+            opacity:
+                0.92;
+
+        }
+
+
+        /* ========================================
+           TOMBOL KEMBALI
+        ======================================== */
+
+        .btn-kembali {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            width:
+                100%;
+
+            min-height:
+                46px;
+
+            margin-bottom:
+                16px;
+
+            padding:
+                11px 16px;
+
+            background:
+                #ffffff;
+
+            color:
+                #1f4e79;
+
+            border:
+                1px solid #cbd8e5;
+
+            border-radius:
+                10px;
+
+            text-decoration:
+                none;
+
+            font-size:
+                14px;
+
+            font-weight:
+                700;
+
+            transition:
+                all 0.2s ease;
+
+        }
+
+
+        .btn-kembali:hover {
+
+            background:
+                #1f4e79;
+
+            border-color:
+                #1f4e79;
+
+            color:
+                #ffffff;
+
+        }
+
+
+        /* ========================================
+           FORM SECTION
+        ======================================== */
+
+        .form-section {
+
+            margin-bottom:
+                20px;
+
+            padding:
+                20px;
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid #e1e7ed;
+
+            border-radius:
+                14px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    0.05
+                );
+
+        }
+
+
+        .section-heading {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+
+            margin-bottom:
+                18px;
+
+        }
+
+
+        .section-heading-line {
+
+            width:
+                4px;
+
+            height:
+                25px;
+
+            background:
+                #1f4e79;
+
+            border-radius:
+                4px;
+
+        }
+
+
+        .section-heading h2 {
+
+            margin:
+                0;
+
+            color:
+                #1f4e79;
+
+            font-size:
+                19px;
+
+            font-weight:
+                800;
+
+        }
+
 
         .form-grid {
-            display: grid;
+
+            display:
+                grid;
 
             grid-template-columns:
-                repeat(2, minmax(0, 1fr));
+                repeat(
+                    2,
+                    minmax(0, 1fr)
+                );
 
-            gap: 18px;
+            gap:
+                15px;
+
         }
+
 
         .form-group {
-            display: flex;
-            flex-direction: column;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
         }
 
-        .form-group.full-width {
-            grid-column: 1 / -1;
+
+        .form-group.full {
+
+            grid-column:
+                1 / -1;
+
         }
 
-
-        /* =========================================
-           LABEL
-           ========================================= */
 
         .form-group label {
-            margin-bottom: 7px;
 
-            font-size: 13px;
-            font-weight: 600;
+            margin-bottom:
+                6px;
 
-            color: #374151;
+            color:
+                #334155;
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+
         }
 
-
-        /* =========================================
-           INPUT & SELECT
-           ========================================= */
 
         .form-group input,
         .form-group select {
-            width: 100%;
-            height: 44px;
 
-            padding: 0 12px;
+            width:
+                100%;
 
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
+            min-height:
+                46px;
 
-            background: #ffffff;
-            color: #111827;
+            padding:
+                11px 13px;
 
-            font-size: 14px;
+            background:
+                #ffffff;
 
-            outline: none;
+            color:
+                #1f2937;
+
+            border:
+                1px solid #cbd5e1;
+
+            border-radius:
+                9px;
+
+            outline:
+                none;
+
+            font-family:
+                inherit;
+
+            font-size:
+                14px;
 
             transition:
                 border-color 0.2s ease,
                 box-shadow 0.2s ease;
+
         }
+
 
         .form-group input:focus,
         .form-group select:focus {
-            border-color: #6b7280;
+
+            border-color:
+                #1f4e79;
 
             box-shadow:
                 0 0 0 3px
-                rgba(107, 114, 128, 0.12);
+                rgba(
+                    31,
+                    78,
+                    121,
+                    0.10
+                );
+
         }
 
-        .form-group input::placeholder {
-            color: #9ca3af;
-        }
 
-        .form-group input[type="date"] {
-            color-scheme: light;
-        }
-
-
-        /* =========================================
-           FORM ACTION
-           ========================================= */
+        /* ========================================
+           FORM BUTTONS
+        ======================================== */
 
         .form-actions {
-            display: flex;
-            align-items: center;
 
-            gap: 10px;
+            display:
+                flex;
 
-            margin-top: 20px;
+            gap:
+                10px;
+
+            margin-top:
+                18px;
+
         }
 
-        .form-actions button {
-            min-height: 42px;
 
-            padding: 10px 18px;
+        .btn {
 
-            border-radius: 8px;
+            min-height:
+                46px;
 
-            border: 1px solid transparent;
+            padding:
+                10px 20px;
 
-            font-size: 14px;
-            font-weight: 600;
+            border:
+                none;
 
-            cursor: pointer;
+            border-radius:
+                9px;
+
+            font-family:
+                inherit;
+
+            font-size:
+                14px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
 
             transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease,
-                opacity 0.2s ease;
+                all 0.2s ease;
+
         }
 
 
-        /* =========================================
-           TOMBOL UTAMA
-           ========================================= */
+        .btn-simpan {
 
-        .btn-primary {
-            background: #1f2937;
-            color: #ffffff;
-        }
+            background:
+                #1f4e79;
 
-        .btn-primary:hover {
-            background: #111827;
+            color:
+                #ffffff;
 
-            transform:
-                translateY(-1px);
-        }
+            flex:
+                1;
 
-        .btn-primary:disabled {
-            opacity: 0.6;
-
-            cursor: not-allowed;
-
-            transform: none;
         }
 
 
-        /* =========================================
-           TOMBOL BATAL
-           ========================================= */
+        .btn-simpan:hover {
 
-        .btn-secondary {
-            background: #ffffff;
+            background:
+                #173d61;
 
-            color: #374151;
-
-            border-color:
-                #d1d5db !important;
-        }
-
-        .btn-secondary:hover {
-            background: #f3f4f6;
-        }
-
-        .btn-secondary:disabled {
-            opacity: 0.6;
-
-            cursor: not-allowed;
         }
 
 
-        /* =========================================
-           JUDUL KELOMPOK
-           ========================================= */
+        .btn-simpan:disabled {
 
-        .jadwal-group-title {
-            margin-top: 26px;
-            margin-bottom: 10px;
+            opacity:
+                0.6;
 
-            font-size: 15px;
-            font-weight: 700;
+            cursor:
+                not-allowed;
 
-            color: #111827;
-        }
-
-        .jadwal-group-title:first-child {
-            margin-top: 0;
         }
 
 
-        /* =========================================
+        .btn-batal {
+
+            display:
+                none;
+
+            background:
+                #eef2f6;
+
+            color:
+                #475569;
+
+            border:
+                1px solid #d6dee7;
+
+        }
+
+
+        .btn-batal:hover {
+
+            background:
+                #e2e8f0;
+
+        }
+
+
+        /* ========================================
+           DAFTAR JADWAL
+        ======================================== */
+
+        .jadwal-section {
+
+            margin-bottom:
+                20px;
+
+        }
+
+
+        .jadwal-section-header {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                12px;
+
+            margin-bottom:
+                10px;
+
+        }
+
+
+        .jadwal-section-title {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+
+        }
+
+
+        .jadwal-section-title .indicator {
+
+            width:
+                4px;
+
+            height:
+                25px;
+
+            background:
+                #1f4e79;
+
+            border-radius:
+                4px;
+
+        }
+
+
+        .jadwal-section-title h2 {
+
+            margin:
+                0;
+
+            color:
+                #1f4e79;
+
+            font-size:
+                18px;
+
+            font-weight:
+                800;
+
+        }
+
+
+        /* ========================================
            TABLE WRAPPER
-           ========================================= */
+        ======================================== */
 
         .table-wrapper {
-            width: 100%;
 
-            overflow-x: auto;
+            width:
+                100%;
 
-            background: #ffffff;
+            overflow-x:
+                auto;
 
-            border: 1px solid #e5e7eb;
+            background:
+                #ffffff;
 
-            border-radius: 10px;
+            border:
+                1px solid #dfe6ed;
 
-            margin-bottom: 22px;
+            border-radius:
+                12px;
 
-            -webkit-overflow-scrolling: touch;
+            box-shadow:
+                0 3px 12px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    0.05
+                );
+
+            -webkit-overflow-scrolling:
+                touch;
+
         }
 
 
-        /* =========================================
+        /* ========================================
            TABLE
-           ========================================= */
+        ======================================== */
 
         .jadwal-table {
-            width: 100%;
 
-            min-width: 680px;
+            width:
+                100%;
 
-            border-collapse: collapse;
+            min-width:
+                720px;
 
-            font-size: 13px;
+            border-collapse:
+                collapse;
+
+            font-size:
+                13px;
+
         }
 
-        .jadwal-table thead th {
-            padding: 12px 14px;
 
-            background: #f9fafb;
+        .jadwal-table thead {
+
+            background:
+                #eef4f9;
+
+        }
+
+
+        .jadwal-table th {
+
+            padding:
+                13px 14px;
+
+            color:
+                #1f4e79;
 
             border-bottom:
-                1px solid #e5e7eb;
+                1px solid #d8e2eb;
 
-            color: #4b5563;
+            text-align:
+                left;
 
-            font-size: 12px;
-            font-weight: 700;
+            font-size:
+                12px;
 
-            text-align: left;
+            font-weight:
+                800;
 
-            white-space: nowrap;
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.3px;
+
+            white-space:
+                nowrap;
+
         }
 
-        .jadwal-table tbody td {
-            padding: 13px 14px;
+
+        .jadwal-table td {
+
+            padding:
+                13px 14px;
 
             border-bottom:
-                1px solid #f0f1f3;
+                1px solid #edf1f5;
 
-            color: #374151;
+            color:
+                #334155;
 
-            vertical-align: middle;
-        }
+            vertical-align:
+                middle;
 
-        .jadwal-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .jadwal-table tbody tr:hover {
-            background: #fafafa;
         }
 
 
-        /* =========================================
-           LEBAR KOLOM
-           ========================================= */
-
-        .jadwal-table th:nth-child(1),
-        .jadwal-table td:nth-child(1) {
-            min-width: 180px;
-        }
-
-        .jadwal-table th:nth-child(2),
-        .jadwal-table td:nth-child(2) {
-            width: 120px;
-
-            white-space: nowrap;
-        }
-
-        .jadwal-table th:nth-child(3),
-        .jadwal-table td:nth-child(3) {
-            min-width: 200px;
-        }
-
-        .jadwal-table th:nth-child(4),
-        .jadwal-table td:nth-child(4) {
-            width: 170px;
-
-            white-space: nowrap;
-        }
-
-
-        /* =========================================
-           TOMBOL AKSI
-           ========================================= */
-
-        .btn-edit-jadwal,
-        .btn-hapus-jadwal {
-            border-radius: 6px;
-
-            padding: 7px 10px;
-
-            font-size: 12px;
-            font-weight: 600;
-
-            cursor: pointer;
+        .jadwal-table tbody tr {
 
             transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
+                background 0.15s ease;
+
         }
 
 
-        /* EDIT */
+        .jadwal-table tbody tr:hover {
 
-        .btn-edit-jadwal {
-            margin-right: 5px;
+            background:
+                #f8fafc;
 
-            background: #ffffff;
-
-            border: 1px solid #d1d5db;
-
-            color: #374151;
-        }
-
-        .btn-edit-jadwal:hover {
-            background: #f3f4f6;
         }
 
 
-        /* HAPUS */
+        .jadwal-table tbody tr:last-child td {
 
-        .btn-hapus-jadwal {
-            background: #ffffff;
+            border-bottom:
+                none;
 
-            border: 1px solid #d1d5db;
-
-            color: #6b7280;
-        }
-
-        .btn-hapus-jadwal:hover {
-            background: #f3f4f6;
-
-            color: #111827;
         }
 
 
-        /* =========================================
-           DATA KOSONG
-           ========================================= */
+        /* ========================================
+           KOLOM
+        ======================================== */
 
-        .empty-data {
-            background: #ffffff;
+        .col-tempat {
 
-            border: 1px solid #e5e7eb;
+            width:
+                34%;
 
-            border-radius: 10px;
+            min-width:
+                220px;
 
-            padding: 35px 20px;
-
-            text-align: center;
-
-            color: #6b7280;
-
-            font-size: 14px;
         }
 
 
-        /* =========================================
-           RESPONSIVE
-           ========================================= */
+        .col-tanggal {
 
-        @media (max-width: 700px) {
+            width:
+                16%;
 
-            .admin-container {
-                padding: 16px;
+            min-width:
+                125px;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        .col-pelayan {
+
+            width:
+                32%;
+
+            min-width:
+                220px;
+
+        }
+
+
+        .col-aksi {
+
+            width:
+                18%;
+
+            min-width:
+                130px;
+
+        }
+
+
+        /* ========================================
+           AKSI
+        ======================================== */
+
+        .aksi-wrapper {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                7px;
+
+        }
+
+
+        .btn-edit,
+        .btn-hapus {
+
+            min-height:
+                34px;
+
+            padding:
+                7px 12px;
+
+            border-radius:
+                7px;
+
+            font-family:
+                inherit;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+
+            transition:
+                all 0.2s ease;
+
+        }
+
+
+        .btn-edit {
+
+            background:
+                #edf4fa;
+
+            color:
+                #1f4e79;
+
+            border:
+                1px solid #c9dceb;
+
+        }
+
+
+        .btn-edit:hover {
+
+            background:
+                #1f4e79;
+
+            color:
+                #ffffff;
+
+        }
+
+
+        .btn-hapus {
+
+            background:
+                #f8f3f3;
+
+            color:
+                #8a4a4a;
+
+            border:
+                1px solid #e5d4d4;
+
+        }
+
+
+        .btn-hapus:hover {
+
+            background:
+                #8a4a4a;
+
+            color:
+                #ffffff;
+
+        }
+
+
+        /* ========================================
+           EMPTY / LOADING
+        ======================================== */
+
+        .empty-row {
+
+            text-align:
+                center !important;
+
+            padding:
+                25px !important;
+
+            color:
+                #64748b !important;
+
+        }
+
+
+        /* ========================================
+           FOOTER
+        ======================================== */
+
+        .jadwal-footer {
+
+            padding:
+                15px 5px 10px;
+
+            text-align:
+                center;
+
+            color:
+                #94a3b8;
+
+            font-size:
+                12px;
+
+        }
+
+
+        /* ========================================
+           FOCUS
+        ======================================== */
+
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        a:focus-visible {
+
+            outline:
+                3px solid
+                rgba(
+                    31,
+                    78,
+                    121,
+                    0.20
+                );
+
+            outline-offset:
+                2px;
+
+        }
+
+
+        /* ========================================
+           TABLET
+        ======================================== */
+
+        @media (max-width: 760px) {
+
+            body {
+
+                padding:
+                    10px;
+
             }
 
-            .page-header h1 {
-                font-size: 22px;
+
+            .jadwal-header {
+
+                padding:
+                    22px 16px;
+
+                border-radius:
+                    13px;
+
             }
 
-            .form-panel {
-                padding: 17px;
 
-                border-radius: 10px;
+            .jadwal-header h1 {
+
+                font-size:
+                    21px;
+
             }
+
+
+            .jadwal-header p {
+
+                font-size:
+                    13px;
+
+            }
+
+
+            .form-section {
+
+                padding:
+                    16px;
+
+            }
+
 
             .form-grid {
-                grid-template-columns: 1fr;
 
-                gap: 15px;
+                grid-template-columns:
+                    1fr;
+
+                gap:
+                    13px;
+
             }
 
-            .form-group.full-width {
-                grid-column: auto;
+
+            .form-group.full {
+
+                grid-column:
+                    auto;
+
             }
+
 
             .form-actions {
-                width: 100%;
+
+                flex-direction:
+                    column;
+
             }
 
-            .form-actions button {
-                flex: 1;
 
-                padding-left: 12px;
-                padding-right: 12px;
+            .btn {
+
+                width:
+                    100%;
+
             }
+
+
+            .jadwal-section-title h2 {
+
+                font-size:
+                    17px;
+
+            }
+
+        }
+
+
+        /* ========================================
+           HP KECIL
+        ======================================== */
+
+        @media (max-width: 480px) {
+
+            .jadwal-container {
+
+                width:
+                    100%;
+
+            }
+
+
+            .jadwal-header {
+
+                margin-bottom:
+                    10px;
+
+            }
+
+
+            .jadwal-header h1 {
+
+                font-size:
+                    19px;
+
+            }
+
+
+            .jadwal-header p {
+
+                font-size:
+                    12px;
+
+            }
+
+
+            .btn-kembali {
+
+                min-height:
+                    44px;
+
+                font-size:
+                    13px;
+
+            }
+
+
+            .form-section {
+
+                padding:
+                    14px;
+
+                border-radius:
+                    11px;
+
+            }
+
+
+            .section-heading h2 {
+
+                font-size:
+                    17px;
+
+            }
+
+
+            .form-group label {
+
+                font-size:
+                    12px;
+
+            }
+
+
+            .form-group input,
+            .form-group select {
+
+                min-height:
+                    45px;
+
+                font-size:
+                    13px;
+
+            }
+
+
+            .jadwal-section-title h2 {
+
+                font-size:
+                    16px;
+
+            }
+
 
             .table-wrapper {
-                border-radius: 8px;
+
+                border-radius:
+                    10px;
+
             }
+
 
             .jadwal-table {
-                min-width: 680px;
+
+                min-width:
+                    680px;
+
             }
+
+
+            .jadwal-table th {
+
+                padding:
+                    11px 12px;
+
+                font-size:
+                    11px;
+
+            }
+
+
+            .jadwal-table td {
+
+                padding:
+                    11px 12px;
+
+                font-size:
+                    12px;
+
+            }
+
+
+            .btn-edit,
+            .btn-hapus {
+
+                min-height:
+                    32px;
+
+                padding:
+                    6px 10px;
+
+                font-size:
+                    11px;
+
+            }
+
         }
 
-
-        @media (max-width: 400px) {
-
-            .admin-container {
-                padding: 12px;
-            }
-
-            .form-panel {
-                padding: 14px;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
-
-            .form-actions button {
-                width: 100%;
-
-                flex: none;
-            }
-        }
     </style>
+
 </head>
 
 
 <body>
 
-    <main class="admin-container">
+
+<div class="jadwal-container">
 
 
-        <!-- =====================================
-             HEADER
-             ===================================== -->
+    <!-- ======================================
+         HEADER
+    ======================================= -->
 
-        <header class="page-header">
+    <header class="jadwal-header">
 
-            <button
-                type="button"
-                class="btn-kembali"
-                onclick="kembaliKeAdmin()"
-            >
-                <span class="btn-kembali-icon">
-                    ←
-                </span>
+        <h1>
+            Kelola Jadwal
+        </h1>
 
-                <span>
-                    Kembali
-                </span>
-            </button>
+        <p>
+            GPIL Jemaat Betesda Purwosari
+        </p>
+
+    </header>
 
 
-            <h1>
-                Kelola Jadwal
-            </h1>
+    <!-- ======================================
+         KEMBALI
+    ======================================= -->
+
+    <a
+        href="kelola-admin.html"
+        class="btn-kembali"
+    >
+        Kembali ke Admin
+    </a>
 
 
-            <p>
-                Tambahkan, ubah, dan kelola
-                jadwal kumpulan.
-            </p>
+    <!-- ======================================
+         FORM
+    ======================================= -->
 
-        </header>
-
-
-        <!-- =====================================
-             FORM
-             ===================================== -->
-
-        <section class="form-panel">
+    <section class="form-section">
 
 
-            <!-- MODE EDIT -->
+        <div class="section-heading">
 
             <div
-                id="editMode"
-                class="edit-mode"
-            >
-                Mode Edit — Anda sedang
-                mengubah jadwal.
-            </div>
+                class="section-heading-line"
+            ></div>
+
+            <h2>
+                Tambah / Edit Jadwal
+            </h2>
+
+        </div>
 
 
-            <!-- FORM GRID -->
+        <form
+            onsubmit="simpanJadwal(event)"
+        >
+
 
             <div class="form-grid">
 
@@ -654,13 +1270,16 @@
                 <div class="form-group">
 
                     <label for="kelompok">
-                        Kelompok
+                        Kelompok Kumpulan
                     </label>
 
-                    <select id="kelompok">
+                    <select
+                        id="kelompok"
+                        required
+                    >
 
                         <option value="">
-                            -- Pilih Kelompok --
+                            Pilih kelompok
                         </option>
 
                         <option value="Rumah Tangga">
@@ -691,7 +1310,7 @@
                     <input
                         type="date"
                         id="tanggal"
-                        autocomplete="off"
+                        required
                     >
 
                 </div>
@@ -702,13 +1321,16 @@
                 <div class="form-group">
 
                     <label for="tempat">
-                        Tempat
+                        Tempat Kumpulan
                     </label>
 
-                    <select id="tempat">
+                    <select
+                        id="tempat"
+                        required
+                    >
 
                         <option value="">
-                            -- Pilih Tempat --
+                            Pilih tempat
                         </option>
 
                     </select>
@@ -724,30 +1346,31 @@
                         Pelayan Firman
                     </label>
 
-                    <select id="pelayanFirman">
+                    <select
+                        id="pelayanFirman"
+                        required
+                    >
 
                         <option value="">
-                            -- Pilih Pelayan Firman --
+                            Pilih pelayan firman
                         </option>
 
                     </select>
 
                 </div>
 
+
             </div>
 
 
-            <!-- =================================
-                 TOMBOL
-                 ================================= -->
+            <!-- BUTTON -->
 
             <div class="form-actions">
 
                 <button
-                    type="button"
+                    type="submit"
                     id="saveButton"
-                    class="btn-primary"
-                    onclick="simpanJadwal(event)"
+                    class="btn btn-simpan"
                 >
                     Simpan Jadwal
                 </button>
@@ -756,44 +1379,242 @@
                 <button
                     type="button"
                     id="cancelButton"
-                    class="btn-secondary"
+                    class="btn btn-batal"
                     onclick="batalEdit()"
-                    style="display: none;"
                 >
                     Batal Edit
                 </button>
 
             </div>
 
-        </section>
+
+        </form>
+
+    </section>
 
 
-        <!-- =====================================
-             DAFTAR JADWAL
-             ===================================== -->
+    <!-- ======================================
+         JADWAL RUMAH TANGGA
+    ======================================= -->
 
-        <section id="jadwalList">
+    <section class="jadwal-section">
 
-            <div class="empty-data">
-                Memuat data jadwal...
+
+        <div class="jadwal-section-header">
+
+            <div class="jadwal-section-title">
+
+                <div
+                    class="indicator"
+                ></div>
+
+                <h2>
+                    Rumah Tangga
+                </h2>
+
             </div>
 
-        </section>
-
-    </main>
+        </div>
 
 
-    <!-- =========================================
-         SCRIPT
-         ========================================= -->
+        <div class="table-wrapper">
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+            <table class="jadwal-table">
 
-    <script src="supabase-client.js"></script>
+                <thead>
 
-    <script src="daftar-jadwal.js"></script>
+                    <tr>
 
-    <script src="kelola-jadwal.js"></script>
+                        <th class="col-tempat">
+                            Tempat
+                        </th>
+
+                        <th class="col-tanggal">
+                            Tanggal
+                        </th>
+
+                        <th class="col-pelayan">
+                            Pelayan Firman
+                        </th>
+
+                        <th class="col-aksi">
+                            Aksi
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="jadwalListRumahTangga"
+                >
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================
+         JADWAL PKB
+    ======================================= -->
+
+    <section class="jadwal-section">
+
+
+        <div class="jadwal-section-header">
+
+            <div class="jadwal-section-title">
+
+                <div
+                    class="indicator"
+                ></div>
+
+                <h2>
+                    PKB
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="jadwal-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th class="col-tempat">
+                            Tempat
+                        </th>
+
+                        <th class="col-tanggal">
+                            Tanggal
+                        </th>
+
+                        <th class="col-pelayan">
+                            Pelayan Firman
+                        </th>
+
+                        <th class="col-aksi">
+                            Aksi
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="jadwalListPKB"
+                >
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================
+         JADWAL PW
+    ======================================= -->
+
+    <section class="jadwal-section">
+
+
+        <div class="jadwal-section-header">
+
+            <div class="jadwal-section-title">
+
+                <div
+                    class="indicator"
+                ></div>
+
+                <h2>
+                    PW
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="jadwal-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th class="col-tempat">
+                            Tempat
+                        </th>
+
+                        <th class="col-tanggal">
+                            Tanggal
+                        </th>
+
+                        <th class="col-pelayan">
+                            Pelayan Firman
+                        </th>
+
+                        <th class="col-aksi">
+                            Aksi
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="jadwalListPW"
+                >
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================
+         FOOTER
+    ======================================= -->
+
+    <footer class="jadwal-footer">
+
+        GPIL Jemaat Betesda Purwosari
+
+    </footer>
+
+
+</div>
+
+
+<!-- ========================================
+     SUPABASE
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-client.js"></script>
+
+<script src="daftar-jadwal.js"></script>
+
+<script src="kelola-jadwal.js"></script>
+
 
 </body>
+
 </html>
