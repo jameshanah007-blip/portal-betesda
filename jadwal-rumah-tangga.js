@@ -11,15 +11,22 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 async function ambilJadwalRumahTangga() {
 
-    const { data, error } =
-    await supabaseClient
+    const hariIni =
+        new Date().toISOString().split("T")[0];
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
         .from("jadwal_kumpulan")
         .select("*")
         .eq("kelompok", "Rumah Tangga")
-        .gte("tanggal", new Date().toISOString().split("T")[0])
+        .gte("tanggal", hariIni)
         .order("tanggal", {
             ascending: true
         });
+
 
     if (error) {
 
@@ -31,33 +38,26 @@ async function ambilJadwalRumahTangga() {
         jadwalRumahTangga = [];
 
         return;
-
     }
 
-    jadwalRumahTangga = data.map(function (jadwal) {
 
-        return {
-            id: jadwal.id,
-            kelompok: jadwal.kelompok,
-            tanggal: jadwal.tanggal,
-            tempat: jadwal.tempat,
-            pelayanFirman: jadwal.pelayan_firman
-        };
-
-    });
+    jadwalRumahTangga = data || [];
 
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    tampilkanJadwal();
-
-});
 
 
 function tampilkanJadwal() {
 
-    const container = document.getElementById("jadwalList");
+    const container =
+        document.getElementById("jadwalList");
+
+
+    if (!container) {
+
+        return;
+
+    }
+
 
     container.innerHTML = "";
 
@@ -66,7 +66,8 @@ function tampilkanJadwal() {
 
         container.innerHTML = `
             <div class="kosong">
-                Belum ada jadwal yang tersedia.
+                Belum ada jadwal Rumah Tangga
+                yang tersedia.
             </div>
         `;
 
@@ -74,71 +75,100 @@ function tampilkanJadwal() {
     }
 
 
-    jadwalRumahTangga
-    .filter(function (jadwal) {
-        return jadwal.tanggal >= new Date().toISOString().split("T")[0];
-    })
-    .sort(function (a, b) {
-        return new Date(a.tanggal) - new Date(b.tanggal);
-    })
-    .forEach(function (jadwal) {
+    jadwalRumahTangga.forEach(
+        function (jadwal) {
 
-        const kartu = document.createElement("div");
-
-        kartu.className = "jadwal-card";
+            const kartu =
+                document.createElement("div");
 
 
-        kartu.innerHTML = `
-
-            <div class="tanggal">
-                📅 ${formatTanggal(jadwal.tanggal)}
-            </div>
-
-            <div class="info">
-                📍 <span class="label">Tempat:</span>
-                ${escapeHTML(jadwal.tempat)}
-            </div>
-
-            <div class="pelayan">
-                🙏 <span class="label">Pelayan Firman:</span>
-                ${escapeHTML(jadwal.pelayanFirman)}
-            </div>
-
-        `;
+            kartu.className =
+                "jadwal-card";
 
 
-        container.appendChild(kartu);
+            kartu.innerHTML = `
 
-    });
+                <div class="tanggal">
+                    📅 ${formatTanggal(jadwal.tanggal)}
+                </div>
+
+                <div class="info">
+                    📍
+                    <span class="label">
+                        Tempat:
+                    </span>
+                    ${escapeHTML(jadwal.tempat)}
+                </div>
+
+                <div class="pelayan">
+                    🙏
+                    <span class="label">
+                        Pelayan Firman:
+                    </span>
+                    ${escapeHTML(
+                        jadwal.pelayan_firman
+                    )}
+                </div>
+
+            `;
+
+
+            container.appendChild(kartu);
+
+        }
+    );
 
 }
 
 
 function formatTanggal(tanggal) {
 
-    const date = new Date(tanggal + "T00:00:00");
+    const date =
+        new Date(
+            tanggal + "T00:00:00"
+        );
 
 
-    return date.toLocaleDateString("id-ID", {
-
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-
-    });
+    return date.toLocaleDateString(
+        "id-ID",
+        {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }
+    );
 
 }
 
 
 function escapeHTML(teks) {
 
-    return String(teks)
+    return String(teks ?? "")
 
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
