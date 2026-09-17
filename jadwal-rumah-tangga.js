@@ -1,12 +1,31 @@
 let jadwalRumahTangga = [];
 
+// Jalankan setelah halaman selesai dimuat
 document.addEventListener("DOMContentLoaded", async function () {
     await ambilJadwalRumahTangga();
     tampilkanJadwal();
 });
 
+
+// ==========================================
+// MENGAMBIL DATA JADWAL DARI SUPABASE
+// ==========================================
 async function ambilJadwalRumahTangga() {
-    const hariIni = new Date().toISOString().split("T")[0];
+
+    // Mengambil tanggal hari ini berdasarkan
+    // waktu lokal perangkat pengguna
+    const sekarang = new Date();
+
+    const hariIni =
+        sekarang.getFullYear() +
+        "-" +
+        String(sekarang.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(sekarang.getDate()).padStart(2, "0");
+
+
+    console.log("Tanggal hari ini:", hariIni);
+
 
     const { data, error } = await supabaseClient
         .from("jadwal_kumpulan")
@@ -15,41 +34,79 @@ async function ambilJadwalRumahTangga() {
         .gte("tanggal", hariIni)
         .order("tanggal", { ascending: true });
 
+
+    // Jika terjadi error
     if (error) {
-        console.error("Gagal mengambil jadwal Rumah Tangga:", error);
+
+        console.error(
+            "Gagal mengambil jadwal Rumah Tangga:",
+            error
+        );
 
         jadwalRumahTangga = [];
+
         return;
     }
 
-    console.log("Data Rumah Tangga:", data);
 
+    // Simpan data yang diterima
     jadwalRumahTangga = data || [];
+
+
+    console.log(
+        "Data Rumah Tangga:",
+        jadwalRumahTangga
+    );
 }
 
-function tampilkanJadwal() {
-    const container = document.getElementById("jadwalList");
 
+// ==========================================
+// MENAMPILKAN JADWAL KE HALAMAN
+// ==========================================
+function tampilkanJadwal() {
+
+    const container =
+        document.getElementById("jadwalList");
+
+
+    // Pastikan elemen tersedia
     if (!container) {
-        console.error("Elemen #jadwalList tidak ditemukan.");
+
+        console.error(
+            "Elemen #jadwalList tidak ditemukan."
+        );
+
         return;
     }
 
+
+    // Kosongkan isi sebelumnya
     container.innerHTML = "";
 
+
+    // Jika tidak ada jadwal
     if (jadwalRumahTangga.length === 0) {
+
         container.innerHTML = `
             <div class="kosong">
                 Belum ada jadwal yang tersedia.
             </div>
         `;
+
         return;
     }
 
-    jadwalRumahTangga.forEach(function (jadwal) {
-        const kartu = document.createElement("div");
 
-        kartu.className = "jadwal-card";
+    // Tampilkan setiap jadwal
+    jadwalRumahTangga.forEach(function (jadwal) {
+
+        const kartu =
+            document.createElement("div");
+
+
+        kartu.className =
+            "jadwal-card";
+
 
         kartu.innerHTML = `
             <div class="tanggal">
@@ -57,32 +114,62 @@ function tampilkanJadwal() {
             </div>
 
             <div class="info">
-                📍 <span class="label">Tempat:</span>
-                ${escapeHTML(jadwal.tempat || "-")}
+                📍
+                <span class="label">
+                    Tempat:
+                </span>
+
+                ${escapeHTML(
+                    jadwal.tempat || "-"
+                )}
             </div>
 
             <div class="pelayan">
-                🙏 <span class="label">Pelayan Firman:</span>
-                ${escapeHTML(jadwal.pelayan_firman || "-")}
+
+                🙏
+                <span class="label">
+                    Pelayan Firman:
+                </span>
+
+                ${escapeHTML(
+                    jadwal.pelayan_firman || "-"
+                )}
+
             </div>
         `;
+
 
         container.appendChild(kartu);
     });
 }
 
-function formatTanggal(tanggal) {
-    const date = new Date(tanggal + "T00:00:00");
 
-    return date.toLocaleDateString("id-ID", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-    });
+// ==========================================
+// FORMAT TANGGAL INDONESIA
+// ==========================================
+function formatTanggal(tanggal) {
+
+    const date =
+        new Date(tanggal + "T00:00:00");
+
+
+    return date.toLocaleDateString(
+        "id-ID",
+        {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }
+    );
 }
 
+
+// ==========================================
+// MENCEGAH HTML INJECTION
+// ==========================================
 function escapeHTML(teks) {
+
     return String(teks)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
