@@ -19,163 +19,93 @@
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-            background: #f3f6fa;
-            color: #1f2937;
+            background: #f5f7fa;
+            color: #263238;
         }
 
-
-        /* =================================
+        /* =========================
            HEADER
-        ================================= */
+        ========================= */
 
         .header {
-            background: linear-gradient(
-                145deg,
-                #173f63 0%,
-                #1f4e79 55%,
-                #2d6797 100%
-            );
-
+            background: #1f4e79;
             color: white;
-
-            padding: 22px 18px 30px;
-
-            border-radius: 0 0 28px 28px;
-
-            box-shadow:
-                0 6px 18px rgba(20, 55, 85, 0.18);
+            padding: 18px 20px 22px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
         }
 
         .header-inner {
             width: 100%;
-            max-width: 600px;
+            max-width: 760px;
             margin: auto;
         }
 
-
-        /* =================================
-           TOMBOL KEMBALI
-        ================================= */
-
         .kembali {
             display: inline-flex;
-
             align-items: center;
-            justify-content: center;
-
-            min-height: 42px;
-
-            padding: 8px 14px;
-
-            border-radius: 12px;
+            min-height: 38px;
+            padding: 7px 12px;
+            border-radius: 8px;
 
             color: white;
-
-            background: rgba(255, 255, 255, 0.13);
-
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.20);
 
             text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
 
-            font-size: 16px;
-            font-weight: 700;
+            margin-bottom: 17px;
+            transition: background 0.2s ease;
+        }
 
-            margin-bottom: 27px;
-
-            transition: 0.2s ease;
+        .kembali:hover {
+            background: rgba(255, 255, 255, 0.18);
         }
 
         .kembali:active {
-            transform: scale(0.97);
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-
-        /* =================================
-           JUDUL HEADER
-        ================================= */
-
-        .judul-kecil {
-            margin: 0 0 8px;
-
-            font-size: 14px;
-
-            font-weight: 700;
-
-            letter-spacing: 1.2px;
-
-            text-transform: uppercase;
-
-            color: rgba(255, 255, 255, 0.75);
+            transform: scale(0.98);
         }
 
         .header h1 {
             margin: 0;
-
-            font-size: 29px;
-
-            line-height: 1.25;
-
-            font-weight: 800;
-
-            letter-spacing: -0.4px;
+            font-size: 24px;
+            line-height: 1.3;
+            font-weight: 700;
+            letter-spacing: -0.2px;
         }
 
-        .header-deskripsi {
-            margin: 10px 0 0;
-
-            font-size: 16px;
-
-            line-height: 1.5;
-
-            color: rgba(255, 255, 255, 0.88);
-        }
-
-
-        /* =================================
+        /* =========================
            CONTENT
-        ================================= */
+        ========================= */
 
         .container {
             width: 100%;
-            max-width: 600px;
-
+            max-width: 760px;
             margin: auto;
-
-            padding: 24px 14px 35px;
+            padding: 22px 16px 35px;
         }
-
-
-        /* =================================
-           DAFTAR JADWAL
-        ================================= */
 
         .jadwal-list {
             display: flex;
-
             flex-direction: column;
-
-            gap: 16px;
+            gap: 12px;
         }
 
-
-        /* =================================
-           CARD
-        ================================= */
+        /* =========================
+           KARTU JADWAL
+        ========================= */
 
         .jadwal-card {
             position: relative;
 
             background: #ffffff;
+            border: 1px solid #e1e6eb;
+            border-radius: 12px;
 
-            border-radius: 18px;
+            padding: 16px 18px 16px 20px;
 
-            padding: 21px 19px 20px 22px;
-
-            border: 1px solid #e4eaf0;
-
-            box-shadow:
-                0 4px 14px rgba(31, 78, 121, 0.09);
+            box-shadow: 0 2px 7px rgba(31, 78, 121, 0.07);
 
             overflow: hidden;
         }
@@ -184,273 +114,230 @@
             content: "";
 
             position: absolute;
-
             left: 0;
             top: 0;
             bottom: 0;
 
-            width: 6px;
+            width: 4px;
 
             background: #1f4e79;
         }
 
-
-        /* =================================
-           TANGGAL
-        ================================= */
-
         .tanggal {
-            color: #173f63;
+            color: #1f4e79;
 
-            font-size: 20px;
-
+            font-size: 17px;
             line-height: 1.4;
 
-            font-weight: 800;
+            font-weight: 700;
 
-            margin-bottom: 17px;
+            margin-bottom: 10px;
         }
-
-
-        /* =================================
-           INFORMASI
-        ================================= */
 
         .info,
         .pelayan {
-            font-size: 17px;
+            font-size: 15px;
+            line-height: 1.5;
 
-            line-height: 1.6;
-
-            color: #4b5563;
+            color: #59636e;
         }
 
         .info {
-            margin-bottom: 13px;
+            margin-bottom: 8px;
         }
 
         .pelayan {
-            padding-top: 13px;
-
-            border-top: 1px solid #e8edf2;
+            padding-top: 8px;
+            border-top: 1px solid #edf0f3;
         }
 
         .label {
-            color: #27384a;
-
-            font-weight: 800;
+            color: #374151;
+            font-weight: 600;
         }
 
-
-        /* =================================
-           JIKA TIDAK ADA DATA
-        ================================= */
+        /* =========================
+           JIKA BELUM ADA JADWAL
+        ========================= */
 
         .kosong {
             background: white;
 
-            border-radius: 18px;
+            border: 1px solid #e1e6eb;
+            border-radius: 12px;
 
-            padding: 34px 20px;
+            padding: 28px 18px;
 
             text-align: center;
 
-            color: #687585;
+            color: #697586;
 
-            border: 1px solid #e4eaf0;
-
-            box-shadow:
-                0 4px 14px rgba(31, 78, 121, 0.07);
-
-            font-size: 16px;
-
+            font-size: 15px;
             line-height: 1.5;
+
+            box-shadow: 0 2px 7px rgba(31, 78, 121, 0.05);
         }
 
-
-        /* =================================
+        /* =========================
            FOOTER
-        ================================= */
+        ========================= */
 
         .footer {
-            padding: 10px 15px 30px;
+            padding: 8px 15px 28px;
 
             text-align: center;
 
-            color: #7a8795;
+            color: #8a949e;
         }
 
         .footer p {
             margin: 0;
 
-            font-size: 14px;
-
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 600;
         }
 
-        .footer small {
-            display: block;
+        /* =========================
+           DESKTOP
+        ========================= */
 
-            margin-top: 6px;
-
-            font-size: 12px;
-        }
-
-
-        /* =================================
-           KHUSUS LAYAR HP
-        ================================= */
-
-        @media (max-width: 480px) {
+        @media (min-width: 768px) {
 
             .header {
-                padding: 20px 17px 29px;
-
-                border-radius: 0 0 25px 25px;
+                padding: 20px 24px 23px;
             }
 
             .kembali {
-                font-size: 16px;
-
-                min-height: 44px;
-
-                padding: 8px 15px;
-
-                margin-bottom: 25px;
-            }
-
-            .judul-kecil {
-                font-size: 13px;
-
-                letter-spacing: 1px;
+                margin-bottom: 18px;
             }
 
             .header h1 {
-                font-size: 27px;
-
-                line-height: 1.28;
-            }
-
-            .header-deskripsi {
-                font-size: 16px;
-
-                margin-top: 9px;
+                font-size: 26px;
             }
 
             .container {
-                padding: 21px 12px 32px;
-            }
-
-            .jadwal-list {
-                gap: 15px;
+                padding-top: 26px;
             }
 
             .jadwal-card {
-                padding: 20px 17px 20px 21px;
-
-                border-radius: 17px;
+                padding: 17px 20px 17px 22px;
             }
 
             .tanggal {
-                font-size: 20px;
-
-                line-height: 1.4;
-
-                margin-bottom: 16px;
+                font-size: 18px;
             }
 
             .info,
             .pelayan {
-                font-size: 17px;
+                font-size: 15px;
+            }
+        }
 
-                line-height: 1.65;
+        /* =========================
+           HP
+        ========================= */
+
+        @media (max-width: 480px) {
+
+            .header {
+                padding: 15px 15px 19px;
+            }
+
+            .kembali {
+                min-height: 36px;
+                padding: 6px 11px;
+
+                font-size: 14px;
+
+                margin-bottom: 14px;
+            }
+
+            .header h1 {
+                font-size: 21px;
+                line-height: 1.3;
+            }
+
+            .container {
+                padding: 18px 12px 28px;
+            }
+
+            .jadwal-list {
+                gap: 10px;
+            }
+
+            .jadwal-card {
+                border-radius: 10px;
+
+                padding: 14px 14px 14px 17px;
+            }
+
+            .jadwal-card::before {
+                width: 3px;
+            }
+
+            .tanggal {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+
+            .info,
+            .pelayan {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+
+            .info {
+                margin-bottom: 7px;
             }
 
             .pelayan {
-                padding-top: 14px;
+                padding-top: 7px;
+            }
+
+            .footer {
+                padding-bottom: 24px;
+            }
+
+            .footer p {
+                font-size: 12px;
             }
         }
     </style>
 </head>
 
-
 <body>
 
-
-    <!-- =================================
-         HEADER
-    ================================= -->
-
     <header class="header">
-
         <div class="header-inner">
 
-            <a
-                href="jadwal-kumpulan.html"
-                class="kembali"
-            >
+            <a href="jadwal-kumpulan.html" class="kembali">
                 ← Kembali
             </a>
 
-
-            <p class="judul-kecil">
-                JADWAL KUMPULAN
-            </p>
-
-
             <h1>
-                Rumah Tangga
+                Jadwal Kumpulan Rumah Tangga
             </h1>
 
-
-            <p class="header-deskripsi">
-                GPIL Jemaat Betesda Purwosari
-            </p>
-
         </div>
-
     </header>
 
 
-    <!-- =================================
-         CONTENT
-    ================================= -->
-
     <main class="container">
 
-        <div
-            id="jadwalList"
-            class="jadwal-list"
-        ></div>
+        <div id="jadwalList" class="jadwal-list"></div>
 
     </main>
 
 
-    <!-- =================================
-         FOOTER
-    ================================= -->
-
     <footer class="footer">
-
         <p>
-            GPIL Jemaat Betesda Purwosari
-        </p>
-
-        <small>
             Portal Informasi Jemaat
-        </small>
-
+        </p>
     </footer>
 
 
-    <!-- =================================
-         SUPABASE
-    ================================= -->
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script src="supabase-client.js"></script>
-
     <script src="jadwal-rumah-tangga.js"></script>
 
 </body>
