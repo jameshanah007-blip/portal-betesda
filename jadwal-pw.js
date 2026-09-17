@@ -1,5 +1,9 @@
 let jadwalPW = [];
 
+
+// ==========================================
+// JALANKAN SETELAH HALAMAN SELESAI DIMUAT
+// ==========================================
 document.addEventListener("DOMContentLoaded", async function () {
 
     await ambilJadwalPW();
@@ -9,18 +13,37 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 
+// ==========================================
+// MENGAMBIL DATA JADWAL PW DARI SUPABASE
+// ==========================================
 async function ambilJadwalPW() {
 
-    const { data, error } =
-        await supabaseClient
-            .from("jadwal_kumpulan")
-            .select("*")
-            .eq("kelompok", "PW")
-.gte("tanggal", new Date().toISOString().split("T")[0])
-.order("tanggal", {
-    ascending: true
-});
+    // Mengambil tanggal hari ini berdasarkan
+    // waktu lokal perangkat pengguna
+    const sekarang = new Date();
 
+    const hariIni =
+        sekarang.getFullYear() +
+        "-" +
+        String(sekarang.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(sekarang.getDate()).padStart(2, "0");
+
+
+    console.log("Tanggal hari ini:", hariIni);
+
+
+    const { data, error } = await supabaseClient
+        .from("jadwal_kumpulan")
+        .select("*")
+        .eq("kelompok", "PW")
+        .gte("tanggal", hariIni)
+        .order("tanggal", {
+            ascending: true
+        });
+
+
+    // Jika terjadi error
     if (error) {
 
         console.error(
@@ -31,33 +54,45 @@ async function ambilJadwalPW() {
         jadwalPW = [];
 
         return;
-
     }
 
-    jadwalPW = data.map(function (jadwal) {
 
-        return {
-            id: jadwal.id,
-            kelompok: jadwal.kelompok,
-            tanggal: jadwal.tanggal,
-            tempat: jadwal.tempat,
-            pelayanFirman: jadwal.pelayan_firman
-        };
+    // Simpan data yang diterima
+    jadwalPW = data || [];
 
-    });
 
+    console.log(
+        "Data PW:",
+        jadwalPW
+    );
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    tampilkanJadwal();
-});
 
+// ==========================================
+// MENAMPILKAN JADWAL PW
+// ==========================================
 function tampilkanJadwal() {
 
-    const container = document.getElementById("jadwalList");
+    const container =
+        document.getElementById("jadwalList");
 
+
+    // Pastikan elemen tersedia
+    if (!container) {
+
+        console.error(
+            "Elemen #jadwalList tidak ditemukan."
+        );
+
+        return;
+    }
+
+
+    // Kosongkan isi sebelumnya
     container.innerHTML = "";
 
+
+    // Jika tidak ada jadwal
     if (jadwalPW.length === 0) {
 
         container.innerHTML = `
@@ -69,18 +104,17 @@ function tampilkanJadwal() {
         return;
     }
 
-    jadwalPW
-    .filter(function (jadwal) {
-        return jadwal.tanggal >= new Date().toISOString().split("T")[0];
-    })
-    .sort(function (a, b) {
-        return new Date(a.tanggal) - new Date(b.tanggal);
-    })
-    .forEach(function (jadwal) {
 
-        const kartu = document.createElement("div");
+    // Tampilkan setiap jadwal
+    jadwalPW.forEach(function (jadwal) {
 
-        kartu.className = "jadwal-card";
+        const kartu =
+            document.createElement("div");
+
+
+        kartu.className =
+            "jadwal-card";
+
 
         kartu.innerHTML = `
             <div class="tanggal">
@@ -88,32 +122,61 @@ function tampilkanJadwal() {
             </div>
 
             <div class="info">
-                📍 <span class="label">Tempat:</span>
-                ${escapeHTML(jadwal.tempat)}
+                📍
+                <span class="label">
+                    Tempat:
+                </span>
+
+                ${escapeHTML(
+                    jadwal.tempat || "-"
+                )}
             </div>
 
             <div class="pelayan">
-                🙏 <span class="label">Pelayan Firman:</span>
-                ${escapeHTML(jadwal.pelayanFirman)}
+
+                🙏
+                <span class="label">
+                    Pelayan Firman:
+                </span>
+
+                ${escapeHTML(
+                    jadwal.pelayan_firman || "-"
+                )}
+
             </div>
         `;
 
+
         container.appendChild(kartu);
+
     });
 }
 
+
+// ==========================================
+// FORMAT TANGGAL INDONESIA
+// ==========================================
 function formatTanggal(tanggal) {
 
-    const date = new Date(tanggal + "T00:00:00");
+    const date =
+        new Date(tanggal + "T00:00:00");
 
-    return date.toLocaleDateString("id-ID", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-    });
+
+    return date.toLocaleDateString(
+        "id-ID",
+        {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }
+    );
 }
 
+
+// ==========================================
+// MENCEGAH HTML INJECTION
+// ==========================================
 function escapeHTML(teks) {
 
     return String(teks)
