@@ -424,7 +424,7 @@
         </h2>
 
 
-        <form id="transactionForm">
+        <form id="transactionForm" autocomplete="off">
 
 
             <!-- TANGGAL -->
@@ -455,6 +455,8 @@
                <input
     type="text"
     id="keterangan"
+    name="transaction-description"
+    autocomplete="off"
 >
 
             </div>
@@ -471,6 +473,9 @@
                <input
     type="text"
     id="jumlah"
+    name="transaction-amount"
+    autocomplete="off"
+    inputmode="numeric"
 >
 
             </div>
