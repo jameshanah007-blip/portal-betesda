@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1f4e79">
+  <title>Laporan Triwulan Keuangan Pemuda</title>
+  <style>
+    :root { color-scheme: light; --navy:#1f4e79; --line:#d7dee7; --muted:#5e6b78; }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:22px; background:#f2f5f8; color:#202a34; font-family:Arial,Helvetica,sans-serif; }
+    .page { max-width:1000px; margin:0 auto; }
+    .toolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; min-height:42px; padding:10px 15px; border:1px solid var(--navy); border-radius:8px; background:white; color:var(--navy); font:700 14px Arial,sans-serif; text-decoration:none; cursor:pointer; }
+    .btn.primary { background:var(--navy); color:white; }
+    .filter { display:flex; align-items:end; gap:12px; flex-wrap:wrap; padding:16px; margin-bottom:18px; border:1px solid var(--line); border-radius:12px; background:white; }
+    .field { display:grid; gap:6px; }
+    label { color:#334155; font-size:13px; font-weight:700; }
+    select { min-height:42px; min-width:145px; padding:8px 10px; border:1px solid #cbd5e1; border-radius:7px; background:white; font:16px Arial,sans-serif; }
+    .status { margin:10px 0; color:var(--muted); font-size:13px; }
+    .error { color:#a32121; background:#fff1f1; border:1px solid #f0caca; border-radius:8px; padding:12px; }
+    .paper { background:white; border:1px solid #d8dee6; box-shadow:0 5px 22px #152a4010; padding:34px 38px; }
+    .paper-head { text-align:center; border-bottom:2px solid #202a34; padding-bottom:16px; margin-bottom:16px; }
+    .paper-head h1 { margin:0 0 7px; font-size:20px; line-height:1.4; }
+    .paper-head h2 { margin:0 0 5px; font-size:16px; }
+    .paper-head p { margin:0; font-size:14px; }
+    .period { margin-top:10px !important; font-weight:700; }
+    table { width:100%; border-collapse:collapse; }
+    .summary td, .summary th { padding:8px 7px; border:1px solid #7d8791; vertical-align:top; font-size:13px; }
+    .summary .section-row td { background:#eef3f8; font-weight:700; }
+    .summary .roman { width:42px; text-align:center; font-weight:700; }
+    .summary .colon { width:20px; text-align:center; }
+    .summary .amount { width:170px; text-align:right; white-space:nowrap; }
+    .detail-title { margin:18px 0 6px; color:var(--navy); font-size:14px; }
+    .detail-table th, .detail-table td { padding:7px 8px; border:1px solid #7d8791; font-size:12px; text-align:left; }
+    .detail-table th { background:#eef3f8; }
+    .detail-table .amount { text-align:right; white-space:nowrap; width:175px; }
+    .signature { display:flex; justify-content:flex-end; margin-top:45px; page-break-inside:avoid; }
+    .signature-box { width:290px; text-align:center; font-size:13px; line-height:1.7; }
+    .signature-space { height:70px; }
+    .signature-name { font-weight:700; text-decoration:underline; }
+    .note { margin-top:18px; color:var(--muted); font-size:11px; }
+    @media (max-width:650px) {
+      body { padding:10px; }
+      .paper { padding:20px 12px; }
+      .paper-head h1 { font-size:17px; }
+      .paper-head h2 { font-size:14px; }
+      .summary td,.summary th { padding:6px 4px; font-size:11px; }
+      .summary .amount { width:112px; white-space:normal; }
+      .signature { margin-top:35px; }
+      .signature-box { width:240px; }
+    }
+    @media print {
+      @page { size:A4 portrait; margin:14mm; }
+      body { padding:0; background:white; }
+      .page { max-width:none; }
+      .no-print { display:none !important; }
+      .paper { border:0; box-shadow:none; padding:0; }
+      .paper-head { margin-top:0; }
+      .summary td,.summary th,.detail-table td,.detail-table th { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="toolbar no-print">
+      <a class="btn" href="index.html">← Kembali ke Portal</a>
+      <button class="btn primary" id="btnCetak" type="button">Cetak / Simpan PDF</button>
+    </div>
+
+    <section class="filter no-print" aria-label="Pilih periode laporan">
+      <div class="field">
+        <label for="tahun">Tahun laporan</label>
+        <select id="tahun"></select>
+      </div>
+      <div class="field">
+        <label for="triwulan">Periode triwulan</label>
+        <select id="triwulan">
+          <option value="1">Triwulan I (Januari–Maret)</option>
+          <option value="2">Triwulan II (April–Juni)</option>
+          <option value="3">Triwulan III (Juli–September)</option>
+          <option value="4">Triwulan IV (Oktober–Desember)</option>
+        </select>
+      </div>
+      <button class="btn primary" id="btnTampilkan" type="button">Tampilkan Laporan</button>
+      <p id="status" class="status" role="status" aria-live="polite">Menghubungkan ke data Buku Kas Pemuda…</p>
+    </section>
+
+    <article class="paper">
+      <header class="paper-head">
+        <h1>LAPORAN TRIWULAN KEUANGAN PERSEKUTUAN PEMUDA</h1>
+        <h2>GPIL JEMAAT BETESDA PURWOSARI</h2>
+        <p class="period" id="periode">Periode laporan</p>
+      </header>
+
+      <table class="summary">
+        <tbody>
+          <tr><td class="roman">I</td><td> SALDO BULAN LALU</td><td class="colon">:</td><td class="amount" id="saldoAwal">—</td></tr>
+          <tr><td class="roman">II</td><td id="labelPenerimaan">PENERIMAAN</td><td class="colon">:</td><td class="amount" id="totalPenerimaan">—</td></tr>
+          <tr><td class="roman">III</td><td>TOTAL (I+II)</td><td class="colon">:</td><td class="amount" id="totalTersedia">—</td></tr>
+          <tr><td class="roman">IV</td><td id="labelPengeluaran">PENGELUARAN</td><td class="colon">:</td><td class="amount" id="totalPengeluaran">—</td></tr>
+          <tr><td class="roman">V</td><td><strong>SALDO AKHIR (III-IV)</strong></td><td class="colon">:</td><td class="amount" id="saldoAkhir"><strong>—</strong></td></tr>
+          <tr class="section-row"><td class="roman">VI</td><td colspan="3">RINCIAN PENERIMAAN</td></tr>
+        </tbody>
+      </table>
+
+      <table class="detail-table" aria-label="Rincian penerimaan">
+        <thead><tr><th style="width:48px">No.</th><th>Keterangan</th><th class="amount">Jumlah</th></tr></thead>
+        <tbody id="rincianPenerimaan"></tbody>
+      </table>
+
+      <table class="summary" style="margin-top:14px">
+        <tbody><tr class="section-row"><td class="roman">VII</td><td colspan="3">RINCIAN PENGELUARAN</td></tr></tbody>
+      </table>
+      <table class="detail-table" aria-label="Rincian pengeluaran">
+        <thead><tr><th style="width:48px">No.</th><th>Keterangan</th><th class="amount">Jumlah</th></tr></thead>
+        <tbody id="rincianPengeluaran"></tbody>
+      </table>
+
+      <div class="signature">
+        <div class="signature-box">
+          Mengetahui Pengurus Persekutuan Pemuda<br>
+          GPIL Jemaat Betesda Purwosari<br>
+          <strong>Ketua</strong>
+          <div class="signature-space"></div>
+          <div class="signature-name">YUSAK</div>
+        </div>
+      </div>
+      <p class="note">Laporan dibuat berdasarkan transaksi pada Buku Kas Pemuda. Periksa periode dan rincian transaksi sebelum dicetak atau disimpan sebagai PDF.</p>
+    </article>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script>
+    const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+    const formatRupiah = nilai => new Intl.NumberFormat("id-ID", {style:"currency",currency:"IDR",maximumFractionDigits:0}).format(Number(nilai) || 0);
+    const statusEl = document.getElementById("status");
+
+    function periodeTriwulan() {
+      const tahun = Number(document.getElementById("tahun").value);
+      const triwulan = Number(document.getElementById("triwulan").value);
+      const bulanMulai = (triwulan - 1) * 3;
+      const awal = tahun + "-" + String(bulanMulai + 1).padStart(2, "0") + "-01";
+      const bulanAkhir = bulanMulai + 2;
+      const akhirTanggal = new Date(tahun, bulanAkhir + 1, 0).getDate();
+      const akhir = tahun + "-" + String(bulanAkhir + 1).padStart(2, "0") + "-" + akhirTanggal;
+      return {tahun, triwulan, bulanMulai, bulanAkhir, awal, akhir};
+    }
+
+    function formatPeriode(p) {
+      return "TRIWULAN " + ["I","II","III","IV"][p.triwulan - 1] + " TAHUN " + p.tahun +
+        " (" + namaBulan[p.bulanMulai] + " SAMPAI " + namaBulan[p.bulanAkhir] + " " + p.tahun + ")";
+    }
+
+    function setNilai(id, value) {
+      document.getElementById(id).textContent = value;
+    }
+
+    function ringkasKategori(transaksi, jenis) {
+      const kelompok = new Map();
+      transaksi.filter(item => item.jenis === jenis).forEach(item => {
+        const nama = String(item.keterangan || "").trim() || "Tanpa keterangan";
+        const jumlah = Number(item.jumlah) || 0;
+        kelompok.set(nama, (kelompok.get(nama) || 0) + jumlah);
+      });
+      const daftar = [...kelompok.entries()].map(([nama, jumlah]) => ({nama, jumlah}))
+        .sort((a,b) => b.jumlah - a.jumlah);
+      if (daftar.length > 5) {
+        const utama = daftar.slice(0, 4);
+        const lainnya = daftar.slice(4).reduce((total, item) => total + item.jumlah, 0);
+        utama.push({nama:"Lainnya (gabungan keterangan lain)", jumlah:lainnya});
+        return utama;
+      }
+      return daftar;
+    }
+
+    function tampilkanRincian(id, data) {
+      const tbody = document.getElementById(id);
+      tbody.replaceChildren();
+      for (let i = 0; i < 5; i++) {
+        const item = data[i];
+        const tr = document.createElement("tr");
+        const nomor = document.createElement("td");
+        const nama = document.createElement("td");
+        const jumlah = document.createElement("td");
+        nomor.textContent = String(i + 1);
+        nama.textContent = item ? item.nama : "—";
+        jumlah.textContent = item ? formatRupiah(item.jumlah) : "—";
+        jumlah.className = "amount";
+        tr.append(nomor, nama, jumlah);
+        tbody.appendChild(tr);
+      }
+    }
+
+    async function muatLaporan() {
+      const periode = periodeTriwulan();
+      setNilai("periode", formatPeriode(periode));
+      setNilai("labelPenerimaan", "PENERIMAAN BULAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI BULAN " + namaBulan[periode.bulanAkhir].toUpperCase());
+      setNilai("labelPengeluaran", "PENGELUARAN BULAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI BULAN " + namaBulan[periode.bulanAkhir].toUpperCase());
+      statusEl.className = "status";
+      statusEl.textContent = "Memuat transaksi dari Buku Kas Pemuda…";
+      document.getElementById("btnTampilkan").disabled = true;
+
+      try {
+        if (typeof supabaseClient === "undefined") throw new Error("Koneksi Supabase belum tersedia.");
+        const {data, error} = await supabaseClient.from("transaksi_pemuda")
+          .select("tanggal,keterangan,jumlah,jenis")
+          .order("tanggal", {ascending:true});
+        if (error) throw error;
+
+        const semua = data || [];
+        const sebelumPeriode = semua.filter(item => item.tanggal && item.tanggal < periode.awal);
+        const dalamPeriode = semua.filter(item => item.tanggal && item.tanggal >= periode.awal && item.tanggal <= periode.akhir);
+        const jumlahJenis = (daftar, jenis) => daftar.reduce((total, item) => total + (item.jenis === jenis ? (Number(item.jumlah) || 0) : 0), 0);
+        const saldoAwal = jumlahJenis(sebelumPeriode, "Pemasukan") - jumlahJenis(sebelumPeriode, "Pengeluaran");
+        const penerimaan = jumlahJenis(dalamPeriode, "Pemasukan");
+        const pengeluaran = jumlahJenis(dalamPeriode, "Pengeluaran");
+        const totalTersedia = saldoAwal + penerimaan;
+        const saldoAkhir = totalTersedia - pengeluaran;
+
+        setNilai("saldoAwal", formatRupiah(saldoAwal));
+        setNilai("totalPenerimaan", formatRupiah(penerimaan));
+        setNilai("totalTersedia", formatRupiah(totalTersedia));
+        setNilai("totalPengeluaran", formatRupiah(pengeluaran));
+        setNilai("saldoAkhir", formatRupiah(saldoAkhir));
+        tampilkanRincian("rincianPenerimaan", ringkasKategori(dalamPeriode, "Pemasukan"));
+        tampilkanRincian("rincianPengeluaran", ringkasKategori(dalamPeriode, "Pengeluaran"));
+        statusEl.textContent = "Laporan berhasil dimuat dari " + dalamPeriode.length + " transaksi pada periode ini.";
+      } catch (error) {
+        console.error("Gagal memuat laporan triwulan:", error);
+        statusEl.className = "status error";
+        statusEl.textContent = "Laporan tidak dapat dimuat. Periksa koneksi Supabase dan akses tabel transaksi_pemuda. " + (error.message || "");
+        ["saldoAwal","totalPenerimaan","totalTersedia","totalPengeluaran","saldoAkhir"].forEach(id => setNilai(id, "Tidak tersedia"));
+        tampilkanRincian("rincianPenerimaan", []);
+        tampilkanRincian("rincianPengeluaran", []);
+      } finally {
+        document.getElementById("btnTampilkan").disabled = false;
+      }
+    }
+
+    const tahunSelect = document.getElementById("tahun");
+    const tahunSekarang = new Date().getFullYear();
+    for (let tahun = tahunSekarang - 8; tahun <= tahunSekarang + 1; tahun++) {
+      const option = document.createElement("option");
+      option.value = String(tahun);
+      option.textContent = String(tahun);
+      tahunSelect.appendChild(option);
+    }
+    tahunSelect.value = String(tahunSekarang);
+    document.getElementById("triwulan").value = String(Math.floor(new Date().getMonth() / 3) + 1);
+    document.getElementById("btnTampilkan").addEventListener("click", muatLaporan);
+    document.getElementById("btnCetak").addEventListener("click", () => window.print());
+    muatLaporan();
+  </script>
+</body>
+</html>
