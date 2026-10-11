@@ -19,25 +19,25 @@
     select { min-height:42px; min-width:145px; padding:8px 10px; border:1px solid #cbd5e1; border-radius:7px; background:white; font:16px Arial,sans-serif; }
     .status { margin:10px 0; color:var(--muted); font-size:13px; }
     .error { color:#a32121; background:#fff1f1; border:1px solid #f0caca; border-radius:8px; padding:12px; }
-    .paper { background:white; border:1px solid #d8dee6; box-shadow:0 5px 22px #152a4010; padding:34px 38px; }
-    .paper-head { text-align:center; border-bottom:2px solid #202a34; padding-bottom:16px; margin-bottom:16px; }
-    .paper-head h1 { margin:0 0 7px; font-size:20px; line-height:1.4; }
-    .paper-head h2 { margin:0 0 5px; font-size:16px; }
+    .paper { background:white; border:1px solid #d8dee6; border-radius:8px; box-shadow:0 5px 22px #152a4010; padding:34px 38px; }
+    .paper-head { text-align:center; border-bottom:2px solid #202a34; padding-bottom:18px; margin-bottom:18px; }
+    .paper-head h1 { margin:0 0 8px; font-size:22px; line-height:1.4; letter-spacing:.25px; }
+    .paper-head h2 { margin:0 0 5px; font-size:17px; line-height:1.45; }
     .paper-head p { margin:0; font-size:14px; }
     table { width:100%; border-collapse:collapse; }
-    .summary td, .summary th { padding:6px 7px; border:1px solid #7d8791; vertical-align:top; font-size:13px; }
-    .summary .section-row td { background:#eef3f8; font-weight:700; }
+    .summary td, .summary th { padding:9px 10px; border:1px solid #7d8791; vertical-align:middle; font-size:14px; line-height:1.35; }
+    .summary .section-row td { background:#eaf0f6; font-weight:700; }
     .summary { table-layout:fixed; }
-    .summary .roman { width:7%; text-align:center; font-weight:700; }
-    .summary .label-cell { width:63%; }
-    .summary .amount { width:30%; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+    .summary .roman { width:8%; text-align:center; font-weight:700; }
+    .summary .label-cell { width:62%; }
+    .summary .amount { width:30%; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; font-weight:600; }
     .detail-title { margin:18px 0 6px; color:var(--navy); font-size:14px; }
     .detail-table { table-layout:fixed; }
-    .detail-table th, .detail-table td { padding:4px 8px; border:1px solid #7d8791; font-size:11px; line-height:1.25; text-align:left; overflow-wrap:anywhere; }
-    .detail-table th:first-child, .detail-table td:first-child { text-align:center; width:7%; }
-    .detail-table th:nth-child(2), .detail-table td:nth-child(2) { width:63%; }
+    .detail-table th, .detail-table td { padding:7px 10px; border:1px solid #7d8791; font-size:12px; line-height:1.35; text-align:left; overflow-wrap:anywhere; }
+    .detail-table th:first-child, .detail-table td:first-child { text-align:center; width:8%; }
+    .detail-table th:nth-child(2), .detail-table td:nth-child(2) { width:62%; }
     .detail-table th:last-child, .detail-table td:last-child { text-align:right; white-space:nowrap; width:30%; font-variant-numeric:tabular-nums; }
-    .detail-table th { background:#eef3f8; }
+    .detail-table th { background:#eaf0f6; font-weight:700; }
     .detail-table .amount { text-align:right; white-space:nowrap; }
     .signature { display:flex; justify-content:flex-end; margin-top:45px; page-break-inside:avoid; }
     .signature-box { width:290px; text-align:center; font-size:13px; line-height:1.7; }
@@ -45,17 +45,27 @@
     .signature-name { font-weight:700; text-decoration:underline; }
     .note { margin-top:18px; color:var(--muted); font-size:11px; }
     @media (max-width:650px) {
-      body { padding:10px; }
-      .paper { padding:20px 12px; }
-      .paper-head h1 { font-size:17px; }
-      .paper-head h2 { font-size:14px; }
-      .summary td,.summary th { padding:5px 4px; font-size:11px; }
-      .detail-table th,.detail-table td { padding:3px 4px; font-size:10px; }
-      .summary .amount { white-space:normal; }
-      .summary .label-cell { overflow-wrap:anywhere; }
-      .detail-table th:last-child, .detail-table td:last-child { white-space:normal; }
-      .signature { margin-top:35px; }
-      .signature-box { width:240px; }
+      body { padding:8px; background:#eef2f6; }
+      .page { width:100%; }
+      .toolbar { gap:8px; margin-bottom:12px; }
+      .btn { min-height:44px; padding:10px 12px; font-size:14px; }
+      .filter { display:grid; grid-template-columns:1fr; gap:10px; padding:12px; margin-bottom:12px; }
+      .field, select { width:100%; }
+      .paper { padding:18px 10px; border-radius:6px; }
+      .paper-head { padding-bottom:13px; margin-bottom:12px; }
+      .paper-head h1 { font-size:18px; line-height:1.35; }
+      .paper-head h2 { font-size:14px; line-height:1.4; }
+      .summary td,.summary th { padding:7px 5px; font-size:12px; line-height:1.35; }
+      .summary .roman { width:9%; }
+      .summary .label-cell { width:61%; overflow-wrap:anywhere; }
+      .summary .amount { width:30%; white-space:normal; }
+      .detail-table th,.detail-table td { padding:6px 5px; font-size:11px; line-height:1.35; }
+      .detail-table th:first-child,.detail-table td:first-child { width:9%; }
+      .detail-table th:nth-child(2),.detail-table td:nth-child(2) { width:61%; }
+      .detail-table th:last-child,.detail-table td:last-child { width:30%; white-space:normal; }
+      .signature { margin-top:30px; }
+      .signature-box { width:230px; }
+      .note { font-size:11px; line-height:1.5; }
     }
     @media print {
       @page { size:A4 portrait; margin:14mm; }
@@ -189,7 +199,7 @@
 
     async function muatLaporan() {
       const periode = periodeTriwulan();
-      setNilai("judulPeriode", "LAPORAN TRIWULAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI " + namaBulan[periode.bulanAkhir].toUpperCase());
+      setNilai("judulPeriode", "LAPORAN TRIWULAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI " + namaBulan[periode.bulanAkhir].toUpperCase() + " " + periode.tahun);
       setNilai("labelPenerimaan", "PENERIMAAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI " + namaBulan[periode.bulanAkhir].toUpperCase());
       setNilai("labelPengeluaran", "PENGELUARAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI " + namaBulan[periode.bulanAkhir].toUpperCase());
       statusEl.className = "status";
