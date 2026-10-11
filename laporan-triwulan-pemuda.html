@@ -29,14 +29,15 @@
     .summary .section-row td { background:#eaf0f6; font-weight:700; }
     .summary { table-layout:fixed; }
     .summary .roman { width:8%; text-align:center; font-weight:700; }
-    .summary .label-cell { width:62%; }
-    .summary .amount { width:30%; text-align:center; white-space:nowrap; font-variant-numeric:tabular-nums; font-weight:600; }
+    .summary .label-cell { width:72%; }
+    .summary .amount { width:20%; text-align:center; white-space:nowrap; font-variant-numeric:tabular-nums; font-weight:600; }
+    .summary .section-row td { background:#eaf0f6; font-weight:700; }
     .detail-title { margin:18px 0 6px; color:var(--navy); font-size:14px; }
     .detail-table { table-layout:fixed; }
     .detail-table th, .detail-table td { padding:7px 10px; border:1px solid #7d8791; font-size:12px; line-height:1.35; text-align:left; overflow-wrap:anywhere; }
     .detail-table th:first-child, .detail-table td:first-child { text-align:center; width:8%; }
-    .detail-table th:nth-child(2), .detail-table td:nth-child(2) { width:62%; }
-    .detail-table th:last-child, .detail-table td:last-child { text-align:center; white-space:nowrap; width:30%; font-variant-numeric:tabular-nums; }
+    .detail-table th:nth-child(2), .detail-table td:nth-child(2) { width:72%; }
+    .detail-table th:last-child, .detail-table td:last-child { text-align:center; white-space:nowrap; width:20%; font-variant-numeric:tabular-nums; }
     .detail-table th { background:#eaf0f6; font-weight:700; }
     .detail-table .amount { text-align:center; white-space:nowrap; }
     .signature { display:flex; justify-content:flex-end; margin-top:45px; page-break-inside:avoid; }
@@ -57,12 +58,12 @@
       .paper-head h2 { font-size:14px; line-height:1.4; }
       .summary td,.summary th { padding:7px 5px; font-size:12px; line-height:1.35; }
       .summary .roman { width:9%; }
-      .summary .label-cell { width:61%; overflow-wrap:anywhere; }
-      .summary .amount { width:30%; white-space:normal; }
+      .summary .label-cell { width:69%; overflow-wrap:anywhere; }
+      .summary .amount { width:22%; white-space:normal; }
       .detail-table th,.detail-table td { padding:6px 5px; font-size:11px; line-height:1.35; }
       .detail-table th:first-child,.detail-table td:first-child { width:9%; }
-      .detail-table th:nth-child(2),.detail-table td:nth-child(2) { width:61%; }
-      .detail-table th:last-child,.detail-table td:last-child { width:30%; white-space:normal; }
+      .detail-table th:nth-child(2),.detail-table td:nth-child(2) { width:69%; }
+      .detail-table th:last-child,.detail-table td:last-child { width:22%; white-space:normal; }
       .signature { margin-top:30px; }
       .signature-box { width:230px; }
       .note { font-size:11px; line-height:1.5; }
@@ -191,7 +192,7 @@
         const jumlah = document.createElement("td");
         nomor.textContent = String(i + 1);
         nama.textContent = item ? item.nama : "—";
-        jumlah.textContent = item ? formatRupiah(item.jumlah) : "—";
+        jumlah.textContent = item ? (item.jumlah === 0 ? "—" : formatRupiah(item.jumlah)) : "—";
         jumlah.className = "amount";
         tr.append(nomor, nama, jumlah);
         tbody.appendChild(tr);
@@ -233,9 +234,9 @@
         const saldoAkhir = totalTersedia - pengeluaran;
 
         setNilai("saldoAwal", formatRupiah(saldoAwal));
-        setNilai("totalPenerimaan", formatRupiah(penerimaan));
+        setNilai("totalPenerimaan", penerimaan === 0 ? "—" : formatRupiah(penerimaan));
         setNilai("totalTersedia", formatRupiah(totalTersedia));
-        setNilai("totalPengeluaran", formatRupiah(pengeluaran));
+        setNilai("totalPengeluaran", pengeluaran === 0 ? "—" : formatRupiah(pengeluaran));
         setNilai("saldoAkhir", formatRupiah(saldoAkhir));
         tampilkanRincian("rincianPenerimaan", ringkasKategori(dalamPeriode, "Pemasukan"));
         tampilkanRincian("rincianPengeluaran", ringkasKategori(dalamPeriode, "Pengeluaran"));
