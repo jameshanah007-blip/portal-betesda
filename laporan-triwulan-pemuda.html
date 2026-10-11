@@ -26,15 +26,15 @@
     .paper-head p { margin:0; font-size:14px; }
     .period { margin-top:10px !important; font-weight:700; }
     table { width:100%; border-collapse:collapse; }
-    .summary td, .summary th { padding:8px 7px; border:1px solid #7d8791; vertical-align:top; font-size:13px; }
+    .summary td, .summary th { padding:6px 7px; border:1px solid #7d8791; vertical-align:top; font-size:13px; }
     .summary .section-row td { background:#eef3f8; font-weight:700; }
     .summary .roman { width:42px; text-align:center; font-weight:700; }
     .summary .colon { width:20px; text-align:center; }
     .summary .amount { width:170px; text-align:right; white-space:nowrap; }
     .detail-title { margin:18px 0 6px; color:var(--navy); font-size:14px; }
-    .detail-table th, .detail-table td { padding:7px 8px; border:1px solid #7d8791; font-size:12px; text-align:left; }
+    .detail-table th, .detail-table td { padding:4px 7px; border:1px solid #7d8791; font-size:11px; line-height:1.2; text-align:left; }\n    .detail-table th:first-child, .detail-table td:first-child { text-align:center; width:48px; }\n    .detail-table th:last-child, .detail-table td:last-child { text-align:center; white-space:nowrap; width:160px; }
     .detail-table th { background:#eef3f8; }
-    .detail-table .amount { text-align:right; white-space:nowrap; width:175px; }
+    .detail-table .amount { text-align:center; white-space:nowrap; width:160px; }
     .signature { display:flex; justify-content:flex-end; margin-top:45px; page-break-inside:avoid; }
     .signature-box { width:290px; text-align:center; font-size:13px; line-height:1.7; }
     .signature-space { height:70px; }
@@ -45,7 +45,7 @@
       .paper { padding:20px 12px; }
       .paper-head h1 { font-size:17px; }
       .paper-head h2 { font-size:14px; }
-      .summary td,.summary th { padding:6px 4px; font-size:11px; }
+      .summary td,.summary th { padding:5px 4px; font-size:11px; }\n      .detail-table th,.detail-table td { padding:3px 4px; font-size:10px; }
       .summary .amount { width:112px; white-space:normal; }
       .signature { margin-top:35px; }
       .signature-box { width:240px; }
@@ -105,7 +105,7 @@
       </table>
 
       <table class="detail-table" aria-label="Rincian penerimaan">
-        <thead><tr><th style="width:48px">No.</th><th>Keterangan</th><th class="amount">Jumlah</th></tr></thead>
+        <thead><tr><th style="width:48px">No.</th><th>Keterangan</th><th class="amount"></th></tr></thead>
         <tbody id="rincianPenerimaan"></tbody>
       </table>
 
@@ -134,7 +134,7 @@
   <script src="supabase-client.js"></script>
   <script>
     const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-    const formatRupiah = nilai => new Intl.NumberFormat("id-ID", {style:"currency",currency:"IDR",maximumFractionDigits:0}).format(Number(nilai) || 0);
+    const formatRupiah = nilai => new Intl.NumberFormat("id-ID", {maximumFractionDigits:0}).format(Number(nilai) || 0);
     const statusEl = document.getElementById("status");
 
     function periodeTriwulan() {
@@ -196,8 +196,8 @@
     async function muatLaporan() {
       const periode = periodeTriwulan();
       setNilai("periode", formatPeriode(periode));
-      setNilai("labelPenerimaan", "PENERIMAAN BULAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI BULAN " + namaBulan[periode.bulanAkhir].toUpperCase());
-      setNilai("labelPengeluaran", "PENGELUARAN BULAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI BULAN " + namaBulan[periode.bulanAkhir].toUpperCase());
+      setNilai("labelPenerimaan", "PENERIMAAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI " + namaBulan[periode.bulanAkhir].toUpperCase());
+      setNilai("labelPengeluaran", "PENGELUARAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI " + namaBulan[periode.bulanAkhir].toUpperCase());
       statusEl.className = "status";
       statusEl.textContent = "Memuat transaksi dari Buku Kas Pemuda…";
       document.getElementById("btnTampilkan").disabled = true;
