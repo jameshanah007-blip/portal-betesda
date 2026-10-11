@@ -24,7 +24,6 @@
     .paper-head h1 { margin:0 0 7px; font-size:20px; line-height:1.4; }
     .paper-head h2 { margin:0 0 5px; font-size:16px; }
     .paper-head p { margin:0; font-size:14px; }
-    .period { margin-top:10px !important; font-weight:700; }
     table { width:100%; border-collapse:collapse; }
     .summary td, .summary th { padding:6px 7px; border:1px solid #7d8791; vertical-align:top; font-size:13px; }
     .summary .section-row td { background:#eef3f8; font-weight:700; }
@@ -90,7 +89,6 @@
       <header class="paper-head">
         <h1>LAPORAN TRIWULAN KEUANGAN PERSEKUTUAN PEMUDA</h1>
         <h2>GPIL JEMAAT BETESDA PURWOSARI</h2>
-        <p class="period" id="periode">Periode laporan</p>
       </header>
 
       <table class="summary">
@@ -113,7 +111,7 @@
         <tbody><tr class="section-row"><td class="roman">VII</td><td colspan="3">RINCIAN PENGELUARAN</td></tr></tbody>
       </table>
       <table class="detail-table" aria-label="Rincian pengeluaran">
-        <thead><tr><th style="width:48px">No.</th><th>Keterangan</th><th class="amount">Jumlah</th></tr></thead>
+        <thead><tr><th style="width:48px">No.</th><th>Keterangan</th><th class="amount"></th></tr></thead>
         <tbody id="rincianPengeluaran"></tbody>
       </table>
 
@@ -148,11 +146,6 @@
       return {tahun, triwulan, bulanMulai, bulanAkhir, awal, akhir};
     }
 
-    function formatPeriode(p) {
-      return "TRIWULAN " + ["I","II","III","IV"][p.triwulan - 1] + " TAHUN " + p.tahun +
-        " (" + namaBulan[p.bulanMulai] + " SAMPAI " + namaBulan[p.bulanAkhir] + " " + p.tahun + ")";
-    }
-
     function setNilai(id, value) {
       document.getElementById(id).textContent = value;
     }
@@ -164,22 +157,13 @@
         const jumlah = Number(item.jumlah) || 0;
         kelompok.set(nama, (kelompok.get(nama) || 0) + jumlah);
       });
-      const daftar = [...kelompok.entries()].map(([nama, jumlah]) => ({nama, jumlah}))
-        .sort((a,b) => b.jumlah - a.jumlah);
-      if (daftar.length > 5) {
-        const utama = daftar.slice(0, 4);
-        const lainnya = daftar.slice(4).reduce((total, item) => total + item.jumlah, 0);
-        utama.push({nama:"Lainnya (gabungan keterangan lain)", jumlah:lainnya});
-        return utama;
-      }
-      return daftar;
+      return [...kelompok.entries()].map(([nama, jumlah]) => ({nama, jumlah}))\n        .sort((a,b) => b.jumlah - a.jumlah);
     }
 
     function tampilkanRincian(id, data) {
       const tbody = document.getElementById(id);
       tbody.replaceChildren();
-      for (let i = 0; i < 5; i++) {
-        const item = data[i];
+      for (let i = 0; i < data.length; i++) {\n        const item = data[i];
         const tr = document.createElement("tr");
         const nomor = document.createElement("td");
         const nama = document.createElement("td");
@@ -195,7 +179,6 @@
 
     async function muatLaporan() {
       const periode = periodeTriwulan();
-      setNilai("periode", formatPeriode(periode));
       setNilai("labelPenerimaan", "PENERIMAAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI " + namaBulan[periode.bulanAkhir].toUpperCase());
       setNilai("labelPengeluaran", "PENGELUARAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI " + namaBulan[periode.bulanAkhir].toUpperCase());
       statusEl.className = "status";
