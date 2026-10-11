@@ -30,16 +30,16 @@
     .summary { table-layout:fixed; }
     .summary .roman { width:8%; text-align:center; font-weight:700; }
     .summary .label-cell { width:72%; }
-    .summary .amount { width:20%; text-align:center; white-space:nowrap; font-variant-numeric:tabular-nums; font-weight:600; }
+    .summary .amount { width:20%; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; font-weight:600; }
     .summary .section-row td { background:#eaf0f6; font-weight:700; }
     .detail-title { margin:18px 0 6px; color:var(--navy); font-size:14px; }
     .detail-table { table-layout:fixed; }
     .detail-table th, .detail-table td { padding:7px 10px; border:1px solid #7d8791; font-size:12px; line-height:1.35; text-align:left; overflow-wrap:anywhere; }
     .detail-table th:first-child, .detail-table td:first-child { text-align:center; width:8%; }
     .detail-table th:nth-child(2), .detail-table td:nth-child(2) { width:72%; }
-    .detail-table th:last-child, .detail-table td:last-child { text-align:center; white-space:nowrap; width:20%; font-variant-numeric:tabular-nums; }
+    .detail-table th:last-child, .detail-table td:last-child { text-align:right; white-space:nowrap; width:20%; font-variant-numeric:tabular-nums; }
     .detail-table th { background:#eaf0f6; font-weight:700; }
-    .detail-table .amount { text-align:center; white-space:nowrap; }
+    .detail-table .amount { text-align:right; white-space:nowrap; }
     .signature { display:flex; justify-content:flex-end; margin-top:45px; page-break-inside:avoid; }
     .signature-box { width:290px; text-align:center; font-size:13px; line-height:1.7; }
     .signature-space { height:70px; }
@@ -122,15 +122,12 @@
       </table>
 
       <table class="detail-table" aria-label="Rincian penerimaan">
-        <thead><tr><th style="width:48px">No.</th><th>Keterangan</th><th class="amount"></th></tr></thead>
+        <thead><tr><th colspan="2">RINCIAN PENERIMAAN</th><th class="amount"></th></tr></thead>
         <tbody id="rincianPenerimaan"></tbody>
       </table>
 
-      <table class="summary" style="margin-top:14px">
-        <tbody><tr class="section-row"><td class="roman">VII</td><td colspan="2">RINCIAN PENGELUARAN</td></tr></tbody>
-      </table>
-      <table class="detail-table" aria-label="Rincian pengeluaran">
-        <thead><tr><th style="width:48px">No.</th><th>Keterangan</th><th class="amount"></th></tr></thead>
+      <table class="detail-table" aria-label="Rincian pengeluaran" style="margin-top:14px">
+        <thead><tr><th colspan="2">VII. RINCIAN PENGELUARAN</th><th class="amount"></th></tr></thead>
         <tbody id="rincianPengeluaran"></tbody>
       </table>
 
@@ -187,14 +184,13 @@
       for (let i = 0; i < data.length; i++) {
         const item = data[i];
         const tr = document.createElement("tr");
-        const nomor = document.createElement("td");
-        const nama = document.createElement("td");
+        const keterangan = document.createElement("td");
         const jumlah = document.createElement("td");
-        nomor.textContent = String(i + 1);
-        nama.textContent = item ? item.nama : "—";
+        keterangan.colSpan = 2;
+        keterangan.textContent = item ? (i + 1) + ". " + item.nama : "—";
         jumlah.textContent = item ? (item.jumlah === 0 ? "—" : formatRupiah(item.jumlah)) : "—";
         jumlah.className = "amount";
-        tr.append(nomor, nama, jumlah);
+        tr.append(keterangan, jumlah);
         tbody.appendChild(tr);
       }
     }
