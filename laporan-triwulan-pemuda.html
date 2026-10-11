@@ -27,15 +27,18 @@
     table { width:100%; border-collapse:collapse; }
     .summary td, .summary th { padding:6px 7px; border:1px solid #7d8791; vertical-align:top; font-size:13px; }
     .summary .section-row td { background:#eef3f8; font-weight:700; }
-    .summary .roman { width:42px; text-align:center; font-weight:700; }
-    .summary .colon { width:20px; text-align:center; }
-    .summary .amount { width:170px; text-align:right; white-space:nowrap; }
+    .summary { table-layout:fixed; }
+    .summary .roman { width:7%; text-align:center; font-weight:700; }
+    .summary .label-cell { width:63%; }
+    .summary .amount { width:30%; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
     .detail-title { margin:18px 0 6px; color:var(--navy); font-size:14px; }
-    .detail-table th, .detail-table td { padding:4px 7px; border:1px solid #7d8791; font-size:11px; line-height:1.2; text-align:left; }
-    .detail-table th:first-child, .detail-table td:first-child { text-align:center; width:48px; }
-    .detail-table th:last-child, .detail-table td:last-child { text-align:center; white-space:nowrap; width:160px; }
+    .detail-table { table-layout:fixed; }
+    .detail-table th, .detail-table td { padding:4px 8px; border:1px solid #7d8791; font-size:11px; line-height:1.25; text-align:left; overflow-wrap:anywhere; }
+    .detail-table th:first-child, .detail-table td:first-child { text-align:center; width:7%; }
+    .detail-table th:nth-child(2), .detail-table td:nth-child(2) { width:63%; }
+    .detail-table th:last-child, .detail-table td:last-child { text-align:right; white-space:nowrap; width:30%; font-variant-numeric:tabular-nums; }
     .detail-table th { background:#eef3f8; }
-    .detail-table .amount { text-align:center; white-space:nowrap; width:160px; }
+    .detail-table .amount { text-align:right; white-space:nowrap; }
     .signature { display:flex; justify-content:flex-end; margin-top:45px; page-break-inside:avoid; }
     .signature-box { width:290px; text-align:center; font-size:13px; line-height:1.7; }
     .signature-space { height:70px; }
@@ -48,7 +51,9 @@
       .paper-head h2 { font-size:14px; }
       .summary td,.summary th { padding:5px 4px; font-size:11px; }
       .detail-table th,.detail-table td { padding:3px 4px; font-size:10px; }
-      .summary .amount { width:112px; white-space:normal; }
+      .summary .amount { white-space:normal; }
+      .summary .label-cell { overflow-wrap:anywhere; }
+      .detail-table th:last-child, .detail-table td:last-child { white-space:normal; }
       .signature { margin-top:35px; }
       .signature-box { width:240px; }
     }
@@ -90,18 +95,18 @@
 
     <article class="paper">
       <header class="paper-head">
-        <h1>LAPORAN TRIWULAN KEUANGAN PERSEKUTUAN PEMUDA</h1>
-        <h2>GPIL JEMAAT BETESDA PURWOSARI</h2>
+        <h1 id="judulPeriode">LAPORAN TRIWULAN JANUARI SAMPAI MARET</h1>
+        <h2>PERSEKUTUAN PEMUDA GPIL JEMAAT BETESDA PURWOSARI</h2>
       </header>
 
       <table class="summary">
         <tbody>
-          <tr><td class="roman">I</td><td> SALDO BULAN LALU</td><td class="colon">:</td><td class="amount" id="saldoAwal">—</td></tr>
-          <tr><td class="roman">II</td><td id="labelPenerimaan">PENERIMAAN</td><td class="colon">:</td><td class="amount" id="totalPenerimaan">—</td></tr>
-          <tr><td class="roman">III</td><td>TOTAL (I+II)</td><td class="colon">:</td><td class="amount" id="totalTersedia">—</td></tr>
-          <tr><td class="roman">IV</td><td id="labelPengeluaran">PENGELUARAN</td><td class="colon">:</td><td class="amount" id="totalPengeluaran">—</td></tr>
-          <tr><td class="roman">V</td><td><strong>SALDO AKHIR (III-IV)</strong></td><td class="colon">:</td><td class="amount" id="saldoAkhir"><strong>—</strong></td></tr>
-          <tr class="section-row"><td class="roman">VI</td><td colspan="3">RINCIAN PENERIMAAN</td></tr>
+          <tr><td class="roman">I</td><td class="label-cell">SALDO BULAN LALU</td><td class="amount" id="saldoAwal">—</td></tr>
+          <tr><td class="roman">II</td><td class="label-cell" id="labelPenerimaan">PENERIMAAN</td><td class="amount" id="totalPenerimaan">—</td></tr>
+          <tr><td class="roman">III</td><td class="label-cell">TOTAL (I+II)</td><td class="amount" id="totalTersedia">—</td></tr>
+          <tr><td class="roman">IV</td><td class="label-cell" id="labelPengeluaran">PENGELUARAN</td><td class="amount" id="totalPengeluaran">—</td></tr>
+          <tr><td class="roman">V</td><td class="label-cell"><strong>SALDO AKHIR (III-IV)</strong></td><td class="amount" id="saldoAkhir"><strong>—</strong></td></tr>
+          <tr class="section-row"><td class="roman">VI</td><td colspan="2">RINCIAN PENERIMAAN</td></tr>
         </tbody>
       </table>
 
@@ -111,7 +116,7 @@
       </table>
 
       <table class="summary" style="margin-top:14px">
-        <tbody><tr class="section-row"><td class="roman">VII</td><td colspan="3">RINCIAN PENGELUARAN</td></tr></tbody>
+        <tbody><tr class="section-row"><td class="roman">VII</td><td colspan="2">RINCIAN PENGELUARAN</td></tr></tbody>
       </table>
       <table class="detail-table" aria-label="Rincian pengeluaran">
         <thead><tr><th style="width:48px">No.</th><th>Keterangan</th><th class="amount"></th></tr></thead>
@@ -184,6 +189,7 @@
 
     async function muatLaporan() {
       const periode = periodeTriwulan();
+      setNilai("judulPeriode", "LAPORAN TRIWULAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI " + namaBulan[periode.bulanAkhir].toUpperCase());
       setNilai("labelPenerimaan", "PENERIMAAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI " + namaBulan[periode.bulanAkhir].toUpperCase());
       setNilai("labelPengeluaran", "PENGELUARAN " + namaBulan[periode.bulanMulai].toUpperCase() + " SAMPAI " + namaBulan[periode.bulanAkhir].toUpperCase());
       statusEl.className = "status";
