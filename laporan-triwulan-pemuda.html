@@ -82,7 +82,7 @@
   <main class="page">
     <div class="toolbar no-print">
       <a class="btn" href="index.html">← Kembali ke Portal</a>
-      <button class="btn primary" id="btnCetak" type="button">Cetak / Simpan PDF</button>
+      <button class="btn primary" id="btnDownloadPdf" type="button">Download PDF</button>
     </div>
 
     <section class="filter no-print" aria-label="Pilih periode laporan">
@@ -147,6 +147,7 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="supabase-client.js"></script>
   <script>
     const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
@@ -262,7 +263,41 @@
     tahunSelect.value = String(tahunSekarang);
     document.getElementById("triwulan").value = String(Math.floor(new Date().getMonth() / 3) + 1);
     document.getElementById("btnTampilkan").addEventListener("click", muatLaporan);
-    document.getElementById("btnCetak").addEventListener("click", () => window.print());
+    document.getElementById("btnDownloadPdf").addEventListener("click", async () => {
+      const tombol = document.getElementById("btnDownloadPdf");
+      const periode = periodeTriwulan();
+      if (typeof html2pdf === "undefined") {
+        statusEl.className = "status error";
+        statusEl.textContent = "Fitur PDF belum tersedia. Periksa koneksi internet lalu muat ulang halaman.";
+        return;
+      }
+      tombol.disabled = true;
+      tombol.textContent = "Menyiapkan PDF…";
+      statusEl.className = "status";
+      statusEl.textContent = "Sedang membuat file PDF laporan…";
+      const namaFile = "Laporan-Triwulan-" +
+        namaBulan[periode.bulanMulai].toUpperCase() + "-SAMPAI-" +
+        namaBulan[periode.bulanAkhir].toUpperCase() + "-" + periode.tahun + ".pdf";
+      const opsi = {
+        margin: [10, 10, 10, 10],
+        filename: namaFile,
+        image: {type: "jpeg", quality: 0.98},
+        html2canvas: {scale: 2, useCORS: true, backgroundColor: "#ffffff", scrollY: 0},
+        jsPDF: {unit: "mm", format: "a4", orientation: "portrait"},
+        pagebreak: {mode: ["css", "legacy"]}
+      };
+      try {
+        await html2pdf().set(opsi).from(document.querySelector(".paper")).save();
+        statusEl.textContent = "PDF berhasil dibuat: " + namaFile;
+      } catch (error) {
+        console.error("Gagal membuat PDF laporan:", error);
+        statusEl.className = "status error";
+        statusEl.textContent = "PDF gagal dibuat. Periksa koneksi internet lalu coba kembali.";
+      } finally {
+        tombol.disabled = false;
+        tombol.textContent = "Download PDF";
+      }
+    });
     muatLaporan();
   </script>
 </body>
