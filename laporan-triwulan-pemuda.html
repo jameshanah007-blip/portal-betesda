@@ -184,13 +184,14 @@
       for (let i = 0; i < data.length; i++) {
         const item = data[i];
         const tr = document.createElement("tr");
-        const nomorDanKeterangan = document.createElement("td");
+        const kolomNomor = document.createElement("td");
+        const keterangan = document.createElement("td");
         const jumlah = document.createElement("td");
-        nomorDanKeterangan.colSpan = 2;
-        nomorDanKeterangan.textContent = item ? (i + 1) + ". " + item.nama : "—";
+        kolomNomor.textContent = "";
+        keterangan.textContent = item ? (i + 1) + ". " + item.nama : "—";
         jumlah.textContent = item ? (item.jumlah === 0 ? "—" : formatRupiah(item.jumlah)) : "—";
         jumlah.className = "amount";
-        tr.append(nomorDanKeterangan, jumlah);
+        tr.append(kolomNomor, keterangan, jumlah);
         tbody.appendChild(tr);
       }
     }
