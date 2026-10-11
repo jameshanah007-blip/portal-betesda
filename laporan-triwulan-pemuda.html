@@ -31,7 +31,9 @@
     .summary .colon { width:20px; text-align:center; }
     .summary .amount { width:170px; text-align:right; white-space:nowrap; }
     .detail-title { margin:18px 0 6px; color:var(--navy); font-size:14px; }
-    .detail-table th, .detail-table td { padding:4px 7px; border:1px solid #7d8791; font-size:11px; line-height:1.2; text-align:left; }\n    .detail-table th:first-child, .detail-table td:first-child { text-align:center; width:48px; }\n    .detail-table th:last-child, .detail-table td:last-child { text-align:center; white-space:nowrap; width:160px; }
+    .detail-table th, .detail-table td { padding:4px 7px; border:1px solid #7d8791; font-size:11px; line-height:1.2; text-align:left; }
+    .detail-table th:first-child, .detail-table td:first-child { text-align:center; width:48px; }
+    .detail-table th:last-child, .detail-table td:last-child { text-align:center; white-space:nowrap; width:160px; }
     .detail-table th { background:#eef3f8; }
     .detail-table .amount { text-align:center; white-space:nowrap; width:160px; }
     .signature { display:flex; justify-content:flex-end; margin-top:45px; page-break-inside:avoid; }
@@ -44,7 +46,8 @@
       .paper { padding:20px 12px; }
       .paper-head h1 { font-size:17px; }
       .paper-head h2 { font-size:14px; }
-      .summary td,.summary th { padding:5px 4px; font-size:11px; }\n      .detail-table th,.detail-table td { padding:3px 4px; font-size:10px; }
+      .summary td,.summary th { padding:5px 4px; font-size:11px; }
+      .detail-table th,.detail-table td { padding:3px 4px; font-size:10px; }
       .summary .amount { width:112px; white-space:normal; }
       .signature { margin-top:35px; }
       .signature-box { width:240px; }
@@ -157,13 +160,15 @@
         const jumlah = Number(item.jumlah) || 0;
         kelompok.set(nama, (kelompok.get(nama) || 0) + jumlah);
       });
-      return [...kelompok.entries()].map(([nama, jumlah]) => ({nama, jumlah}))\n        .sort((a,b) => b.jumlah - a.jumlah);
+      return [...kelompok.entries()].map(([nama, jumlah]) => ({nama, jumlah}))
+        .sort((a,b) => b.jumlah - a.jumlah);
     }
 
     function tampilkanRincian(id, data) {
       const tbody = document.getElementById(id);
       tbody.replaceChildren();
-      for (let i = 0; i < data.length; i++) {\n        const item = data[i];
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i];
         const tr = document.createElement("tr");
         const nomor = document.createElement("td");
         const nama = document.createElement("td");
@@ -187,12 +192,20 @@
 
       try {
         if (typeof supabaseClient === "undefined") throw new Error("Koneksi Supabase belum tersedia.");
-        const {data, error} = await supabaseClient.from("transaksi_pemuda")
-          .select("tanggal,keterangan,jumlah,jenis")
-          .order("tanggal", {ascending:true});
-        if (error) throw error;
-
-        const semua = data || [];
+        // Ambil semua halaman data agar batas default Supabase tidak memotong transaksi.
+        const semua = [];
+        const ukuranHalaman = 1000;
+        for (let mulai = 0; ; mulai += ukuranHalaman) {
+          const {data, error} = await supabaseClient.from("transaksi_pemuda")
+            .select("id,tanggal,keterangan,jumlah,jenis")
+            .order("tanggal", {ascending:true})
+            .order("id", {ascending:true})
+            .range(mulai, mulai + ukuranHalaman - 1);
+          if (error) throw error;
+          const halaman = data || [];
+          semua.push(...halaman);
+          if (halaman.length < ukuranHalaman) break;
+        }
         const sebelumPeriode = semua.filter(item => item.tanggal && item.tanggal < periode.awal);
         const dalamPeriode = semua.filter(item => item.tanggal && item.tanggal >= periode.awal && item.tanggal <= periode.akhir);
         const jumlahJenis = (daftar, jenis) => daftar.reduce((total, item) => total + (item.jenis === jenis ? (Number(item.jumlah) || 0) : 0), 0);
